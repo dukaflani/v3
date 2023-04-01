@@ -1,0 +1,67 @@
+// Nextjs Imports
+import { useRouter } from "next/router"
+
+// MUI Imports
+import { Box, Stack, Typography, Card, CardMedia, CardContent, IconButton, Tooltip, Button } from "@mui/material"
+
+// NPM Imports
+import numeral from 'numeral';
+
+// Icons
+import { WhatsAppOutlined } from '@ant-design/icons'
+import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
+
+
+
+
+const TabProductCard = ({ product, data }) => {
+    const router = useRouter()
+
+
+  return (
+    <Box>
+        <Stack spacing={2}>
+            <Box>
+                <Stack>
+                    <Typography variant="subtitle2">PRODUCTS & MERCHANDISE</Typography>
+                    <Typography variant="caption">{`Buy products promoted or sold by ${data?.stage_name}`}</Typography>
+                </Stack>
+            </Box>
+            <Box>
+                <Card square>
+                    <CardMedia
+                        sx={{ height: 320 }}
+                        image={product?.image}
+                        title={product?.title}
+                    />
+                    <CardContent>
+                        <Box>
+                            <Stack>
+                                <Box sx={{display: 'flex', alignItems: 'start', justifyContent: 'space-between'}}>
+                                    <Typography className="line-clamp-2 line-clamp" variant="subtitle1">{product?.title}</Typography>
+                                    {/* <Tooltip title='Order on WhatsApp'>
+                                        <IconButton>
+                                            <WhatsAppOutlined style={{cursor: 'pointer', fontSize: 20}} />
+                                        </IconButton>
+                                    </Tooltip> */}
+                                </Box>
+                                <Stack>
+                                    <Typography variant="h6">{product?.local_currency}{numeral(product?.local_price).format('0,0')}</Typography>
+                                </Stack>
+                                <Stack>
+                                    <Typography className="line-clamp-2 line-clamp" variant="body2">{product?.description}</Typography>
+                                </Stack>
+                                <Box sx={{paddingTop: 2, width: '100%'}}>
+                                    <Button startIcon={<LocalOfferOutlinedIcon/>} onClick={() => router.push({ pathname: `/shop/${product?.id}` })} fullWidth size="small" variant="contained">Product Details</Button>
+                                </Box>
+                            </Stack>
+                        </Box>
+                    </CardContent>
+                </Card>
+            </Box>
+        </Stack>
+    </Box>
+  )
+}
+
+export default TabProductCard
