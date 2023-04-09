@@ -65,14 +65,18 @@ const TabSkizaCards = ({ skiza, data }) => {
                 </Stack>
             </Box>
             <Card square>
-              <CardContent>
+              {skiza?.length == 0 && <CardContent>
+                <Typography variant="body2">No Skiza Tunes Found</Typography>
+                </CardContent>}
+
+              {skiza?.length > 0 && <CardContent>
                 {skiza?.map((skizaTune, i) => (
                     <Box key={i}>
                         <TabSkizaTuneCard skizaTune={skizaTune} />
                         <Divider sx={{display: i == lastSkizaCard ? 'none' : 'block'}}/>
                     </Box>
                 ))}
-              </CardContent>
+              </CardContent>}
             </Card>
         </Stack>
     </Box>

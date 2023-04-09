@@ -9,17 +9,23 @@ import Image from "next/legacy/image";
 import numeral from 'numeral'
 import { formatDistanceStrict } from 'date-fns'
 
+// Tanstack/React Query
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 
 // MUI Imports
 import { Box, Grid, Typography, Avatar, IconButton, Stack, Tooltip, Link, 
   Skeleton, Menu, MenuItem, List, ListItem, ListItemText, ListItemAvatar, colors } from "@mui/material"
-import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import { useTheme } from '@mui/material/styles';
-
-
-// Icons
+  
+  
+  // Icons
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
+
+// Project Imports
+import { addView } from '@/axios/axios';
 
 
 
@@ -49,13 +55,34 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
     rawViewCount < 1000 || rawViewCount % 10 === 0 ? formatedViewCount = numeral(rawViewCount).format('0a') :  formatedViewCount = numeral(rawViewCount).format('0.0a')
 
 
+    const newView = {
+      video: video?.id,
+      user: 1,
+      time: new Date()
+    }
+
+    const queryClient = useQueryClient()
+    const { mutate } = useMutation(addView, { 
+      onSuccess: () => {
+        queryClient.invalidateQueries(["videos-list"])
+        queryClient.invalidateQueries(["current-video", video.youtube_id])
+      }
+     })
+     
+    const handleVideoClick = () => {
+      router.push({pathname: '/watch', query: {v: video.youtube_id}})
+      mutate(newView)
+    }
+
     const cardBody = (
       <>
         <Box sx={{ minHeight: 260}}>
         <Box sx={{ width: '100%', height: '100%', maxWidth: 350, margin: 'auto'}}>
           {video.thumbnail ? (
-            <Box onClick={() => router.push({pathname: '/watch', query: {v: video.youtube_id}})
-            } sx={{ backgroundColor: colors.grey[200], width: '100%', height: '56.25%', borderRadius: 2, position: "relative", cursor:'pointer'}}>
+            <Box 
+              onClick={handleVideoClick}
+              sx={{ backgroundColor: colors.grey[200], width: '100%', height: '56.25%', borderRadius: 2, position: "relative", cursor:'pointer'}}
+              >
               <Image 
                   src={video.thumbnail} 
                   layout='responsive'
@@ -79,6 +106,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                   onClick={(e) => {
                     e.preventDefault()
                     router.push({pathname: '/watch', query: {v: video.youtube_id}})
+                    mutate(newView)
                   }}
                   title={video.title}
                   className="line-clamp-2 line-clamp"
@@ -161,13 +189,13 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                 >
                   <MenuItem onClick={handleClose}>
                     <List>
-                      <ListItem disableGutters>
+                      <ListItem onClick={() => router.push({ pathname: `/shop/${video?.product}` })} disableGutters>
                         <ListItemAvatar>
                           <Avatar>
                             <LocalOfferOutlinedIcon /> 
                           </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary="Go to product details" secondary="Quick view" />
+                        <ListItemText primary="Go to product details" secondary={`${video?.product_title.substring(0, 20)}...`} />
                       </ListItem>
                     </List>
                   </MenuItem>

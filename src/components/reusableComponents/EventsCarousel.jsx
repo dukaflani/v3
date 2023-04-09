@@ -3,10 +3,11 @@ import { useState } from 'react'
 
 // Next Image
 import Image from "next/legacy/image";
+import { useRouter } from 'next/router'
 
 
 // MUI Imports
-import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material"
+import { Box, Button, colors, Grid, Paper, Stack, Typography } from "@mui/material"
 
 // React Slick Carousel
 import Slider from "react-slick";
@@ -19,7 +20,7 @@ import poster1 from '../../../public/assets/pictures/event1.jpg'
 import { RightOutlined } from "@ant-design/icons";
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import OutlinedFlagTwoToneIcon from '@mui/icons-material/OutlinedFlagTwoTone';
-import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 
 
@@ -48,7 +49,8 @@ function CarouselPrevArrow(props) {
 
 
 
-const ProductsCarouselDukaflani = ({ title, color1, color2, icon }) => {
+const ProductsCarouselDukaflani = ({ title, color1, color2, icon, events }) => {
+    const router = useRouter()
     const [productHovered, setProductHovered] = useState(null)
   
     const handleMouseEnter = (index) => {
@@ -101,42 +103,42 @@ const ProductsCarouselDukaflani = ({ title, color1, color2, icon }) => {
           <Paper square>
           <Grid>
               <Slider {...settings} >
-                  {[...Array(10).keys()].map((item, i) => (
+                  {events?.map((event, i) => (
                     <Grid onMouseEnter={() => handleMouseEnter(i)} onMouseLeave={handleMouseLeave} key={i} xs={12} sx={{ width: '100%', cursor:'pointer', padding: 0.5}} item>
                       <Box>
                           <Paper square elevation={productHovered == i ? 5 : productHovered == null ? 0 : 0}>
                             <Stack>
-                            <Box sx={{ position: "relative", cursor:'pointer'}}>
+                            <Box sx={{ position: "relative", cursor:'pointer', backgroundColor: colors.grey[100]}}>
                               <Image 
-                                  src={poster1} 
+                                  src={event?.poster ? event?.poster : poster1} 
                                   layout='responsive'
-                                  alt='Event title'
+                                  alt={event?.title}
                                   width="100%"
                                   height='75%'
                                   />
                             </Box>
                             <Box sx={{padding: 0.5}}>
                               <Stack >
-                                <Typography gutterBottom className='line-clamp-1 line-clamp' variant='body2'>Event title jvjdjn ljnljnln lnljdnlscn ldkndjdln knkdjndljn jnjnln kkjnlknk knjnkj ljnljnl</Typography>
+                                <Typography gutterBottom className='line-clamp-1 line-clamp' variant='body2'>{event?.title}</Typography>
                                   <Stack spacing={0.5}>
                                     <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                                       <LocationOnOutlinedIcon sx={{fontSize: 12}} />
-                                      <Typography className='line-clamp-1 line-clamp' variant='caption'>Event Venue</Typography>
+                                      <Typography className='line-clamp-1 line-clamp' variant='caption'>{event?.venue}</Typography>
                                     </Stack>
                                     <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                                       <OutlinedFlagTwoToneIcon sx={{fontSize: 12}} />
-                                      <Typography className='line-clamp-1 line-clamp' variant='caption'>Event Location</Typography>
+                                      <Typography className='line-clamp-1 line-clamp' variant='caption'>{event?.location}</Typography>
                                     </Stack>
                                       <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-                                        <ScheduleOutlinedIcon sx={{fontSize: 12}} />
-                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>Event Time</Typography>
+                                        <CalendarTodayIcon sx={{fontSize: 12}} />
+                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>{new Date(event?.date).toDateString()}</Typography>
                                       </Stack>
                                   </Stack>
                               </Stack>
                             </Box>
                             </Stack>
                             <Box sx={{padding: 0.5}}>
-                              <Button variant='text' size='small' fullWidth >Event Details</Button>
+                              <Button onClick={() => router.push({ pathname: `/events/${event?.id}`, query: {a: event?.user} }) } variant='text' size='small' fullWidth >Event Details</Button>
                             </Box>
                           </Paper>
                       </Box>

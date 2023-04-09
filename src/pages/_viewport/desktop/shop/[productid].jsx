@@ -4,7 +4,7 @@ import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 
 //MUI Imports
-import { Avatar, Box, Button, colors, Container, Divider, Grid, Paper, Stack, Typography } from "@mui/material"
+import { Avatar, Box, Button, colors, Container, Divider, Grid, Link, Paper, Skeleton, Stack, Typography } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
 
 // NPM Imports
@@ -19,7 +19,7 @@ import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Project imports
-import { getCurrentVideoProduct, getCurrentVideoUserProfile } from "@/axios/axios";
+import { getCurrentVideoProduct, getCurrentVideoUserProfile, getUpsellProducts } from "@/axios/axios";
 
 // Components
 import NavigationLayout2 from '@/layout/desktop/NavigationLayout2'
@@ -33,37 +33,30 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
     const router = useRouter()
     const { productid } = router.query
 
-    // const queryClient = useQueryClient()
-    // const { data } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
-    //     initialData: () => {
-    //         const video = queryClient.getQueryData(["videos-list"])?.pages[0]?.find(video => video.youtube_id === v)
-    //         if(video) {
-    //             return video
-    //         } else {
-    //             return undefined
-    //         }
-    //     }
-    // })
     
+    const queryClient = useQueryClient()
     const videoProductID = productid ? productid : 0
-    const { data: product } = useQuery(["current-video-product", videoProductID], (videoProductID) => getCurrentVideoProduct(videoProductID))
-    
-    // const queryClient = useQueryClient()
-    // const videoProductID = productid ? productid : 0
-    // const { data: product } = useQuery(["current-video-product", videoProductID], (videoProductID) => getCurrentVideoProduct(videoProductID), {
-    //     initialData: () => {
-    //         const videoProduct = queryClient.getQueryData(["current-video-product"])?.find(videoProduct => videoProduct.id === videoProductID)
-    //         if(videoProduct) {
-    //             return videoProduct
-    //         } else {
-    //             return undefined
-    //         }
-    //     }
-    // })
+    const { data: product, isLoading: loadingProduct } = useQuery(["current-video-product", videoProductID], (videoProductID) => getCurrentVideoProduct(videoProductID), {
+        initialData: () => {
+            const videoProduct = queryClient.getQueryData(["current-video-product", Number(videoProductID)])
+            if(videoProduct) {
+                return videoProduct
+            } else {
+                return undefined
+            }
+        }
+    })
 
-    const videoProfileUserID = product?.user ? product?.user : 0
-    const { data: profile, isLoading, isFetching } = useQuery(["current-video-profile", videoProfileUserID], (videoProfileUserID) => getCurrentVideoUserProfile(videoProfileUserID))
+
+    const publisherUserID = product?.user ? product?.user : 0
+    const { data: profile, isLoading: loadingProfile, isFetching } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID))
     
+    const { data: upsellProducts } = useQuery(["upsell-products", publisherUserID], (publisherUserID) => getUpsellProducts(publisherUserID))
+    
+    const msg = `Hello ${product?.promoted_by}, I'm interested in the ${product?.title} from ${product?.sold_by} on dukaflani.com`
+    const msg2 = msg.replace(/ /g, "%20")
+    const whatsappLink = `https://wa.me/${product?.whatsapp}?text=${msg2}`
+
 
   return (
     <NavigationLayout2 setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} >
@@ -82,7 +75,7 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
                             <Paper square sx={{padding: 2}}>
                                 <Grid container columnSpacing={3}>
                                     <Grid item xs={12} md={4}>
-                                    <Box sx={{position: 'relative', borderRadius: 2,}}>
+                                    {!loadingProduct ? (<Box sx={{position: 'relative', borderRadius: 2,}}>
                                         <Image 
                                             src={product?.image} 
                                             layout='responsive'
@@ -91,59 +84,61 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
                                             alt={product?.title}
                                             style={{borderRadius: 6}}
                                         />
-                                    </Box>
+                                    </Box>) : (<Skeleton animation="wave"  variant="rectangular" sx={{ paddingTop: '100%', width: '100%', borderRadius: 2}} />)}
                                     </Grid>
                                     <Grid item xs={12} md={8}>
                                         <Grid container columnSpacing={4}>
                                             <Grid item xs={12} md={7}>
                                                 <Stack spacing={2}>
                                                     <Stack spacing={1}>
-                                                        <Typography variant="h6" component='h1'>{product?.title}</Typography>
-                                                        <Typography variant="caption">{`Sold By: ${product?.sold_by}`}</Typography>
+                                                        {!loadingProduct ? (<Typography variant="h6" component='h1'>{product?.title}</Typography>) : (<Skeleton width="70%" />)}
+                                                        {!loadingProduct ? (<Typography variant="caption">{`Sold By: ${product?.sold_by}`}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
                                                     <Divider/>
                                                     <Box sx={{backgroundColor: '#f48e21', borderRadius: 2}}>
                                                         <Stack sx={{padding: 1}}>
                                                             <Stack direction='row' spacing={1}>
                                                                 <CategoryOutlinedIcon sx={{color: 'white', fontSize: 20}} />
-                                                                <Typography sx={{color: 'white'}} variant="subtitle2">{product?.product_category}</Typography>
+                                                                {!loadingProduct ? (<Typography sx={{color: 'white'}} variant="subtitle2">{product?.product_category}</Typography>) : (<Skeleton width="30%" />)}
                                                             </Stack>
                                                         </Stack>
                                                         <Stack sx={{padding: 0.2}}>
                                                             <Paper sx={{padding: 2, borderBottomLeftRadius: 6, borderBottomRightRadius: 6}} elevation={0} square>
                                                                 <Stack>
-                                                                    <Typography variant="h4">{`${product?.local_currency}${numeral(product?.local_price).format('0,0')}`}</Typography>
+                                                                    {!loadingProduct ? (<Typography variant="h4">{`${product?.local_currency}${numeral(product?.local_price).format('0,0')}`}</Typography>) : (<Skeleton width="50%" sx={{paddingTop: 4}} />)}
                                                                     <Box>
-                                                                        <Typography sx={{backgroundColor: colors.blue[50], padding: 0.5, color: colors.blue[500]}} variant="caption">{product?.product_status}</Typography>
+                                                                        {!loadingProduct ? (<Typography sx={{backgroundColor: colors.blue[50], padding: 0.5, color: colors.blue[500]}} variant="caption">{product?.product_status}</Typography>) : (<Skeleton width="30%" />)}
                                                                     </Box>
-                                                                    <Typography variant="caption">{product?.status_description}</Typography>
+                                                                    {!loadingProduct ? (<Typography variant="caption">{product?.status_description}</Typography>) : (<Skeleton width="45%" />)}
                                                                 </Stack>
                                                             </Paper>
                                                         </Stack>
                                                     </Box>
-                                                    <Box sx={{width: '100%', paddingBottom: 2}}>
-                                                        <Button startIcon={<WhatsAppOutlined />} sx={{backgroundColor: '#25D366'}} fullWidth  variant="contained" size='small'>Order on WhatsApp</Button>
-                                                    </Box>
+                                                    <Link href={whatsappLink} underline='none' target="_blank" rel="noopener">
+                                                        <Box sx={{width: '100%', paddingBottom: 2}}>
+                                                            <Button startIcon={<WhatsAppOutlined />} sx={{backgroundColor: '#25D366'}} fullWidth  variant="contained" size='small'>Order on WhatsApp</Button>
+                                                        </Box>
+                                                    </Link>
                                                 </Stack>
                                             </Grid>
                                             <Grid item xs={12} md={5}>
-                                                <Typography variant="subtitle1" gutterBottom>Promoted By:</Typography>
+                                                {product?.is_sponsored ? (<Typography variant="subtitle1" gutterBottom>Sponsored By:</Typography>) : (<Typography variant="subtitle1" gutterBottom>Promoted By:</Typography>)}
                                                 <Stack direction='row' spacing={1}>
                                                 <Box>
                                                     <Avatar  src={profile?.profile_avatar} />
                                                 </Box>
-                                                <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start'}}>
+                                                <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start', width: '100%'}}>
                                                     <Stack spacing={-0.5}>
                                                         <Stack spacing={0.5} direction='row'>
-                                                            <Typography variant='subtitle2'>{profile?.stage_name}</Typography>
+                                                            {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
                                                             {profile?.is_verified == "True" && <CheckCircleFilled style={{ fontSize: 13, color: theme.myColors.textDark }} />}                   
                                                         </Stack>
-                                                        <Typography variant='caption'>{profile?.role}</Typography>
+                                                        {!loadingProfile ? (<Typography variant='caption'>{profile?.role}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
                                                 </Box>
                                                 </Stack>
                                                 <Box sx={{width: '100%', paddingTop: 1}}>
-                                                    <Button startIcon={<FavoriteBorderOutlinedIcon />} fullWidth variant="contained" size='small'>Join Fanbase</Button>
+                                                    <Button disabled startIcon={<FavoriteBorderOutlinedIcon />} fullWidth variant="contained" size='small'>Join Fanbase</Button>
                                                 </Box>
                                             </Grid>
                                         </Grid>
@@ -161,7 +156,7 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
                                     <Box sx={{padding: 1.5}}>
                                         <Stack>
                                             <Typography variant="subtitle2">Description</Typography>
-                                            <Typography variant="body1">{product?.description}</Typography>
+                                            {!loadingProduct ? (<Typography variant="body1">{product?.description}</Typography>) : (<Skeleton width="80%" />)}
                                         </Stack>
                                     </Box>
                                 </Stack>
@@ -172,6 +167,7 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
                             <Box>
                                 <UpsellProductsCarousel
                                 promoter={profile?.stage_name}
+                                upsellProducts={upsellProducts}
                                 color1="#f48e21"
                                 color2="#b723d5"
                                 icon={<FireOutlined style={{fontSize: 25, color: '#ffffff'}}/>}

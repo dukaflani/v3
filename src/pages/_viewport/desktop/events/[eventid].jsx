@@ -4,11 +4,14 @@ import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 
 //MUI Imports
-import { Avatar, Box, Button, colors, Container, Divider, Grid, Paper, Stack, Typography } from "@mui/material"
+import { Avatar, Box, Button, colors, Container, Divider, Grid, Link, Paper, Skeleton, Stack, Typography } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
 
 // TanStack/React-Query
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+
+// NPM Imports
+import numeral from 'numeral';
 
 // Icons
 import { ScheduleOutlined } from "@ant-design/icons";
@@ -29,7 +32,7 @@ import UpsellEventsCarousel from '@/components/reusableComponents/UpsellEventsCa
 import Copyright from '@/components/reusableComponents/Copyright'
 
 // Project Imports
-import { getCurrentEvent, getCurrentVideoUserProfile } from "@/axios/axios";
+import { getCurrentEvent, getCurrentVideoUserProfile, getUpsellEvents } from "@/axios/axios";
 
 
 const EventPage = ({ setIsDarkMode, isDarkMode }) => {
@@ -42,7 +45,7 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
     // const { data: eventX } = useQuery(["current-event", currentEventID], (currentEventID) => getCurrentEvent(currentEventID))
 
     const queryClient = useQueryClient()
-    const { data: event } = useQuery(["current-event", eventid], (eventid) => getCurrentEvent(eventid), {
+    const { data: event, isLoading: loadingEvent } = useQuery(["current-event", eventid], (eventid) => getCurrentEvent(eventid), {
         initialData: () => {
             const eventCache = queryClient.getQueryData(["current-video-events",Number(a)])?.find(event => event?.id == eventid)
             if(eventCache) {
@@ -53,8 +56,10 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                 }
             })
 
-    const eventProfileUserID = event?.user ? event?.user : 0
-    const { data: profile, isLoading, isFetching } = useQuery(["current-video-profile", eventProfileUserID], (eventProfileUserID) => getCurrentVideoUserProfile(eventProfileUserID))
+    const publisherUserID = event?.user ? event?.user : 0
+    const { data: profile, isLoading: loadingProfile } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID))
+
+    const { data: upsellEvents } = useQuery(["upsell-events", publisherUserID], (publisherUserID) => getUpsellEvents(publisherUserID))
             
     const time = event?.time
     const timeArray = time?.split(":").map(Number);
@@ -80,7 +85,7 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                             <Paper square sx={{padding: 2}}>
                                 <Grid container columnSpacing={3}>
                                     <Grid item xs={12} md={4}>
-                                    <Box sx={{position: 'relative', borderRadius: 2,}}>
+                                    {!loadingEvent ? (<Box sx={{position: 'relative', borderRadius: 2, background: colors.grey[100]}}>
                                         <Image 
                                             src={event?.poster} 
                                             layout='responsive'
@@ -89,33 +94,33 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                                             width='100%'
                                             style={{borderRadius: 6}}
                                         />
-                                    </Box>
+                                    </Box>) : (<Skeleton animation="wave"  variant="rectangular" sx={{ paddingTop: '100%', width: '100%', borderRadius: 2}} />)}
                                     </Grid>
                                     <Grid item xs={12} md={8}>
                                         <Grid container columnSpacing={4}>
                                             <Grid item xs={12} md={7}>
                                                 <Stack spacing={2}>
                                                     <Stack spacing={1}>
-                                                        <Typography variant="h6" component='h1'>{event?.title}</Typography>
-                                                        <Typography variant="caption">Event By: Safaricom Live</Typography>
+                                                        {!loadingEvent ? (<Typography variant="h6" component='h1'>{event?.title}</Typography>) : (<Skeleton width="70%" />)}
+                                                        {!loadingEvent ? (<Typography variant="caption">{`Event By: ${event?.event_organizer}`}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
                                                     <Divider/>
                                                     <Box sx={{backgroundColor: '#f48e21', borderRadius: 2}}>
                                                         <Stack sx={{padding: 1}}>
                                                             <Stack direction='row' spacing={1}>
                                                                 <CategoryOutlinedIcon sx={{color: 'white', fontSize: 20}} />
-                                                                <Typography sx={{color: 'white'}} variant="subtitle2">{event?.event_type}</Typography>
+                                                                {!loadingEvent ? (<Typography sx={{color: 'white'}} variant="subtitle2">{event?.event_category}</Typography>) : (<Skeleton width="30%" />)}
                                                             </Stack>
                                                         </Stack>
                                                         <Stack sx={{padding: 0.2}}>
                                                             <Paper sx={{padding: 2, borderBottomLeftRadius: 6, borderBottomRightRadius: 6}} elevation={0} square>
                                                                 <Stack>
                                                                     <Box sx={{paddingBottom: 0.5}}>
-                                                                        <Typography sx={{backgroundColor: colors.blue[50], padding: 0.5, color: colors.blue[500]}} variant="caption">Ticket Prices From</Typography>
+                                                                        {!loadingEvent ? (<Typography sx={{backgroundColor: colors.blue[50], padding: 0.5, color: colors.blue[500]}} variant="caption">{event?.event_ticket_info}</Typography>) : (<Skeleton width="30%" />)}
                                                                     </Box>
-                                                                    <Typography variant="h4">ksh.1,500</Typography>
+                                                                    {!loadingEvent ? (<Typography variant="h4">{`${event?.local_currency}${numeral(event?.local_price).format('0,0')}`}</Typography>) : (<Skeleton width="50%" sx={{paddingTop: 4}} />)}
                                                                     <Box>
-                                                                        <Typography sx={{backgroundColor: colors.green[50], padding: 0.5, color: colors.green[500]}} variant="caption">ticketsasa.com</Typography>
+                                                                        {!loadingEvent ? (<Typography sx={{backgroundColor: colors.green[50], padding: 0.5, color: colors.green[500]}} variant="caption">{`${event?.ticket_platform}`}</Typography>) : (<Skeleton width="40%" />)}
                                                                     </Box>
                                                                     {/* <Box sx={{paddingTop: 1}}>
                                                                         <Stack direction='row' spacing={0.5}>
@@ -127,13 +132,15 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                             </Paper>
                                                         </Stack>
                                                     </Box>
-                                                    <Box sx={{width: '100%', paddingBottom: 2}}>
-                                                        <Button startIcon={<LocalActivityOutlinedIcon/>}  fullWidth  variant="contained" size='small'>Buy Tickets</Button>
-                                                    </Box>
+                                                    <Link href={event?.ticket_link} underline='none' target="_blank" rel="noopener">
+                                                        <Box sx={{width: '100%', paddingBottom: 2}}>
+                                                            <Button disabled={!event?.ticket_link} startIcon={<LocalActivityOutlinedIcon/>}  fullWidth  variant="contained" size='small'>Buy Tickets</Button>
+                                                        </Box>
+                                                    </Link>
                                                 </Stack>
                                             </Grid>
                                             <Grid item xs={12} md={5}>
-                                                <Typography variant="subtitle1" gutterBottom>Promoted By:</Typography>
+                                                {event?.is_sponsored ? (<Typography variant="subtitle1" gutterBottom>Sponsored By:</Typography>) : (<Typography variant="subtitle1" gutterBottom>Promoted By:</Typography>)}
                                                 <Stack direction='row' spacing={1}>
                                                 <Box>
                                                     <Avatar  src={profile?.profile_avatar} />
@@ -141,15 +148,15 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                 <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start'}}>
                                                     <Stack spacing={-0.5}>
                                                         <Stack spacing={0.5} direction='row'>
-                                                            <Typography variant='subtitle2'>{profile?.stage_name}</Typography>
+                                                            {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
                                                             {profile?.is_verified == 'True' && <CheckCircleIcon sx={{ fontSize: 15, color: theme.myColors.textDark }} />}                   
                                                         </Stack>
-                                                        <Typography variant='caption'>{profile?.role}</Typography>
+                                                        {!loadingProfile ? (<Typography variant='caption'>{profile?.role}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
                                                 </Box>
                                                 </Stack>
                                                 <Box sx={{width: '100%', paddingTop: 1}}>
-                                                    <Button startIcon={<FavoriteBorderOutlinedIcon />} fullWidth variant="contained" size='small'>Join Fanbase</Button>
+                                                    <Button disabled startIcon={<FavoriteBorderOutlinedIcon />} fullWidth variant="contained" size='small'>Join Fanbase</Button>
                                                 </Box>
                                             </Grid>
                                         </Grid>
@@ -169,28 +176,28 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                                             <Stack spacing={1}>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <LocationOnOutlinedIcon fontSize="small" />
-                                                    <Typography variant='body2'>{event?.venue}</Typography>
+                                                    {!loadingEvent ? (<Typography variant='body2'>{event?.venue}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <OutlinedFlagTwoToneIcon fontSize="small" />
-                                                    <Typography variant='body2'>{event?.location}</Typography>
+                                                    {!loadingEvent ? (<Typography variant='body2'>{event?.location}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <PublicOutlinedIcon fontSize="small" />
-                                                    <Typography variant='body2'>{`${event?.city}, ${event?.country}`}</Typography>
+                                                    {!loadingEvent ? (<Typography variant='body2'>{`${event?.city}, ${event?.country}`}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <EventOutlinedIcon fontSize="small" />
-                                                    <Typography variant='body2'>{new Date(event?.date).toDateString()}</Typography>
+                                                    {!loadingEvent ? (<Typography variant='body2'>{new Date(event?.date).toDateString()}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <ScheduleOutlinedIcon fontSize="small" />
-                                                    <Typography variant='body2'>{`${hours}:${minutes?.toString().padStart(2, '0')}hrs`}</Typography>
+                                                    {!loadingEvent ? (<Typography variant='body2'>{`${hours}:${minutes?.toString().padStart(2, '0')}hrs`}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
                                             </Stack>
                                             <Stack>
                                                 <Typography variant="subtitle2">Description</Typography>
-                                                <Typography variant="body1">{event?.description}</Typography>
+                                                {!loadingEvent ? (<Typography variant="body1">{event?.description}</Typography>) : (<Skeleton width="80%" />)}
                                             </Stack>
                                         </Stack>
                                     </Box>
@@ -201,7 +208,9 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                            {/* Upsell Events */}
                             <Box>
                                 <UpsellEventsCarousel
-                                title="Wakadinali Tour Dates"
+                                promoter={profile?.stage_name}
+                                upsellEvents={upsellEvents}
+                                publisherUserID={publisherUserID}
                                 color1="#f48e21"
                                 color2="#2900be"
                                 icon={<ScheduleOutlined style={{fontSize: 25, color: '#ffffff'}} />}

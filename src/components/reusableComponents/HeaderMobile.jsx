@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter } from 'next/router';
 
 // MUI Imports
-import { AppBar, Box, Toolbar, Stack, IconButton, Link, Avatar, TextField, InputBase, List, Drawer,
+import { AppBar, Box, Toolbar, Stack, IconButton, Link, Avatar, Typography, InputBase, List, Drawer,
   ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
 import { useTheme } from '@mui/material/styles';
 
@@ -126,7 +126,7 @@ const HeaderMobile = () => {
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
         >
-          <div style={{minWidth: 250, backgroundColor: theme.myColors.myBackground, minHeight: '100%'}}>
+          <div style={{minWidth: 250, backgroundColor: theme.myColors.myBackground, minHeight: '100%', display: 'flex', flexDirection: 'column'}}>
               <Toolbar variant="dense" sx={{width: '100%'}}>
                 <IconButton onClick={() => setDrawerOpen(false)} edge="start" color="inherit" aria-label="menu" sx={{ mr: 1 }}>
                   <MenuOutlined style={{ fontSize: 16, color: theme.myColors.textDark }} />
@@ -142,7 +142,7 @@ const HeaderMobile = () => {
                   </Box>
                 </Link>
               </Toolbar>
-              <Box sx={{paddingTop: 1}}>
+              <Box sx={{paddingTop: 1, flexGrow: 1}}>
                 <nav>
                   <List>
                   {navItems.map((navItem, i) => (
@@ -163,6 +163,12 @@ const HeaderMobile = () => {
                   ))}
                   </List>
                 </nav>
+              </Box>
+              <Stack sx={{paddingX: 2}} direction="row" spacing={2}>
+                <Typography sx={{cursor: 'pointer'}} onClick={() => router.push({ pathname: '/links/contact_us' })} variant='subtitle2'>Contuct us</Typography>
+              </Stack>
+              <Box sx={{paddingX: 2}}>
+                <Typography variant='caption'>&copy; {new Date().getFullYear()} Jidraff Gathura</Typography>
               </Box>
           </div>
         </Drawer>

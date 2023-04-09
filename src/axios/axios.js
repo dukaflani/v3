@@ -87,3 +87,43 @@ export const getCurrentEvent = async ( event_id ) => {
     const response = await api.get(`/store/events/${eventID}/`)
     return response.data
 }
+
+
+export const addView = async (newView) => {
+    const response = await api.post(`/store/views/`, newView)
+    return response.data
+}
+
+
+export const getUpsellProducts = async (user_id) => {
+    const userID = user_id?.queryKey[1]
+    const response = await api.get(`/store/products/?user=${userID}`)
+    return response.data
+}
+
+
+export const getUpsellEvents = async (user_id) => {
+    const userID = user_id?.queryKey[1]
+    const response = await api.get(`/store/events/?user=${userID}`)
+    return response.data
+}
+
+
+export const getProductByCategory = async (category) => {
+    const productCategory = category?.queryKey[1]
+    const response = await api.get(`/store/products/?user=&product_category=${productCategory}`)
+    return response.data
+}
+
+
+export const getFeaturedEvents = async () => {
+    const response = await api.get(`/store/events/?is_featured=true`)
+    return response.data
+}
+
+
+export const getEventByCategory = async (category) => {
+    const eventCategory = category?.queryKey[1]
+    const response = await api.get(`/store/events/?event_category=${eventCategory}`)
+    return response.data
+}

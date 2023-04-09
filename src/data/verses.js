@@ -1,0 +1,1 @@
+export const verseChoices = ['Intro', 'Pre_chorus', 'Chorus', 'Verse', 'Bridge', 'Outro']

@@ -3,15 +3,20 @@ import { useState } from 'react'
 
 // Next Image
 import Image from "next/legacy/image";
+import { useRouter } from 'next/router';
 
 // MUI Imports
-import { Box, Divider, Grid, Paper, Stack, Typography, colors } from "@mui/material"
+import { Box, Divider, Grid, Paper, Stack, Typography, colors, Link } from "@mui/material"
 import { useTheme } from '@mui/material/styles';
 
 // React Slick Carousel
 import Slider from "react-slick";
 
+// TanStack/React-Query
+import { useQuery } from '@tanstack/react-query';
+
 // Project Imports
+import { getProductByCategory } from "@/axios/axios";
 import Leaderboard3Ads from '@/components/reusableComponents/Leaderboard3Ads'
 import ProductsCarouselDukaflani from '@/components/reusableComponents/ProductsCarouselDukaflani'
 import Copyright from '@/components/reusableComponents/Copyright'
@@ -31,6 +36,7 @@ import { ApiTwoTone,  CheckCircleOutlined, DollarCircleTwoTone, HeartOutlined,
 
 
 const ProductsComponent = () => {
+  const router = useRouter()
   const adPostersArray = [adposter1, adposter2, adposter3, adposter4]
   const [categoryHovered, setCategoryHovered] = useState('')
   const [vendorHovered, setVendorHovered] = useState('')
@@ -56,19 +62,23 @@ const ProductsComponent = () => {
   const storeCategories = [
     {
       name: <Typography sx={ categoryHovered == '0' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Dukaflani Brands</Typography>,
-      icon: <CheckCircleOutlined style={ categoryHovered == '0' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: theme.myColors.textDark}} />
+      icon: <CheckCircleOutlined style={ categoryHovered == '0' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: theme.myColors.textDark}} />,
+      link: '#dukaflani'
     },
     {
       name: <Typography sx={ categoryHovered == '1' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Apparel</Typography>,
-      icon: <SkinOutlined style={ categoryHovered == '1' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: theme.myColors.textDark}} />
+      icon: <SkinOutlined style={ categoryHovered == '1' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: theme.myColors.textDark}} />,
+      link: '#apparel'
     },
     {
       name: <Typography sx={ categoryHovered == '2' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Wellness</Typography>,
-      icon: <HeartOutlined style={ categoryHovered == '2' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: theme.myColors.textDark}} />
+      icon: <HeartOutlined style={ categoryHovered == '2' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: theme.myColors.textDark}} />,
+      link: '#wellness'
     },
     {
       name: <Typography sx={ categoryHovered == '3' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Electronics</Typography>,
-      icon: <TabletOutlined style={ categoryHovered == '3' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: theme.myColors.textDark}} />
+      icon: <TabletOutlined style={ categoryHovered == '3' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: theme.myColors.textDark}} />,
+      link: '#electronics'
     },
   ]
 
@@ -96,6 +106,22 @@ const ProductsComponent = () => {
     },
   ]
 
+  const categoryDukaflani = 'Dukaflani'
+  const { data: dukaflaniProducts } = useQuery(["dukaflani-products", categoryDukaflani], (categoryDukaflani) => getProductByCategory(categoryDukaflani))
+  
+  const categoryApparel = 'Apparel'
+  const { data: apparelProducts } = useQuery(["apparel-products", categoryApparel], (categoryApparel) => getProductByCategory(categoryApparel))
+  
+  const categoryBeauty = 'Beauty'
+  const { data: beautyProducts } = useQuery(["beauty-products", categoryBeauty], (categoryBeauty) => getProductByCategory(categoryBeauty))
+  
+  const categoryWellness = 'Wellness'
+  const { data: wellnessProducts } = useQuery(["wellness-products", categoryWellness], (categoryWellness) => getProductByCategory(categoryWellness))
+  
+  const categoryElectronics = 'Electronics'
+  const { data: electronicsProducts } = useQuery(["electronics-products", categoryElectronics], (categoryElectronics) => getProductByCategory(categoryElectronics))
+  
+
   return (
     <Box>
       {/* Hero Section */}
@@ -104,17 +130,18 @@ const ProductsComponent = () => {
           <Grid md={2} sx={{ display: {xs:'none', md:'block'}}} item>
             <Paper square sx={{padding: 1, height: '100%'}}>
                 {storeCategories.map((category, i) => (
-                  <Stack 
-                      key={i}
-                      spacing={1} 
-                      direction='row' 
-                      sx={{cursor: 'pointer', paddingBottom: 0.5}}
-                      onMouseEnter={() => handleMouseIn(i)}
-                      onMouseLeave={handleMouseOut}
-                    >
-                    <Box>{category.icon}</Box>
-                    <Box>{category.name}</Box>
-                  </Stack>
+                  <Link underline='none' key={i} href={category?.link}>
+                    <Stack 
+                        spacing={1} 
+                        direction='row' 
+                        sx={{cursor: 'pointer', paddingBottom: 0.5}}
+                        onMouseEnter={() => handleMouseIn(i)}
+                        onMouseLeave={handleMouseOut}
+                      >
+                      <Box>{category.icon}</Box>
+                      <Box>{category.name}</Box>
+                    </Stack>
+                  </Link>
                 ))}
                 <Box sx={{paddingTop: 1}}>
                   <Typography variant='caption'>Top Vendors:</Typography>
@@ -138,7 +165,7 @@ const ProductsComponent = () => {
           </Grid>
           {/* Carousel */}
           <Grid xs={12} sm={9} md={7} item>
-              <Box sx={{ width: '100%', height: '56.25%', position: "relative", cursor:'pointer', backgroundColor: colors.grey[100]}}>
+              <Box sx={{ width: '100%', height: '100%', position: "relative", cursor:'pointer', backgroundColor: colors.grey[100]}}>
                   <Slider 
                       className="carousel-styles" 
                       autoplay
@@ -162,22 +189,22 @@ const ProductsComponent = () => {
           <Grid sm={3} sx={{ display: {xs:'none', sm:'block'}}} item>
             <Stack spacing={2} sx={{height:'100%'}}>
             <Paper square sx={{padding: 1, height: '50%'}}>
-              <Stack sx={{display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent: 'space-evenly', height: '100%'}}>
-                <Stack direction='row' spacing={1} sx={{display: 'flex', alignItems:'center'}}>
+              <Stack onClick={() => router.push({ pathname: '/links/contact_us' })} sx={{display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent: 'space-evenly', height: '100%'}}>
+                <Stack direction='row' spacing={1} sx={{display: 'flex', alignItems:'center', cursor: 'pointer'}}>
                   <DollarCircleTwoTone style={{fontSize: 25}} twoToneColor='#1976d2'/>
                   <Stack spacing={-1}>
                     <Typography variant='subtitle2'>Sell on Dukaflani</Typography>
                     <Typography variant='caption'>Become a Vendor</Typography>
                   </Stack>
                 </Stack>
-                <Stack direction='row' spacing={1} sx={{display: 'flex', alignItems:'center'}}>
+                <Stack direction='row' spacing={1} sx={{display: 'flex', alignItems:'center', cursor: 'pointer'}}>
                   <ApiTwoTone style={{fontSize: 25}} twoToneColor='#1976d2' />
                   <Stack spacing={-1}>
                     <Typography variant='subtitle2'>How it Works</Typography>
                     <Typography variant='caption'>Self Help Guide</Typography>
                   </Stack>
                 </Stack>
-                <Stack direction='row' spacing={1} sx={{display: 'flex', alignItems:'center'}}>
+                <Stack direction='row' spacing={1} sx={{display: 'flex', alignItems:'center', cursor: 'pointer'}}>
                   <QuestionCircleTwoTone style={{fontSize: 25}}  twoToneColor='#1976d2' />
                   <Stack spacing={-1}>
                     <Typography variant='subtitle2'>Help Center</Typography>
@@ -204,44 +231,49 @@ const ProductsComponent = () => {
         <Leaderboard3Ads/>
       </Box>
       {/* Dukaflani Brands Carousel */}
-      <Box>
+      <Box id='dukaflani'>
         <ProductsCarouselDukaflani
           title="Dukaflani Brands"
+          products={dukaflaniProducts}
           color1="#2900be"
           color2="#b723d5"
         />
       </Box>
       {/* Apparel Carousel */}
-      <Box>
+      <Box id='apparel'>
         <ProductsCarousel
           title="Apparel"
+          products={apparelProducts}
           color1="#f48e21"
           color2="#b723d5"
           icon={<SkinOutlined style={{fontSize: 25, color: '#ffffff'}}/>}
         />
       </Box>
       {/* Beauty Products Carousel */}
-      <Box>
+      <Box id='beauty'>
         <ProductsCarousel
           title="Beauty"
+          products={beautyProducts}
           color1="#f48e21"
           color2="#b723d5"
           icon={<Face3OutlinedIcon sx={{fontSize: 28, color: '#ffffff'}}/>}
         />
       </Box>
       {/* Wellness Carousel */}
-      <Box>
+      <Box id='wellness'>
         <ProductsCarousel
           title="Wellness"
+          products={wellnessProducts}
           color1="#f48e21"
           color2="#b723d5"
           icon={<HeartOutlined style={{fontSize: 25, color: '#ffffff'}}/>}
         />
       </Box>
       {/* Electronics Carousel */}
-      <Box>
+      <Box id='electronics'>
         <ProductsCarousel
           title="Electronics"
+          products={electronicsProducts}
           color1="#f48e21"
           color2="#b723d5"
           icon={<TabletOutlined style={{fontSize: 25, color: '#ffffff'}}/>}
@@ -251,9 +283,9 @@ const ProductsComponent = () => {
       <Box>
         <Paper square sx={{padding: 2, marginTop: 3}}>
           <Stack>
-            <Typography variant='h6' component='h1'>Dukaflani - Plugging Business to Music</Typography>
+            <Typography variant='h6' component='h1'>Dukaflani - Buy Celebrity Merchandise</Typography>
             <Typography variant='body1'>
-              We help musicians sell merchandise online.
+              We help celebrities sell merchandise online.
             </Typography>
             {/* <Box>
               <ul>

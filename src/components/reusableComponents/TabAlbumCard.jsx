@@ -4,8 +4,11 @@ import { useState } from 'react'
 // NextJS Imports
 import { useRouter } from 'next/router';
 
+// Tanstack/React Query
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 // MUI Imports
-import { Box, Card, CardActionArea, CardContent, CardMedia, Divider, Link, Paper, Stack, Typography, colors } from '@mui/material'
+import { Box, Card, CardActionArea, CardContent, CardMedia, Divider, Link, Stack, Typography, colors } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // Icons
@@ -13,9 +16,37 @@ import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 
+// Project Imports
+import { addView } from '@/axios/axios';
+
+
+
+
 export const TabAlbumTrackCard = ({ albumTrackHovered, i, albumTrack }) => {
   const theme = useTheme()
   const router = useRouter()
+
+
+  const newView = {
+    video: albumTrack?.video,
+    user: 1,
+    time: new Date()
+  }
+
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation(addView, { 
+    onSuccess: () => {
+      queryClient.invalidateQueries(["videos-list"])
+      queryClient.invalidateQueries(["current-video", albumTrack.youtube_id])
+    }
+   })
+
+  const handleVideoClick = () => {
+    router.push({pathname: '/watch', query: {v: albumTrack.youtube_id}})
+    mutate(newView)
+  }
+
+
  
   return (
     <Card square sx={{marginTop: 1}} elevation={albumTrackHovered == i ? 1 : albumTrackHovered == null ? 0 : 0}>
@@ -28,7 +59,7 @@ export const TabAlbumTrackCard = ({ albumTrackHovered, i, albumTrack }) => {
               <Typography className="line-clamp-1 line-clamp" variant='caption'>{albumTrack?.featuring ? `ft. ${albumTrack?.featuring}` : "Solo Project"}</Typography>
             </Stack>
             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', paddingLeft: 1}} >
-              {albumTrack?.video ? <PlayCircleIcon onClick={() => router.push({pathname: '/watch', query: {v: albumTrack.youtube_id}})} sx={{color: theme.myColors.textDark}} /> : <PlayCircleIcon sx={{color: colors.grey[100]}} />}
+              {albumTrack?.video ? <PlayCircleIcon onClick={handleVideoClick} sx={{color: theme.myColors.textDark}} /> : <PlayCircleIcon sx={{color: colors.grey[100]}} />}
             </Box>
           </Box>
         </CardContent>
@@ -68,47 +99,49 @@ const TabAlbumCard = ({ album, data, albumTracks }) => {
             <Box>
                 <Stack>
                     <Typography variant="subtitle2">MUSIC COLLECTION</Typography>
-                    <Typography variant="caption">{`Explore more from ${album?.title} the ${album?.album_type} by ${data?.stage_name}`}</Typography>
+                    {album?.id == 1 ? <Typography variant="caption">No album found</Typography>
+                     : 
+                     <Typography variant="caption">{`Explore more from ${album?.title} the ${album?.album_type} by ${data?.stage_name}`}</Typography>}
                 </Stack>
             </Box>
-            <Card square>
+            {album?.id != 1 && <Card square>
               <CardContent>
-            <Stack spacing={3}>
-              <Link href={album?.link} underline="none" target="_blank" rel="noopener">
-                <Card square elevation={albumHovered ? 5 : 1} onMouseEnter={handleMouseIn} onMouseLeave={handleMouseOut}>
-                <CardActionArea>
-                    <CardMedia
-                      sx={{ height: 300 }}
-                      image={album?.cover}
-                      title={album?.title}
-                    />
-                  <CardContent>
-                    <Stack>
-                      <Stack spacing={0.5} direction='row'>
-                          <Typography variant='subtitle2'>{data?.stage_name}</Typography>
-                          {data?.verified && <CheckCircleIcon sx={{ fontSize: 15, color: theme.myColors.textDark }} />}                   
-                      </Stack>
-                      <Typography variant='body2'>{album?.title}</Typography>
-                      <Typography variant='body2'>{albumTracks?.length} {albumTracks?.length == 1 ? "Track" : "Tracks"}</Typography>
-                      <Stack sx={{cursor: 'pointer'}} direction='row' spacing={1}>
-                        <Typography sx={{color: albumHovered && '#1976d2'}} variant='body2'>{`${album?.option_type} ${album?.link_title}`}</Typography>
-                        <OpenInNewOutlinedIcon fontSize='small' sx={{color: albumHovered && '#1976d2'}} />
-                      </Stack>
-                    </Stack>
-                  </CardContent>
-                  </CardActionArea>
-                </Card>
-                </Link>
-                <Box>
-                    {albumTracks?.map((albumTrack, i) => (
-                        <Box onMouseEnter={() => handleMouseIn2(i)} onMouseLeave={handleMouseOut2} key={i}>
-                            <TabAlbumTrackCard albumTrack={albumTrack} albumTrackHovered={albumTrackHovered} i={i} />
-                        </Box>
-                    ))}
-                </Box>
-            </Stack>
+                  <Stack spacing={3}>
+                    <Link href={album?.link} underline="none" target="_blank" rel="noopener">
+                      <Card square elevation={albumHovered ? 5 : 1} onMouseEnter={handleMouseIn} onMouseLeave={handleMouseOut}>
+                      <CardActionArea>
+                          <CardMedia
+                            sx={{ height: 300 }}
+                            image={album?.cover}
+                            title={album?.title}
+                          />
+                        <CardContent>
+                          <Stack>
+                            <Stack spacing={0.5} direction='row'>
+                                <Typography variant='subtitle2'>{data?.stage_name}</Typography>
+                                {data?.verified && <CheckCircleIcon sx={{ fontSize: 15, color: theme.myColors.textDark }} />}                   
+                            </Stack>
+                            <Typography variant='body2'>{album?.title}</Typography>
+                            <Typography variant='body2'>{albumTracks?.length} {albumTracks?.length == 1 ? "Track" : "Tracks"}</Typography>
+                            <Stack sx={{cursor: 'pointer'}} direction='row' spacing={1}>
+                              <Typography sx={{color: albumHovered && '#1976d2'}} variant='body2'>{`${album?.option_type} ${album?.link_title}`}</Typography>
+                              <OpenInNewOutlinedIcon fontSize='small' sx={{color: albumHovered && '#1976d2'}} />
+                            </Stack>
+                          </Stack>
+                        </CardContent>
+                        </CardActionArea>
+                      </Card>
+                      </Link>
+                      <Box>
+                          {albumTracks?.map((albumTrack, i) => (
+                              <Box onMouseEnter={() => handleMouseIn2(i)} onMouseLeave={handleMouseOut2} key={i}>
+                                  <TabAlbumTrackCard albumTrack={albumTrack} albumTrackHovered={albumTrackHovered} i={i} />
+                              </Box>
+                          ))}
+                      </Box>
+                  </Stack>
               </CardContent>
-            </Card>
+            </Card>}
         </Stack>
     </Box>
   )

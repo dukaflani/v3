@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 // Next Image
 import Image from "next/legacy/image";
-
+import { useRouter } from "next/router"
 
 // MUI Imports
 import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material"
@@ -11,12 +11,10 @@ import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material"
 // React Slick Carousel
 import Slider from "react-slick";
 
-// Project Imports
-import poster1 from '../../../public/assets/pictures/event1.jpg'
-
 
 // Icons
 import { ClockCircleOutlined, EnvironmentOutlined, FlagOutlined, RightOutlined } from "@ant-design/icons";
+import PublicIcon from '@mui/icons-material/Public';
 
 
 
@@ -45,7 +43,8 @@ function CarouselPrevArrow(props) {
 
 
 
-const ProductsCarouselDukaflani = ({ title, color1, color2, icon }) => {
+const ProductsCarouselDukaflani = ({ color1, color2, icon, upsellEvents, promoter, publisherUserID }) => {
+    const router = useRouter()
     const [productHovered, setProductHovered] = useState(null)
   
     const handleMouseEnter = (index) => {
@@ -91,49 +90,49 @@ const ProductsCarouselDukaflani = ({ title, color1, color2, icon }) => {
               <Box >
                 {icon}
               </Box>
-              <Typography sx={{color: 'white'}} variant='subtitle1'>{title}</Typography>
+              <Typography sx={{color: 'white'}} variant='subtitle1'>{`More From ${promoter}`}</Typography>
             </Stack>
             <Button size='small' variant='text' style={{color: 'white'}} endIcon={<RightOutlined style={{color: 'white', fontSize: 15}} />}>Explore</Button>
           </Stack>
           <Paper square>
           <Grid>
               <Slider {...settings} >
-                  {[...Array(10).keys()].map((item, i) => (
+                  {upsellEvents?.map((upsellEvent, i) => (
                     <Grid onMouseEnter={() => handleMouseEnter(i)} onMouseLeave={handleMouseLeave} key={i} xs={12} sx={{ width: '100%', cursor:'pointer', padding: 0.5}} item>
                       <Box>
                           <Paper square elevation={productHovered == i ? 5 : productHovered == null ? 0 : 0}>
                             <Stack>
                             <Box sx={{ position: "relative", cursor:'pointer'}}>
                               <Image 
-                                  src={poster1} 
+                                  src={upsellEvent?.poster} 
                                   layout='responsive'
-                                  alt='Event title'
+                                  alt={upsellEvent?.title} 
                                   width="100%"
                                   height='75%'
                                   />
                             </Box>
                             <Box sx={{padding: 0.5}}>
                               <Stack >
-                                <Typography gutterBottom className='line-clamp-1 line-clamp' variant='body2'>Event title jvjdjn ljnljnln lnljdnlscn ldkndjdln knkdjndljn jnjnln kkjnlknk knjnkj ljnljnl</Typography>
+                                <Typography gutterBottom className='line-clamp-1 line-clamp' variant='body2'>{upsellEvent?.title}</Typography>
                                   <Stack spacing={0.5}>
                                     <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                                       <EnvironmentOutlined style={{fontSize: 12}} />
-                                      <Typography className='line-clamp-1 line-clamp' variant='caption'>Event Venue</Typography>
+                                      <Typography className='line-clamp-1 line-clamp' variant='caption'>{upsellEvent?.venue}</Typography>
                                     </Stack>
                                     <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                                       <FlagOutlined style={{fontSize: 12}} />
-                                      <Typography className='line-clamp-1 line-clamp' variant='caption'>Event Location</Typography>
+                                      <Typography className='line-clamp-1 line-clamp' variant='caption'>{upsellEvent?.location}</Typography>
                                     </Stack>
                                       <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-                                        <ClockCircleOutlined style={{fontSize: 12}} />
-                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>Event Time</Typography>
+                                        <PublicIcon sx={{fontSize: 15}} />
+                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>{`${upsellEvent?.city}, ${upsellEvent?.country}`}</Typography>
                                       </Stack>
                                   </Stack>
                               </Stack>
                             </Box>
                             </Stack>
                             <Box sx={{padding: 0.5}}>
-                              <Button variant='text' size='small' fullWidth >Event Details</Button>
+                              <Button onClick={() => router.push({ pathname: `/events/${upsellEvent?.id}`, query: {a: publisherUserID} }) } variant='text' size='small' fullWidth >Event Details</Button>
                             </Box>
                           </Paper>
                       </Box>

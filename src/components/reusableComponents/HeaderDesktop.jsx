@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 // Mui Imports
 import { Box, Tabs, Tab, AppBar, Toolbar, IconButton, Stack, Avatar, 
-  InputBase, Tooltip, Link, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+  InputBase, Tooltip, Link, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { styled, alpha, useTheme } from '@mui/material/styles';
 
 // NPM Import
@@ -250,7 +250,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
         >
-          <div style={{minWidth: 250, backgroundColor: theme.myColors.myBackground, minHeight: '100%'}}>
+          <div style={{minWidth: 250, backgroundColor: theme.myColors.myBackground, minHeight: '100%', display: 'flex', flexDirection: 'column'}}>
               <Toolbar variant="dense" sx={{width: '100%'}}>
                 <IconButton onClick={() => setDrawerOpen(false)} edge="start" color="inherit" aria-label="menu" sx={{ mr: 1 }}>
                   <MenuOutlined style={{ fontSize: 16, color: theme.myColors.textDark }} />
@@ -266,27 +266,35 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                   </Box>
                 </Link>
               </Toolbar>
-              <Box sx={{paddingTop: 1}}>
-                <nav>
-                  <List>
-                  {navItems.map((navItem, i) => (
-                    <ListItem disablePadding key={i}>
-                      <ListItemButton
-                        selected={pathName === navItem.path}
-                        onClick={() =>{ 
-                          router.push({ pathname: navItem.link });
-                          setDrawerOpen(false);
-                        }}
-                      >
-                        <ListItemIcon>
-                          {navItem.icon}
-                        </ListItemIcon>
-                        <ListItemText primary={navItem.label} />
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
-                  </List>
-                </nav>
+              <Box sx={{ paddingTop: 1, flexGrow: 1 }}>
+                <Box>
+                  <nav>
+                    <List>
+                    {navItems.map((navItem, i) => (
+                      <ListItem disablePadding key={i}>
+                        <ListItemButton
+                          selected={pathName === navItem.path}
+                          onClick={() =>{ 
+                            router.push({ pathname: navItem.link });
+                            setDrawerOpen(false);
+                          }}
+                        >
+                          <ListItemIcon>
+                            {navItem.icon}
+                          </ListItemIcon>
+                          <ListItemText primary={navItem.label} />
+                        </ListItemButton>
+                      </ListItem>
+                    ))}
+                    </List>
+                  </nav>
+                </Box>
+              </Box>
+              <Stack sx={{paddingX: 2}} direction="row" spacing={2}>
+                <Typography sx={{cursor: 'pointer'}} onClick={() => router.push({ pathname: '/links/contact_us' })} variant='subtitle2'>Contuct us</Typography>
+              </Stack>
+              <Box sx={{paddingX: 2}}>
+                <Typography variant='caption'>&copy; {new Date().getFullYear()} Jidraff Gathura</Typography>
               </Box>
           </div>
         </Drawer>

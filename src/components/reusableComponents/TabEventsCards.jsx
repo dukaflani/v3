@@ -2,7 +2,7 @@
 import { useRouter } from 'next/router'
 
 // MUI Imports
-import { Box, Button, Card, CardActionArea, CardContent, Stack, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // Icons
@@ -84,13 +84,18 @@ const TabEventsCards = ({ data, events, videoUserID }) => {
                     <Typography variant="caption">{`Discover events featuring both performance or appearances by ${data?.stage_name}`}</Typography>
                 </Stack>
             </Box>
-            <Box>
+            {events?.length == 0 && <Card>
+              <CardContent>
+                <Typography variant='body2'>{`${data?.stage_name} has not added any events yet.`}</Typography>
+              </CardContent>
+            </Card>}
+            {events?.length > 0 && <Box>
                 {events?.map((event, i) => (
                     <Box key={i}>
                         <TabEventCard event={event} videoUserID={videoUserID} />
                     </Box>
                 ))}
-            </Box>
+            </Box>}
         </Stack>
     </Box>
   )

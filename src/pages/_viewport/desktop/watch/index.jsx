@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 
 //  Mui Imports
 import { Avatar, Box, Card, colors, Container, Divider, Grid, Button, Stack, Typography, 
-    CardContent, CardActionArea, Tooltip, Tabs, Tab, Paper, Link } from '@mui/material'
+    CardContent, CardActionArea, Tooltip, Tabs, Tab, Paper, Link, Skeleton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // TanStack/React-Query
@@ -17,6 +17,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 // NPM Imports
 import numeral from 'numeral';
 import Linkify from 'react-linkify';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 // Icons
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
@@ -59,6 +60,26 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const { v } = router.query
     const [tabPosition, setTabPosition] = useState(0)
     const [showMoreText, setShowMoreText] = useState(false)
+    const [linkCopied, setLinkCopied] = useState(false)
+    const [shareButtonText, setShareButtonText] = useState('Share')
+    const [numberOfLikes, setNumberOfLikes] = useState('') 
+    const [numberOfUnlikes, setNumberOfUnlikes] = useState('')  
+    const [is_liked, setIs_liked] = useState(false)
+    const [is_unliked, setIs_unliked] = useState(false)
+
+
+
+    useEffect(() => {
+        if (linkCopied) {
+            setShareButtonText('Copied!')
+            setTimeout(() => {
+                setShareButtonText('Share')
+                setLinkCopied(false)
+            }, 2000);    
+        }
+    }, [linkCopied])
+    
+
   
     
     const handleChange = (event, newValue) => {
@@ -107,11 +128,11 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const { data: events } = useQuery(["current-video-events", videoUserID], (videoUserID) => getCurrentVideoEvents(videoUserID))
 
 
-    const rawFanBaseCount = profile?.fanbase_count
+    const rawFanBaseCount = profile?.fanbase_count ? profile?.fanbase_count : 0
     let formatedFanBaseCount = ''
     rawFanBaseCount < 1000 || rawFanBaseCount % 10 === 0 ? formatedFanBaseCount = numeral(rawFanBaseCount).format('0a') :  formatedFanBaseCount = numeral(rawFanBaseCount).format('0.0a')
 
-    const rawLikesCount = data?.like_count
+    const rawLikesCount = data?.like_count ? data?.like_count : 0
     let formatedLikesCount = ''
     rawLikesCount < 1000 || rawLikesCount % 10 === 0 ? formatedLikesCount = numeral(rawLikesCount).format('0a') :  formatedLikesCount = numeral(rawLikesCount).format('0.0a')
 
@@ -134,13 +155,13 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                     <Grid container sx={{padding: 5}} spacing={3}>
                         <Grid xs={12} md={8} item>
                             <Stack>
-                                <Box sx={{position: 'relative', paddingBottom: '56.25%'}}>
+                                {data?.youtube_embed_link ? (<Box sx={{position: 'relative', paddingBottom: '56.25%'}}>
                                     <iframe width='100%' height='100%' src={data?.youtube_embed_link} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-                                </Box>
+                                </Box>) : (<Skeleton animation="wave"  variant="rectangular" sx={{ paddingTop: '56.25%', width: '100%'}} />)}
                                 <Stack>
                                     <Box>
-                                        <Typography sx={{color: '#1976d2'}} variant='button'>{data?.genre_title}</Typography>
-                                        <Typography variant='h6' component='h1'>{data?.title}</Typography>
+                                        {data?.genre_title ? (<Typography sx={{color: '#1976d2'}} variant='button'>{data?.genre_title}</Typography>) : (<Skeleton width="10%" />)}
+                                        {data?.title ? (<Typography variant='h6' component='h1'>{data?.title}</Typography>) : (<Skeleton width="70%" />)}
                                     </Box>
                                 </Stack>
                                 <Stack>
@@ -148,23 +169,23 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                         <Grid container spacing={1}>
                                             <Grid item xs={12} md={6}>
                                                 <Stack direction='row' spacing={1}>
-                                                    <Typography variant='body2'>{numeral(data?.views_count).format('0,0')} {data?.views_count == 1 ? 'view' : 'views'}</Typography>
+                                                    {data?.views_count ? (<Typography variant='body2'>{numeral(data?.views_count).format('0,0')} {data?.views_count == 1 ? 'view' : 'views'}</Typography>) : (<Skeleton width="10%" />)}
                                                     <Box sx={{display: {xs: 'none', md: 'block'}}}>&bull;</Box>
-                                                    <Typography sx={{display: {xs: 'none', md: 'block'}}} variant='body2'>{new Date(data?.date).toDateString()}</Typography>
+                                                    {data?.date ? (<Typography sx={{display: {xs: 'none', md: 'block'}}} variant='body2'>{new Date(data?.date).toDateString()}</Typography>) : (<Skeleton width="15%" />)}
                                                 </Stack>
                                             </Grid>
                                             <Grid item xs={12} md={6}>
-                                                <Typography sx={{display: {xs: 'block', md: 'none'}}} variant='body2'>{new Date(data?.date).toDateString()}</Typography>
+                                                {data?.date ? (<Typography sx={{display: {xs: 'block', md: 'none'}}} variant='body2'>{new Date(data?.date).toDateString()}</Typography>) : (<Skeleton width="15%" />)}
                                             </Grid>
                                         </Grid>
                                     </Box>
-                                    <Stack direction='row' spacing={2}>
+                                    {formatedLikesCount && <Stack direction='row' spacing={2}>
                                         <Paper elevation={0} sx={{ backgroundColor: colors.grey[200], display: 'flex', alignItems: 'center', justifyContent: 'end', paddingY: 1, paddingX: 1.5, borderRadius: 10, }}>
                                             <Stack spacing={2} direction='row'>
                                                 <Tooltip placement="top" title='I like'>
                                                     <Stack direction='row' spacing={1} sx={{cursor: 'pointer'}}>
                                                         <ThumbUpOutlinedIcon sx={{fontSize: 19}} />
-                                                        <Typography sx={{ fontWeight:'bold' }} variant='body2'>{formatedLikesCount}</Typography>
+                                                        {formatedLikesCount && <Typography sx={{ fontWeight:'bold' }} variant='body2'>{formatedLikesCount}</Typography>}
                                                     </Stack>
                                                 </Tooltip>
                                                 <Divider orientation="vertical" variant="middle" flexItem />
@@ -173,17 +194,22 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                         </Paper>
                                         <Paper elevation={0} sx={{ backgroundColor: colors.grey[200], display: 'flex', alignItems: 'center', justifyContent: 'end', paddingY: 1, paddingX: 1.5, borderRadius: 10, cursor: 'pointer'}}>
                                             <Stack spacing={2} direction='row'>
-                                            <Tooltip placement="top" title='Share'>
-                                                <Stack direction='row' spacing={1}>
-                                                    <ShareOutlinedIcon sx={{fontSize: 19}} />
-                                                    <Typography sx={{ fontWeight:'bold' }} variant='body2'>Share</Typography>
-                                                </Stack>
-                                            </Tooltip>
+                                            <CopyToClipboard
+                                                    text={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${v}`}
+                                                    onCopy={() => setLinkCopied(true)}
+                                            >
+                                                <Tooltip placement="top" title='Share'>
+                                                        <Stack direction='row' spacing={1}>
+                                                            <ShareOutlinedIcon sx={{fontSize: 19}} />
+                                                            <Typography sx={{ fontWeight:'bold' }} variant='body2'>{shareButtonText}</Typography>
+                                                        </Stack>
+                                                </Tooltip>
+                                            </CopyToClipboard>
                                             </Stack>
                                         </Paper>
-                                    </Stack>
+                                    </Stack>}
                                 </Stack>
-                                <Box sx={{paddingTop: 1, paddingBottom: 2}}>
+                                {data?.description && <Box sx={{paddingTop: 1, paddingBottom: 2}}>
                                     <Stack direction="column">
                                         <Linkify componentDecorator={(decoratedHref, decoratedText, key) => ( <Link target="blank" underline="none" rel="noopener" sx={{marginBottom: -1, width: 250, display: 'inline-block', overflowX: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}  href={decoratedHref} key={key}> {decoratedText} </Link> )} >
                                             <Typography className={showMoreText ? " " : "line-clamp-1 line-clamp"} gutterBottom variant='body1'>
@@ -192,7 +218,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                         </Linkify>
                                         <Button onClick={() => setShowMoreText(!showMoreText)} size="small">{showMoreText ? "Show Less" : "Show More"}</Button>
                                     </Stack>
-                                </Box>
+                                </Box>}
                                 {/* <Box sx={{paddingTop: 1, paddingBottom: 2}}>
                                     <Stack direction="column">
                                         <Linkify componentDecorator={(decoratedHref, decoratedText, key) => ( <Link target="blank" underline="none" rel="noopener" sx={{marginBottom: -1, width: 250, display: 'inline-block', overflowX: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}  href={decoratedHref} key={key}> {decoratedText} </Link> )} >
@@ -220,27 +246,27 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                         <Box sx={{ width: '100%'}}>
                                             <Stack spacing={1} direction='row' sx={{display: 'flex', alignItems: 'center', width: '100%'}}>
                                                 <Box>
-                                                    <Avatar  src={data?.profile_avatar} alt={data?.stage_name} />
+                                                    {data?.profile_avatar ? (<Avatar  src={data?.profile_avatar} alt={data?.stage_name} />) : (<Skeleton animation="wave" variant="circular" width={40} height={40} />)}
                                                 </Box>
                                                 <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start'}}>
                                                     <Stack spacing={-0.2}>
                                                         <Stack spacing={0.5} direction='row'>
                                                             <Tooltip title='Wakadinali'>
-                                                                <Typography sx={{cursor: 'pointer'}} className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography>
+                                                                {data?.stage_name ? (<Typography sx={{cursor: 'pointer'}} className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography>) : (<Skeleton width="100%" />)}
                                                             </Tooltip>
                                                             {data?.verified && <Tooltip title='Verified'><CheckCircleIcon sx={{ fontSize: 15, color: theme.myColors.textDark, cursor: 'pointer' }} /></Tooltip>}                   
                                                         </Stack>
-                                                        <Typography variant='caption'>{!isLoading && "Fanbase"} {!isLoading && formatedFanBaseCount}</Typography>
+                                                        <Typography variant='caption'>{isLoading ? 'Fanbase --' :  `Fanbase ${formatedFanBaseCount}`}</Typography>
                                                     </Stack>
                                                 </Box>
                                                 <Box>
                                                     {
-                                                    !true ? <Tooltip title='Join Fanbase'>
-                                                        <Button startIcon={<FavoriteBorderOutlinedIcon/>} variant='contained' size='small'>Join</Button>
+                                                    true ? <Tooltip title='Join Fanbase'>
+                                                        <Button disabled startIcon={<FavoriteBorderOutlinedIcon/>} variant='contained' size='small'>Join</Button>
                                                     </Tooltip>
                                                     :
                                                     <Tooltip title='Leave Fanbase'>
-                                                        <Button startIcon={<FavoriteIcon/>} variant='outlined' size='small'>Leave</Button>
+                                                        <Button disabled startIcon={<FavoriteIcon/>} variant='outlined' size='small'>Leave</Button>
                                                     </Tooltip>
                                                     }
                                                 </Box>        
@@ -303,7 +329,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                         <Box>
                                                             {
                                                                 {
-                                                                    0: <TabStreamingLinks streamingLinks={streamingLinks} data={data} />,
+                                                                    0: <TabStreamingLinks streamingLinks={streamingLinks} data={data} youtubeID={v} />,
                                                                     1: <TabProductCard product={product} data={data} />,
                                                                     2: <TabLyricsCard  data={data} lyrics={lyrics} verses={lyrics_verses}  />,
                                                                     3: <TabSkizaCards data={data} skiza={skiza_list}   />,

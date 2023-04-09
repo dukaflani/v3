@@ -3,16 +3,17 @@ import { useState } from 'react'
 
 // Next Image
 import Image from "next/legacy/image";
+import { useRouter } from "next/router"
 
 
 // MUI Imports
-import { Box, Button, Grid, Paper, Stack, Typography, Tooltip } from "@mui/material"
+import { Box, Button, Grid, Paper, Stack, Typography, Tooltip, colors } from "@mui/material"
 
 // React Slick Carousel
 import Slider from "react-slick";
 
-// Project Imports
-import product1 from '../../../public/assets/pictures/dukaflani-hoodie-mockup.jpg'
+// NPM Imports
+import numeral from 'numeral';
 
 
 // Icons
@@ -45,7 +46,8 @@ function CarouselPrevArrow(props) {
 
 
 
-const ProductsCarouselDukaflani = ({ promoter, color1, color2, icon }) => {
+const ProductsCarouselDukaflani = ({ promoter, color1, color2, icon, upsellProducts }) => {
+    const router = useRouter()
     const [productHovered, setProductHovered] = useState(null)
   
     const handleMouseEnter = (index) => {
@@ -98,35 +100,35 @@ const ProductsCarouselDukaflani = ({ promoter, color1, color2, icon }) => {
           <Paper square>
           <Grid>
               <Slider {...settings} >
-                  {[...Array(10).keys()].map((item, i) => (
+                  {upsellProducts?.map((upsellProduct, i) => (
                     <Grid onMouseEnter={() => handleMouseEnter(i)} onMouseLeave={handleMouseLeave} key={i} xs={12} sx={{ width: '100%', cursor:'pointer', padding: 0.5}} item>
                       <Box>
                           <Paper square elevation={productHovered == i ? 5 : productHovered == null ? 0 : 0}>
                             <Stack>
-                            <Box sx={{position: "relative", cursor:'pointer'}}>
+                            <Box sx={{position: "relative", cursor:'pointer', backgroundColor: colors.grey[100]}}>
                               <Image 
-                                  src={product1} 
+                                  src={upsellProduct?.image} 
                                   layout='responsive'
-                                  alt='product title'
+                                  alt={upsellProduct?.title}
                                   width="100%"
                                   height='75%'
                                   />
                             </Box>
                             <Box sx={{padding: 0.5}}>
-                              <Stack>
-                                <Typography variant='body2'>Dukaflani branded hoodie</Typography>
-                                <Typography variand='h6'>Ksh.3,500</Typography>
+                              <Stack spacing={0.5}>
+                                <Typography className="line-clamp-1 line-clamp" variant='body2'>{upsellProduct?.title}</Typography>
+                                <Typography className="line-clamp-1 line-clamp" variand='h6'>{upsellProduct?.local_currency}{numeral(upsellProduct?.local_price).format('0,0')}</Typography>
                                 <Tooltip title={`From ${promoter}`} placement="top">
                                   <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                                     <UserOutlined style={{fontSize: 12}} />
-                                    <Typography variant='caption'>{promoter}</Typography>
+                                    <Typography className="line-clamp-1 line-clamp" variant='caption'>{promoter}</Typography>
                                   </Stack>
                                 </Tooltip>
                               </Stack>
                             </Box>
                             </Stack>
                             <Box sx={{padding: 0.5}}>
-                              <Button variant='text' size='small' fullWidth >View Details</Button>
+                              <Button onClick={() => router.push({ pathname: `/shop/${upsellProduct?.id}` })} variant='text' size='small' fullWidth >View Details</Button>
                             </Box>
                           </Paper>
                       </Box>

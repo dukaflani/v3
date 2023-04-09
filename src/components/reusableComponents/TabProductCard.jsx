@@ -2,7 +2,7 @@
 import { useRouter } from "next/router"
 
 // MUI Imports
-import { Box, Stack, Typography, Card, CardMedia, CardContent, IconButton, Tooltip, Button } from "@mui/material"
+import { Box, Stack, Typography, Card, CardMedia, CardContent, colors, Button } from "@mui/material"
 
 // NPM Imports
 import numeral from 'numeral';
@@ -34,6 +34,14 @@ const TabProductCard = ({ product, data }) => {
                         image={product?.image}
                         title={product?.title}
                     />
+                    {product?.is_sponsored ? <Box sx={{padding:0.5, backgroundColor: colors.blue[100]}}>
+                        <Typography sx={{color: colors.blue[800]}} variant="body2">Sponsored</Typography>
+                    </Box>
+                    :
+                    <Box sx={{padding:0.5, backgroundColor: colors.grey[300]}}>
+                        <Typography sx={{color: colors.grey[800]}} variant="body2">{product?.status_description}</Typography>
+                    </Box>
+                    }
                     <CardContent>
                         <Box>
                             <Stack>
