@@ -1,10 +1,10 @@
 // MUI Imports
-import { Button } from '@mui/material'
+import { Button, CircularProgress } from '@mui/material'
 
 // NPM Imports
 import { useFormikContext } from 'formik'
 
-const MySubmitButton = ({ children, ...otherProps }) => {
+const MySubmitButton = ({ children, is_loading, ...otherProps }) => {
 
     const { submitForm } = useFormikContext()
 
@@ -19,7 +19,7 @@ const MySubmitButton = ({ children, ...otherProps }) => {
     }
 
   return (
-    <Button {...buttonConfig} >
+    <Button {...buttonConfig} startIcon={is_loading && <CircularProgress color="inherit" size={25} />}>
         {children}
     </Button>
   )

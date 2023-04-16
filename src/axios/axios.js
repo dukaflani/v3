@@ -127,3 +127,8 @@ export const getEventByCategory = async (category) => {
     const response = await api.get(`/store/events/?event_category=${eventCategory}`)
     return response.data
 }
+
+
+export const registerAccount = async ( newAccount ) => {
+    await api.post(`/auth/users/`, newAccount)
+}

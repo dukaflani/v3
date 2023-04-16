@@ -30,43 +30,43 @@ const HeaderMobile = () => {
       icon: <HomeOutlined style={{fontSize: 25}} />, 
       label: 'Home',
       link: '/',
-      path: '/_viewport/desktop'
+      path: '/_viewport/mobile'
     },
     {
       icon: <ShopOutlined style={{fontSize: 25}} />, 
       label: 'Shop',
       link: '/shop',
-      path: '/_viewport/desktop/shop'
+      path: '/_viewport/mobile/shop'
     },
     {
       icon: <BarcodeOutlined style={{fontSize: 25}} />, 
       label: 'Events',
       link: '/events',
-      path: '/_viewport/desktop/events'
+      path: '/_viewport/mobile/events'
     },
     // {
     //   icon: <LayoutOutlined style={{fontSize: 25}} />,
     //   label: 'Dashboard',
     //   link: '/dashboard',
-    //   path: '/_viewport/desktop/dashboard'
+    //   path: '/_viewport/mobile/dashboard'
     // },
     // {
     //   icon: <UserOutlined style={{fontSize: 25}} />,
     //   label: 'Profile',
     //   link: '/profile',
-    //   path: '/_viewport/desktop/profile'
+    //   path: '/_viewport/mobile/profile'
     // },
     // {
     //   icon: <CloudUploadOutlined style={{fontSize: 25}} />,
     //   label: 'Uploads',
     //   link: '/upload',
-    //   path: '/_viewport/desktop/upload'
+    //   path: '/_viewport/mobile/upload'
     // },
     // {
     //   icon: <SettingOutlined style={{fontSize: 25}} />,
     //   label: 'Settings',
     //   link: '/settings',
-    //   path: '/_viewport/desktop/settings'
+    //   path: '/_viewport/mobile/settings'
     // },
   ]
 
