@@ -217,7 +217,7 @@ const ProductsComponent = () => {
               <Box sx={{display: 'flex', alignItems: 'center', justifyContent:'center'}} className='animated-gradient'>
                 <Stack sx={{textAlign: 'center'}} spacing={1}>
                   <Typography sx={{color: 'white'}} variant='caption'>GET STARTED</Typography>
-                  <Typography sx={{color: 'white', border: '2px solid white', cursor: 'pointer'}} variant='h6'>LOGIN</Typography>
+                  <Typography onClick={() => router.push({ pathname: '/links/contact_us' })} sx={{color: 'white', border: '2px solid white', cursor: 'pointer'}} variant='h6'>LOGIN</Typography>
                   <Typography sx={{color: 'white', letterSpacing: 3}} variant='body1'>VENDOR HUB!</Typography>
                 </Stack>
               </Box>
