@@ -5,17 +5,21 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 
 // Mui Imports
-import { Box, Tabs, Tab, AppBar, Toolbar, IconButton, Stack, Avatar, 
+import { Box, AppBar, Toolbar, IconButton, Stack, Avatar, 
   InputBase, Tooltip, Link, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { styled, alpha, useTheme } from '@mui/material/styles';
 
 // NPM Import
 import { useCookies } from "react-cookie"
+import { useDispatch, useSelector } from 'react-redux';
 
 // Icons
 import { MenuOutlined, ShoppingCartOutlined, BellOutlined,
-   SearchOutlined, HomeFilled, ShopFilled, BarcodeOutlined, HomeOutlined, ShopOutlined } from '@ant-design/icons'
+   SearchOutlined, BarcodeOutlined, HomeOutlined, ShopOutlined } from '@ant-design/icons'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
+
+// Project Imports
+import { addSearchTerm, deleteSearchTerm } from '@/redux/features/search/searchSlice';
 
 
 
@@ -74,13 +78,29 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
+  const searchTerm = useSelector((state) => state.search.searchTerm)
   const theme = useTheme()
   const router = useRouter()
   const pathName = router.pathname
   const pathnameLength = pathName.split("/")
+  const [mySearchTerm, setMySearchTerm] = useState(searchTerm)
   const [showTabs, setShowTabs] = useState(true)
-  
+
   const [drawerOpen, setDrawerOpen] = useState(false)
+
+  const dispatch = useDispatch()
+  const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
+
+  const updateSearchTerm = (e) => {
+    if (e.key === 'Enter') {
+      router.push({pathname: `/results/`, query: { search_query: formattedSearchTerm }})
+      dispatch(addSearchTerm(mySearchTerm))
+    }
+  }
+
+  useEffect(() => {
+    setMySearchTerm(searchTerm)
+  }, [searchTerm])
 
   const navItems = [
     {
@@ -221,6 +241,9 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                 style={{ color: theme.myColors.textDark }}
                 placeholder="Search…"
                 inputProps={{ 'aria-label': 'search' }}
+                value={mySearchTerm}
+                onChange={(e) => setMySearchTerm(e.target.value)}
+                onKeyDown={updateSearchTerm}
               />
             </Search>
             </Box>

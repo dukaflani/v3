@@ -23,6 +23,15 @@ import { ThemeProvider, CssBaseline } from '@mui/material'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
+// NPM Imports
+import { Provider } from 'react-redux';
+
+// Project Imports
+import store from '@/redux/app/store';
+
+
+
+
 const queryClient = new QueryClient();
 
 
@@ -38,7 +47,9 @@ export default function App({ Component, pageProps }) {
       <ThemeProvider theme={isDarkMode ? myDarkTheme : myLightTheme}>
           <CssBaseline />
           <QueryClientProvider client={queryClient}>
-            <Component {...pageProps} setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} value={value} setValue={setValue} />
+            <Provider store={store}>
+              <Component {...pageProps} setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} value={value} setValue={setValue} />
+            </Provider>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
       </ThemeProvider>

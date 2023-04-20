@@ -95,7 +95,7 @@ const ProductsCarouselDukaflani = ({ promoter, color1, color2, icon, upsellProdu
               </Box>
               <Typography sx={{color: 'white'}} variant='subtitle1'>{`More From ${promoter}`}</Typography>
             </Stack>
-            <Button size='small' variant='text' style={{color: 'white'}} endIcon={<RightOutlined style={{color: 'white', fontSize: 15}} />}>See All</Button>
+            {/* <Button size='small' variant='text' disabled style={{color: 'white'}} endIcon={<RightOutlined style={{color: 'white', fontSize: 15}} />}>See All</Button> */}
           </Stack>
           <Paper square>
           <Grid>

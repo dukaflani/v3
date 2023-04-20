@@ -78,14 +78,15 @@ const FormikContainer = () => {
         birthDate: Yup.date().required('Required').nullable()
     })
 
-    const onSubmit = (values) => console.log('On Submit birthdate:', values)
+    // const onSubmit = (values) => console.log('On Submit birthdate:', values)
 
 
   return (
     <Formik 
         initialValues={initialValues} 
         validationSchema={validationSchema} 
-        onSubmit={onSubmit}>
+        // onSubmit={onSubmit}
+        >
         {
             (formik) => 
             (<Form>

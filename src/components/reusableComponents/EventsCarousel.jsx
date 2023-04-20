@@ -98,7 +98,7 @@ const ProductsCarouselDukaflani = ({ title, color1, color2, icon, events }) => {
               </Box>
               <Typography sx={{color: 'white'}} variant='subtitle1'>{title}</Typography>
             </Stack>
-            <Button size='small' variant='text' style={{color: 'white'}} endIcon={<RightOutlined style={{color: 'white', fontSize: 15}} />}>Explore</Button>
+            {/* <Button size='small' variant='text' disabled style={{color: 'white'}} endIcon={<RightOutlined style={{color: 'white', fontSize: 15}} />}>Explore</Button> */}
           </Stack>
           <Paper square>
           <Grid>

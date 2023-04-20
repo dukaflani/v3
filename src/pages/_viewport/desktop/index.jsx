@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 // Nextjs Imports
 import Head from 'next/head'
+import { useRouter } from 'next/router';
 
 //  Mui Imports
 import { Box, Button, Container, Paper, Stack, Typography } from '@mui/material'
@@ -20,6 +21,7 @@ import BottomNavDesktop from '@/components/reusableComponents/BottomNavDesktop';
 
 
 export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
+  const router = useRouter()
   const theme = useTheme()
   const [open, setOpen] = useState(false);
   const adString = 'Start selling on Dukaflani now!'
@@ -45,7 +47,7 @@ export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
                     </div>
                 </div>
                 <div>
-                  <Button startIcon={<InfoOutlinedIcon/>} onClick={() => setOpen(true)} size="small">Learn How</Button>
+                  <Button startIcon={<InfoOutlinedIcon/>} onClick={() => router.push({ pathname: '/links/contact_us' })} size="small">Learn How</Button>
                 </div>
               </div>
             </Container>

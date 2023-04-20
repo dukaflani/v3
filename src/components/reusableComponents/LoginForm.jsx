@@ -26,11 +26,15 @@ const FORM_VALIDATION = Yup.object().shape({
     keepLoggedIn: Yup.boolean()
 })
 
-const onSubmit = (values) => console.log('On Submit birthdate:', values)
+// const onSubmit = (values) => console.log('On Submit birthdate:', values)
 
 const LoginForm = () => {
   return (
-    <Formik initialValues={{...INITIAL_FORM_STATE}} validationSchema={FORM_VALIDATION} onSubmit={onSubmit}>
+    <Formik 
+        initialValues={{...INITIAL_FORM_STATE}} 
+        validationSchema={FORM_VALIDATION} 
+        // onSubmit={onSubmit}
+        >
         <Form>
             <Stack spacing={2}>
                 <Grid container spacing={2}>

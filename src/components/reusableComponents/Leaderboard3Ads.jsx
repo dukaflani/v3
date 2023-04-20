@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 // Next Image
 import Image from "next/legacy/image";
+import { useRouter } from 'next/router';
 
 // MUI Imports
 import { Box, Button, Paper, Stack, Typography } from "@mui/material"
@@ -17,6 +18,7 @@ import ad3 from '../../../public/assets/pictures/dukaflani-banner-3.png'
 
 
 const Leaderboard3Ads = () => {
+    const router = useRouter()
     const [pic1Hovered, setPic1Hovered] = useState(false)
     const [pic2Hovered, setPic2Hovered] = useState(false)
     const [pic3Hovered, setPic3Hovered] = useState(false)
@@ -54,11 +56,11 @@ const Leaderboard3Ads = () => {
               </Box>
               <Typography sx={{color: 'white'}} variant='subtitle1'>Limited Slots Available</Typography>
             </Stack>
-            <Button size='small' variant='text' style={{color: 'white'}} endIcon={<RightOutlined style={{color: 'white', fontSize: 15}} />}>Details</Button>
+            <Button onClick={() => router.push({ pathname: '/links/contact_us' })} size='small' variant='text' style={{color: 'white'}} endIcon={<RightOutlined style={{color: 'white', fontSize: 15}} />}>Details</Button>
           </Stack>
           <Paper square>
             <Stack direction="row" sx={{padding: 1}} >
-              <Stack onMouseEnter={handleMouseInPic1} onMouseLeave={handleMouseOutPic1} xs={4} sx={{width: '100%', height: '56.25%'}}>
+              <Stack onClick={() => router.push({ pathname: '/links/contact_us' })} onMouseEnter={handleMouseInPic1} onMouseLeave={handleMouseOutPic1} xs={4} sx={{width: '100%', height: '56.25%'}}>
                 <Paper elevation={pic1Hovered ? 10 : 0} sx={{ width: '100%', height: '100%', position: "relative", cursor:'pointer'}}>
                   <Image 
                       src={ad1} 
@@ -67,7 +69,7 @@ const Leaderboard3Ads = () => {
                       />
                 </Paper>
               </Stack>
-              <Stack onMouseEnter={handleMouseInPic2} onMouseLeave={handleMouseOutPic2} xs={4} sx={{width: '100%', height: '56.25%'}}>
+              <Stack onClick={() => router.push({ pathname: '/links/contact_us' })} onMouseEnter={handleMouseInPic2} onMouseLeave={handleMouseOutPic2} xs={4} sx={{width: '100%', height: '56.25%'}}>
                 <Paper elevation={pic2Hovered ? 10 : 0} sx={{ width: '100%', height: '100%', position: "relative", cursor:'pointer'}}>
                   <Image 
                       src={ad2} 
@@ -76,7 +78,7 @@ const Leaderboard3Ads = () => {
                       />
                 </Paper>
               </Stack>
-              <Stack onMouseEnter={handleMouseInPic3} onMouseLeave={handleMouseOutPic3} xs={4} sx={{width: '100%', height: '56.25%'}}>
+              <Stack onClick={() => router.push({ pathname: '/links/contact_us' })} onMouseEnter={handleMouseInPic3} onMouseLeave={handleMouseOutPic3} xs={4} sx={{width: '100%', height: '56.25%'}}>
                 <Paper elevation={pic3Hovered ? 10 : 0} sx={{ width: '100%', height: '100%', position: "relative", cursor:'pointer'}}>
                   <Image 
                       src={ad3} 

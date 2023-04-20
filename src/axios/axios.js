@@ -130,5 +130,26 @@ export const getEventByCategory = async (category) => {
 
 
 export const registerAccount = async ( newAccount ) => {
-    await api.post(`/auth/users/`, newAccount)
+    const response = await api.post(`/auth/users/`, newAccount)
+}
+
+
+export const searchVideos = async ( searchParams ) => {
+    const searchTerm = searchParams?.queryKey[1]
+    const response = await api.get(`/store/video-results-no-pagination/?search=${searchTerm}&limit=20`)
+    return response.data.results
+}
+
+
+export const searchProducts = async ( searchParams ) => {
+    const searchTerm = searchParams?.queryKey[1]
+    const response = await api.get(`/store/products-results-offset/?search=${searchTerm}&limit=20`)
+    return response.data.results
+}
+
+
+export const searchEvents = async ( searchParams ) => {
+    const searchTerm = searchParams?.queryKey[1]
+    const response = await api.get(`/store/events-results-offset/?search=${searchTerm}&limit=20`)
+    return response.data.results
 }
