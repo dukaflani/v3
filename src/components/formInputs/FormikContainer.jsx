@@ -78,7 +78,6 @@ const FormikContainer = () => {
         birthDate: Yup.date().required('Required').nullable()
     })
 
-    // const onSubmit = (values) => console.log('On Submit birthdate:', values)
 
 
   return (

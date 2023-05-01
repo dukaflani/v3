@@ -87,7 +87,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                         <Typography gutterBottom sx={{lineHeight: 1}} component='h1' variant='h6'>SongTitle goes here and should not be trancated in anyway shape or form</Typography>
                         <Stack sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}} direction='row' spacing={1}>
                             <Typography sx={{color: '#1976d2'}} variant='button'>Gengetone</Typography>
-                            <Typography variant='caption'>3.4m views</Typography>
+                            <Typography variant='caption'>3.4m visits</Typography>
                             <Typography variant='caption'>6 months ago</Typography>
                             <Typography variant='subtitle2'>more...</Typography>
                         </Stack>
@@ -182,7 +182,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly'}}>
                                 <Box sx={{textAlign: 'center'}}>
                                     <Typography variant='subtitle2'>282,345,674</Typography>
-                                    <Typography variant='caption'>views</Typography>
+                                    <Typography variant='caption'>visits</Typography>
                                 </Box>
                                 <Box sx={{textAlign: 'center'}}>
                                     <Typography variant='subtitle2'>3.5k</Typography>

@@ -1,5 +1,8 @@
+// NextJs Imports
+import { useRouter } from "next/router" 
+
 // MUI Imports
-import { Grid, Stack, Typography } from "@mui/material"
+import { Box, Grid, Link, Stack, Typography } from "@mui/material"
 
 // NPM Imports
 import { Formik, Form } from "formik"
@@ -26,9 +29,10 @@ const FORM_VALIDATION = Yup.object().shape({
     keepLoggedIn: Yup.boolean()
 })
 
-// const onSubmit = (values) => console.log('On Submit birthdate:', values)
 
 const LoginForm = () => {
+    const router = useRouter()
+
   return (
     <Formik 
         initialValues={{...INITIAL_FORM_STATE}} 
@@ -41,6 +45,14 @@ const LoginForm = () => {
                     <Grid item xs={12} >
                         <Typography variant="h6">Login</Typography>
                     </Grid>
+                    <Grid item xs={12} >
+                        <Stack direction="row" spacing={0.5}>
+                            <Typography variant="subtitle2">Don't have an account?</Typography>
+                            <Box onClick={() => router.push({ pathname: '/account/register' })} sx={{cursor: 'pointer'}}>
+                                <Typography color='primary' variant="subtitle2">Register here</Typography>
+                            </Box>
+                        </Stack>
+                    </Grid>
                     <Grid item xs={12}>
                         <MyInput required name='email' label='Email' />
                     </Grid>
@@ -52,6 +64,13 @@ const LoginForm = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <MySubmitButton>Login</MySubmitButton>
+                    </Grid>
+                    <Grid item xs={12} >
+                        <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
+                            <Box onClick={() => router.push({ pathname: '/' })} sx={{cursor: 'pointer'}}>
+                                <Typography color='primary' variant="subtitle2">Forgot Password?</Typography>
+                            </Box>
+                        </Box>
                     </Grid>
                 </Grid>
             </Stack>

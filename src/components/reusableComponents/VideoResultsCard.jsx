@@ -109,7 +109,7 @@ const VideoResultsCard = ({ video }) => {
                                 <Tooltip title={video.stage_name} placement="top" ><Typography sx={{cursor: 'pointer'}} className="line-clamp-1 line-clamp" variant='body2'>{video.stage_name}</Typography></Tooltip>
                                 {video.verified && <Tooltip title='Verified' placement="top" ><CheckCircleIcon sx={{ fontSize: 15, color: theme.myColors.textDark }} /></Tooltip>}
                                 </Stack>
-                                <Typography variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>
+                                <Typography variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'visit' : 'visits'} &bull; {videoUploadTime}</Typography>
                             </Stack>
                         </Box>
                         <Box>

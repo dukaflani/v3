@@ -12,6 +12,9 @@ import { useQuery } from '@tanstack/react-query';
 import { Avatar, Box, Container, Stack, Tab, Tabs, Typography, colors } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
 
+// NPM Imports
+import { useSelector } from 'react-redux';
+
 // Icons
 import WhatshotTwoToneIcon from '@mui/icons-material/WhatshotTwoTone';
 
@@ -23,6 +26,8 @@ import EventResultsComponent from '@/components/reusableComponents/EventResultsC
 import { searchVideos, searchProducts, searchEvents } from '@/axios/axios';
 
 const searchPage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
+    const searchTerm = useSelector((state) => state.search.searchTerm)
+    const formattedSearchTerm = searchTerm?.replace(/%2/g, "+")
 
     const [tabValue, setTabValue] = useState(0);
     const router = useRouter()
@@ -43,12 +48,26 @@ const searchPage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   return (
     <>
     <NavigationLayout2 setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} value={value} setValue={setValue} >
-        <Head>
-            <title>Search Results | Dukaflani</title>
-            <meta name="description" content="Search results page" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <link rel="icon" href="/favicon.ico" />
-        </Head>
+    <Head>
+        <title>{`${searchTerm} results | Dukaflani Search`}</title>
+        <meta name="title" content={`${searchTerm} results | Dukaflani Search`}/>
+        <meta name="description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+        <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
+
+        
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/results?search_query=${formattedSearchTerm}`} />
+        <meta property="og:title" content={`${searchTerm} results | Dukaflani Search`}/>
+        <meta property="og:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+        <meta property="og:image" content="https://dukaflani-user-uploads.s3.ap-south-1.amazonaws.com/branding/dukaflani-social-media-cover-potrait.png"/>
+
+        
+        <meta property="twitter:card" content="summary_large_image"/>
+        <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/results?search_query=${formattedSearchTerm}`} />
+        <meta property="twitter:title" content={`${searchTerm} results | Dukaflani Search`}/>
+        <meta property="twitter:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+        <meta property="twitter:image" content="https://dukaflani-user-uploads.s3.ap-south-1.amazonaws.com/branding/dukaflani-social-media-cover-potrait.png"/>
+      </Head>
         <Box sx={{minHeight: '100vh', backgroundColor: theme.myColors.myBackground, paddingTop: 5, paddingBottom: 10}}>
             <Container maxWidth='lg'>
                 <Container sx={{paddingTop: 3}} maxWidth='md'>

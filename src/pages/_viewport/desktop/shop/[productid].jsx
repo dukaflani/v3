@@ -61,12 +61,33 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
   return (
     <NavigationLayout2 setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} >
         <Head>
-          <title>Buy Dukaflani Branded Hoodie - ksh.3,500 | Khaligraph Jones</title>
-          <meta name="description" content="Watch 'Kwame' by Khaligraph Jones on
-           Dukaflani to get the Lyrics, Streaming Links, Products and Merchandise, Skiza Tunes, The Album, Events and Tour Dates " />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+            <title>{`Buy ${product?.title} - ${product?.local_currency}${numeral(product?.local_price).format('0,0')} | Dukaflani Shopping`}</title>
+            <meta name="title" content={`Buy ${product?.title} - ${product?.local_currency}${numeral(product?.local_price).format('0,0')} | Dukaflani Shopping`} />
+            <meta name="description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+            <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
+
+            
+            <meta property="og:type" content="website"/>
+            <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/shop/${product?.id}`} />
+            <meta property="og:title" content={`Buy ${product?.title} - ${product?.local_currency}${numeral(product?.local_price).format('0,0')} | Dukaflani Shopping`} />
+            <meta property="og:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+            <meta 
+                property="og:image" 
+                // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${data?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${data?.song_title}&video_title=${data?.title}&avatar=${data?.profile_avatar}`} />
+                content={product?.image} 
+                />
+
+            
+            <meta property="twitter:card" content="summary_large_image"/>
+            <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/shop/${product?.id}`} />
+            <meta property="twitter:title" content={`Buy ${product?.title} - ${product?.local_currency}${numeral(product?.local_price).format('0,0')} | Dukaflani Shopping`} />
+            <meta property="twitter:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+            <meta 
+                property="twitter:image" 
+                // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${data?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${data?.song_title}&video_title=${data?.title}&avatar=${data?.profile_avatar}`} />
+                content={product?.image} 
+                />
+      </Head>
         <Box sx={{backgroundColor: theme.myColors.myBackground, minHeight: '100vh', paddingTop: 5}}>
             <Container maxWidth='lg'>
                 <Box>

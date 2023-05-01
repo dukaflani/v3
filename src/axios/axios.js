@@ -1,9 +1,15 @@
+// Axios Import
 import axios from 'axios'
 
 
 export const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_BASE_URL
 })
+
+export const api2 = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_NEXT_URL
+})
+
 
 
 export const getVideosPage = async ( pageParam = 1, options = {} ) => {
@@ -130,7 +136,58 @@ export const getEventByCategory = async (category) => {
 
 
 export const registerAccount = async ( newAccount ) => {
-    const response = await api.post(`/auth/users/`, newAccount)
+    await api.post(`/auth/users/`, newAccount)
+}
+
+
+export const loginUser = async (loginInfo) => {
+    const response = await api.post(`/auth/jwt/create`, loginInfo)
+    return response.data
+}
+
+export const getRefreshToken = async () => {
+    const response = await api2.get(`/api/hello`)
+    return response.data.token
+}
+
+export const renewAccessToken = async (currentRefreshToken) => {
+    const refreshToken = currentRefreshToken?.queryKey[1]
+    const response = await api.post(`/auth/jwt/refresh/`, refreshToken)
+    return response.data
+}
+
+
+export const getCurrentUser = async ( token ) => {
+    const accessToken = token?.queryKey[1]
+    const response = await api.get(`/auth/users/me/`, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: accessToken 
+        }
+    })
+    return response.data
+}
+
+
+export const getUserProfile = async ( userID ) => {
+    const currentUserId = userID?.queryKey[1]
+    const response = await api.get(`/store/user-profile/?user=${currentUserId}`)
+    return response.data
+}
+
+
+export const updateProfile = async ({ id, accessToken, ...profileInfo }) => {
+    const user_id = id
+    const acccess_token = accessToken
+    const profile_info = profileInfo
+    const response = await api.patch(`/store/user-profile/${user_id}/` , profile_info, {
+        headers: {
+            // 'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: acccess_token
+        }
+    })
+    return response.data
 }
 
 

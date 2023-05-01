@@ -26,8 +26,12 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 // NPM Imports
 import { Provider } from 'react-redux';
 
+
+
 // Project Imports
 import store from '@/redux/app/store';
+import { renewAccessToken } from '@/axios/axios';
+import { updateToken } from '@/redux/features/auth/authSlice';
 
 
 
@@ -40,6 +44,9 @@ export default function App({ Component, pageProps }) {
   const { page } = router.query
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [value, setValue] = useState(0)
+
+  
+  
 
 
 

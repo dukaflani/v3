@@ -1,18 +1,14 @@
 // React Imports
 import { useEffect, useState } from "react"
 
-// Nextjs Imports
-import { useRouter } from "next/router"
-
 // MUI Imports
-import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, 
+import { Box, Button, Dialog, DialogActions, DialogContent, 
     DialogTitle, Grid, Link, Stack, Typography } from "@mui/material"
 
 // NPM Imports
 import { Formik, Form } from "formik"
 import * as Yup from 'yup'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { useDispatch } from 'react-redux';
 
 // Tanstack Imports
 import { useMutation } from "@tanstack/react-query"
@@ -27,18 +23,13 @@ import MySelectInput from "../formInputs/MySelectInput"
 import MyCheckBox from "../formInputs/MyCheckBox"
 import MySubmitButton from "../formInputs/MySubmitButton"
 import MyPasswordInput from "../formInputs/MyPasswordInput"
-import { registerAccount, loginUser } from "@/axios/axios"
-import { updateToken } from "@/redux/features/auth/authSlice"
+import { registerAccount, updateProfile } from "@/axios/axios"
+import MyFileInput from "../formInputs/MyFileInput";
 
-
-
-
-const RegisterForm = () => {
-    const router = useRouter()
-    const dispatch = useDispatch()
+const ProfileForm = () => {
+    
     const [openSuccessDialogue, setOpenSuccessDialogue] = useState(false)
     const [openErrorDialogue, setOpenErrorDialogue] = useState(false)
-    const [openRetrieveProfileSettings, setOpenRetrieveProfileSettings] = useState(false)
     const [userSuccessVariables, setUserSuccessVariables] = useState(null)
     const [userErrorVariables, setUserErrorVariables] = useState(null)
     const [userPassword, setUserPassword] = useState('') 
@@ -48,78 +39,63 @@ const RegisterForm = () => {
     const [copyButtonText, setCopyButtonText] = useState('copy')
 
 
+  
+    // const MAX_FILE_SIZE = 307200; //300KB
+
+    // const validFileExtensions = { image: ['jpg', 'png', 'jpeg', 'PNG'] };
+    // const validFileExtensions = { image: ['jpg', 'gif', 'png', 'jpeg', 'svg', 'webp'] };
+
+    // function isValidFileType(fileName, fileType) {
+    //     return fileName && validFileExtensions[fileType].indexOf(fileName.split('.').pop()) > -1;
+    //   }
+
+
     const INITIAL_FORM_STATE = {
-        username: '',
-        password: '',
-        confirmPassword: '',
-        email: '',
-        // phone: '',
-        first_name: '',
-        last_name: '',
-        role: '',
-        stage_name: '',
-        termsOfService: false,
-        is_verified: false
+        nationality: '',
+        management: '',
+        booking_email: '',
+        booking_contact: '',
+        about: '',
+        facebook: '',
+        twitter: '',
+        instagram: '',
+        tiktok: '',
+        youtube_channel: '',
+        profile_avatar: ''
     
     }
     
     
     const FORM_VALIDATION = Yup.object().shape({
-        username: Yup.string().required('Required'),
-        password: Yup.string().required('Required'),
-        confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required'),
-        email: Yup.string().email('Please enter a valid email').required('required'),
-        // phone: Yup.number().integer().typeError('Please enter a valid phone number'),
-        first_name: Yup.string().required('Required'),
-        last_name: Yup.string().required('Required'),
-        role: Yup.string().required('Required'),
-        stage_name: Yup.string().required('Required'),
-        termsOfService: Yup.boolean().oneOf([true], 'Please read and accept our T&Cs').required('Please read and accept our T&Cs'),
-        is_verified: Yup.boolean()
+        nationality: Yup.string().required('Required'),
+        management: Yup.string().required('Required'),
+        booking_email: Yup.string().required('Required'),
+        booking_contact: Yup.number().integer().typeError('Please enter a valid phone number'),
+        about: Yup.string().required('Required'),
+        facebook: Yup.string().required('Required'),
+        twitter: Yup.string().required('Required'),
+        instagram: Yup.string().required('Required'),
+        tiktok: Yup.string().required('Required'),
+        youtube_channel: Yup.string().required('Required'),
+        profile_avatar: Yup
+            .mixed()
+            .required('Required')
+            .test("is-valid-size", "Max allowed size is 300KB", value => value && value?.size <= MAX_FILE_SIZE)
+            .test("is-valid-type", "Not a valid image type", value => isValidFileType(value && value?.name?.toLowerCase(), "profile_avatar"))
     })
 
     const { mutate, isLoading, isError, error, isSuccess } = useMutation(registerAccount, {
         onSuccess: (_data, variables, _context) => {
             setUserSuccessVariables(variables)
-
+               
         },
         onError: (_error, variables, _context) => {
             setUserErrorVariables(variables)
         }
     })
 
-
-    const { mutate: performLogin, isLoading: loginLoading, isError: loginError, isSuccess: loginSuccess } = useMutation(loginUser, {
-        onSuccess: (data, _variables, _context) => {
-            // Update token in redux state
-            dispatch(updateToken(data?.access));
-            // Set cookie
-            fetch(process.env.NEXT_PUBLIC_BAKE_URL, {
-                method: 'POST',
-                body: JSON.stringify({ refreshToken: data?.refresh }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                }
-            });
-            // Navigate to profile settings
-            router.push({ pathname: `/account/profile/settings` });
-        },
-    })
-
-    const loginInfo = {
-        email: userEmail ,
-        password: userPassword,
-    }
-
-
     const onSubmit = (values) => {
-        mutate(values)
-    }
-
-
-    const handleLogin = () => {
-        performLogin(loginInfo)
+        // mutate(values)
     }
     
 
@@ -134,16 +110,6 @@ const RegisterForm = () => {
             setOpenErrorDialogue(true)
         }
        }, [isError])
-
-
-    useEffect(() => {
-        if (loginLoading) {
-             // Close success dialogue
-             setOpenSuccessDialogue(false);
-             // Open retrieving profile settings dialogue
-             setOpenRetrieveProfileSettings(true)
-        }
-       }, [loginLoading])
 
 
 
@@ -187,61 +153,48 @@ const RegisterForm = () => {
                 <Stack spacing={2}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} >
-                            <Typography variant="h6">Create an account</Typography>
-                        </Grid>
-                        <Grid item xs={12} >
-                            <Stack direction="row" spacing={0.5}>
-                                <Typography variant="subtitle2">Already have an account?</Typography>
-                                <Box onClick={() => router.push({ pathname: '/account/login' })} sx={{cursor: 'pointer'}}>
-                                    <Typography color='primary' variant="subtitle2">Login here</Typography>
-                                </Box>
-                            </Stack>
+                            <Typography variant="h6">Edit your profile</Typography>
                         </Grid>
                         <Grid item xs={12} >
                             <Typography variant="subtitle1">Account Information:</Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <MyInput required name='first_name' label='First Name' />
+                            <MyInput required name='nationality' label='Nationality' />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <MyInput required name='last_name' label='Last Name' />
+                            <MyInput required name='management' label='Management' />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <MyInput required name='username' label='Username' />
+                            <MyInput required name='booking_email' label='Booking Email' />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        {/* <Grid item xs={12} md={6}>
                             <MySelectInput required name='role' label='Account Type' />
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12}>
-                            <MyInput required name='stage_name' label='Stage Name/Brand Name' />
+                            <MyInput required name='booking_contact' label='Booking Contact' />
                         </Grid>
 
                         <Grid item xs={12} >
                             <Typography variant="subtitle1">Login Information:</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <MyInput required name='email' label='Email' />
+                            <MyInput required name='about' label='About' />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <MyInput name='facebook' label='Facebook' />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <MyFileInput name="profile_avatar" />
                         </Grid>
                         {/* <Grid item xs={12}>
-                            <MyInput name='phone' label='Phone' />
-                        </Grid> */}
-                        <Grid item xs={12}>
                             <MyPasswordInput required name='password' label='Password' />
-                        </Grid>
-                        <Grid item xs={12}>
+                        </Grid> */}
+                        {/* <Grid item xs={12}>
                             <MyPasswordInput required name='confirmPassword' label='Confirm Password' />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <MyCheckBox name='termsOfService' legend='Terms and Conditions' label={
-                                <Stack direction="row" spacing={0.4}>
-                                    <Typography variant="body1">I agree to the</Typography>
-                                    <Box onClick={() => router.push({ pathname: '/legal/terms_and_conditions' })} sx={{cursor: 'pointer'}}>
-                                        <Typography color='primary' variant="body1">Ts&Cs</Typography>
-                                    </Box>
-                                </Stack>
-                            } />
-                            {/* <MyCheckBox name='termsOfService' legend='Terms & Conditions' label='I agree.' /> */}
-                        </Grid>
+                        </Grid> */}
+                        {/* <Grid item xs={12}>
+                            <MyCheckBox name='termsOfService' legend='Agree to our Terms' label={<Link underline="none" href="/legal/terms_and_conditions">Terms and Conditions</Link>} />
+                        </Grid> */}
                         <Grid item xs={12}>
                             <MySubmitButton is_loading={isLoading}>{isLoading ? 'Creating Account...' : 'Register Account'}</MySubmitButton>
                         </Grid>
@@ -291,29 +244,8 @@ const RegisterForm = () => {
                 </Stack>
             </DialogContent>
             <DialogActions>
-            <Button onClick={handleLogin}>Update profile</Button>
+            <Button onClick={handleCloseSuccess}>Update profile</Button>
             <Button color="error" onClick={handleCloseSuccess}>Cancel</Button>
-            </DialogActions>
-        </Dialog>
-
-
-        {/* Retrieve Profile Settings Dialogue */}
-        <Dialog
-            open={openRetrieveProfileSettings}
-            onClose={() => setOpenRetrieveProfileSettings(false)}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-            <DialogTitle id="alert-dialog-title">
-            {"Retrieving your profile settings"}
-            </DialogTitle>
-            <DialogContent>
-                <Box sx={{display: 'flex', justifyContent: "center", alignItems: "center", padding: 2}}>
-                    <CircularProgress />
-                </Box>
-            </DialogContent>
-            <DialogActions>
-            <Button color="error" onClick={() => setOpenRetrieveProfileSettings(false)}>Close</Button>
             </DialogActions>
         </Dialog>
 
@@ -361,4 +293,4 @@ const RegisterForm = () => {
   )
 }
 
-export default RegisterForm
+export default ProfileForm

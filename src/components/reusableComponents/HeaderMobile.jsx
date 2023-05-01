@@ -166,6 +166,7 @@ const HeaderMobile = () => {
               </Box>
               <Stack sx={{paddingX: 2}} direction="row" spacing={2}>
                 <Typography sx={{cursor: 'pointer'}} onClick={() => router.push({ pathname: '/links/contact_us' })} variant='subtitle2'>Contuct us</Typography>
+                <Typography sx={{cursor: 'pointer'}} onClick={() => router.push({ pathname: '/legal/terms_and_conditions' })} variant='subtitle2'>Terms</Typography>
               </Stack>
               <Box sx={{paddingX: 2}}>
                 <Typography variant='caption'>&copy; {new Date().getFullYear()} Jidraff Gathura</Typography>

@@ -86,7 +86,6 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
         setTabPosition(newValue);
       };
 
-    //   const { data } = useQuery(["current-video", v], (v) => getCurrentVideo(v))
     
     const queryClient = useQueryClient()
     const { data } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
@@ -143,12 +142,33 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   return (
     <NavigationLayout2 setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} >
         <Head>
-          <title>Watch Goosebumps - Sammyboy Kenya | Dukaflani</title>
-          <meta name="description" content="Watch 'Kwame' by Khaligraph Jones on
-           Dukaflani to get the Lyrics, Streaming Links, Products and Merchandise, Skiza Tunes, The Album, Events and Tour Dates " />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+            <title>{`Get ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`}</title>
+            <meta name="title" content={`Get ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
+            <meta name="description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+            <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
+
+            
+            <meta property="og:type" content="website"/>
+            <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}&tab=links`} />
+            <meta property="og:title" content={`Get ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
+            <meta property="og:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+            <meta 
+                property="og:image" 
+                // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${data?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${data?.song_title}&video_title=${data?.title}&avatar=${data?.profile_avatar}`} />
+                content={data?.thumbnail} 
+                />
+
+            
+            <meta property="twitter:card" content="summary_large_image"/>
+            <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}&tab=links`} />
+            <meta property="twitter:title" content={`Get ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
+            <meta property="twitter:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+            <meta 
+                property="twitter:image" 
+                // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${data?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${data?.song_title}&video_title=${data?.title}&avatar=${data?.profile_avatar}`} />
+                content={data?.thumbnail} 
+                />
+      </Head>
         <Box sx={{backgroundColor: theme.myColors.myBackground, minHeight: '100vh', paddingTop: 5}}>
             <Container maxWidth='lg'>
                 <Box>
@@ -169,7 +189,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                         <Grid container spacing={1}>
                                             <Grid item xs={12} md={6}>
                                                 <Stack direction='row' spacing={1}>
-                                                    {data?.views_count ? (<Typography variant='body2'>{numeral(data?.views_count).format('0,0')} {data?.views_count == 1 ? 'view' : 'views'}</Typography>) : (<Skeleton width="10%" />)}
+                                                    {data?.views_count ? (<Typography variant='body2'>{numeral(data?.views_count).format('0,0')} {data?.views_count == 1 ? 'visit' : 'visits'}</Typography>) : (<Skeleton width="10%" />)}
                                                     <Box sx={{display: {xs: 'none', md: 'block'}}}>&bull;</Box>
                                                     {data?.date ? (<Typography sx={{display: {xs: 'none', md: 'block'}}} variant='body2'>{new Date(data?.date).toDateString()}</Typography>) : (<Skeleton width="15%" />)}
                                                 </Stack>

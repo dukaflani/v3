@@ -71,12 +71,33 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
   return (
     <NavigationLayout2 setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} >
         <Head>
-          <title>Event title | Khaligraph Jones</title>
-          <meta name="description" content="Watch 'Kwame' by Khaligraph Jones on
-           Dukaflani to get the Lyrics, Streaming Links, Products and Merchandise, Skiza Tunes, The Album, Events and Tour Dates " />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+            <title>{`Discover ${event?.title} by ${event?.event_organizer} happening at the ${event?.venue} | Dukaflani Events`}</title>
+            <meta name="title" content={`Discover ${event?.title} by ${event?.event_organizer} happening at the ${event?.venue} | Dukaflani Events`} />
+            <meta name="description" content="Discover events from the biggest event organisers in Africa"/>
+            <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
+
+            
+            <meta property="og:type" content="website"/>
+            <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/events/${event?.id}?a=${event?.user}`} />
+            <meta property="og:title" content={`Discover ${event?.title} by ${event?.event_organizer} happening at the ${event?.venue} | Dukaflani Events`} />
+            <meta property="og:description" content="Discover events from the biggest event organisers in Africa"/>
+            <meta 
+                property="og:image" 
+                // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${data?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${data?.song_title}&video_title=${data?.title}&avatar=${data?.profile_avatar}`} />
+                content={event?.poster} 
+                />
+
+            
+            <meta property="twitter:card" content="summary_large_image"/>
+            <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/events/${event?.id}?a=${event?.user}`} />
+            <meta property="twitter:title" content={`Discover ${event?.title} by ${event?.event_organizer} happening at the ${event?.venue} | Dukaflani Events`} />
+            <meta property="twitter:description" content="Discover events from the biggest event organisers in Africa"/>
+            <meta 
+                property="twitter:image" 
+                // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${data?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${data?.song_title}&video_title=${data?.title}&avatar=${data?.profile_avatar}`} />
+                content={event?.poster} 
+                />
+      </Head>
         <Box sx={{backgroundColor: theme.myColors.myBackground, minHeight: '100vh', paddingTop: 5}}>
             <Container maxWidth='lg'>
                 <Box>

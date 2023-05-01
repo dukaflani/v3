@@ -54,8 +54,8 @@ const EventsComponent = () => {
         <Paper square >
               <Box sx={{padding: 2, display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                 <Stack>
-                  <Typography component='h1' variant='subtitle1'>FEATURED EVENTS</Typography>
-                  <Typography component='h2' variant='body2'>Top Music Events Happening in Kenya</Typography>
+                  {loadingFeaturedEvents ? (<Typography component='h1' variant='subtitle1'>Loading events. Please wait ...</Typography>) : (<Typography component='h1' variant='subtitle1'>FEATURED EVENTS</Typography>)}
+                  {!loadingFeaturedEvents && <Typography component='h2' variant='body2'>Top Music Events Happening in Kenya</Typography>}
                 </Stack>
               </Box>
               <Box sx={{ width: '100%', borderRadius: 2, position: "relative", cursor:'pointer'}}>

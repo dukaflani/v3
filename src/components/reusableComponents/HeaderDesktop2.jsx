@@ -79,6 +79,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const searchTerm = useSelector((state) => state.search.searchTerm)
+  const userProfile = useSelector((state) => state.auth.profileInfo)
   const theme = useTheme()
   const router = useRouter()
   const pathName = router.pathname
@@ -258,7 +259,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                   <ShoppingCartOutlined />
                 </IconButton>
               </Tooltip>
-              <Avatar src='/no-image.png' alt='Jidraff Gathura'/>
+              <Avatar src={userProfile?.profile_avatar} alt={`${userProfile?.first_name} ${userProfile?.last_name}`}/>
               <Tooltip title="More Options">
                 <IconButton>
                   <MoreVertIcon />
@@ -313,6 +314,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
               </Box>
               <Stack sx={{paddingX: 2}} direction="row" spacing={2}>
                 <Typography sx={{cursor: 'pointer'}} onClick={() => router.push({ pathname: '/links/contact_us' })} variant='subtitle2'>Contuct us</Typography>
+                <Typography sx={{cursor: 'pointer'}} onClick={() => router.push({ pathname: '/legal/terms_and_conditions' })} variant='subtitle2'>Terms</Typography>
               </Stack>
               <Box sx={{paddingX: 2}}>
                 <Typography variant='caption'>&copy; {new Date().getFullYear()} Jidraff Gathura</Typography>
