@@ -187,4 +187,6 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading }, ref) => {
   return content
 })
 
+MoreVideosCard.displayName = 'MoreVideosCard';
+
 export default MoreVideosCard

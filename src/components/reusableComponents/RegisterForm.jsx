@@ -41,23 +41,23 @@ const RegisterForm = () => {
     const [openRetrieveProfileSettings, setOpenRetrieveProfileSettings] = useState(false)
     const [userSuccessVariables, setUserSuccessVariables] = useState(null)
     const [userErrorVariables, setUserErrorVariables] = useState(null)
-    const [userPassword, setUserPassword] = useState('') 
-    const [userEmail, setUserEmail] = useState('')
-    const [userUsername, setUserUsername] = useState('')
+    const [userPassword, setUserPassword] = useState("") 
+    const [userEmail, setUserEmail] = useState("")
+    const [userUsername, setUserUsername] = useState("")
     const [passwordCopied, setPasswordCopied] = useState(false)
-    const [copyButtonText, setCopyButtonText] = useState('copy')
+    const [copyButtonText, setCopyButtonText] = useState("copy")
 
 
     const INITIAL_FORM_STATE = {
-        username: '',
-        password: '',
-        confirmPassword: '',
-        email: '',
+        username: "",
+        password: "",
+        confirmPassword: "",
+        email: "",
         // phone: '',
-        first_name: '',
-        last_name: '',
-        role: '',
-        stage_name: '',
+        first_name: "",
+        last_name: "",
+        role: "",
+        stage_name: "",
         termsOfService: false,
         is_verified: false
     
@@ -65,16 +65,16 @@ const RegisterForm = () => {
     
     
     const FORM_VALIDATION = Yup.object().shape({
-        username: Yup.string().required('Required'),
-        password: Yup.string().required('Required'),
-        confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required'),
-        email: Yup.string().email('Please enter a valid email').required('required'),
+        username: Yup.string().required("Required"),
+        password: Yup.string().required("Required"),
+        confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match").required("Required"),
+        email: Yup.string().email("Please enter a valid email").required("required"),
         // phone: Yup.number().integer().typeError('Please enter a valid phone number'),
-        first_name: Yup.string().required('Required'),
-        last_name: Yup.string().required('Required'),
-        role: Yup.string().required('Required'),
-        stage_name: Yup.string().required('Required'),
-        termsOfService: Yup.boolean().oneOf([true], 'Please read and accept our T&Cs').required('Please read and accept our T&Cs'),
+        first_name: Yup.string().required("Required"),
+        last_name: Yup.string().required("Required"),
+        role: Yup.string().required("Required"),
+        stage_name: Yup.string().required("Required"),
+        termsOfService: Yup.boolean().oneOf([true], "Please read and accept our T&Cs").required("Please read and accept our T&Cs"),
         is_verified: Yup.boolean()
     })
 
@@ -162,9 +162,9 @@ const RegisterForm = () => {
 
     useEffect(() => {
         if (passwordCopied) {
-            setCopyButtonText('Copied!')
+            setCopyButtonText("Copied!")
             setTimeout(() => {
-                setCopyButtonText('Copy')
+                setCopyButtonText("Copy")
                 setPasswordCopied(false)
             }, 2000);    
         }
@@ -201,38 +201,38 @@ const RegisterForm = () => {
                             <Typography variant="subtitle1">Account Information:</Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <MyInput required name='first_name' label='First Name' />
+                            <MyInput required name="first_name" label="First Name" />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <MyInput required name='last_name' label='Last Name' />
+                            <MyInput required name="last_name" label="Last Name" />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <MyInput required name='username' label='Username' />
+                            <MyInput required name="username" label="Username" />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <MySelectInput required name='role' label='Account Type' />
+                            <MySelectInput required name="role" label="Account Type" />
                         </Grid>
                         <Grid item xs={12}>
-                            <MyInput required name='stage_name' label='Stage Name/Brand Name' />
+                            <MyInput required name="stage_name" label="Stage Name/Brand Name" />
                         </Grid>
 
                         <Grid item xs={12} >
                             <Typography variant="subtitle1">Login Information:</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <MyInput required name='email' label='Email' />
+                            <MyInput required name="email" label="Email" />
                         </Grid>
                         {/* <Grid item xs={12}>
                             <MyInput name='phone' label='Phone' />
                         </Grid> */}
                         <Grid item xs={12}>
-                            <MyPasswordInput required name='password' label='Password' />
+                            <MyPasswordInput required name="password" label="Password" />
                         </Grid>
                         <Grid item xs={12}>
-                            <MyPasswordInput required name='confirmPassword' label='Confirm Password' />
+                            <MyPasswordInput required name="confirmPassword" label="Confirm Password" />
                         </Grid>
                         <Grid item xs={12}>
-                            <MyCheckBox name='termsOfService' legend='Terms and Conditions' label={
+                            <MyCheckBox name="termsOfService" legend="Terms and Conditions" label={
                                 <Stack direction="row" spacing={0.4}>
                                     <Typography variant="body1">I agree to the</Typography>
                                     <Box onClick={() => router.push({ pathname: '/legal/terms_and_conditions' })} sx={{cursor: 'pointer'}}>

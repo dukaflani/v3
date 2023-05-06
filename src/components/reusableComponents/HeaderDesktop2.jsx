@@ -155,7 +155,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     if (pathnameLength.length > 3) {
       setShowTabs(false)
     }  
-  }, [pathName])
+  }, [pathName, pathnameLength.length])
   
 
   
@@ -190,7 +190,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     } else {
       setIsDarkMode(false)
     }
-  }, [])
+  }, [cookie.LightMode])
   
 
 

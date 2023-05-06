@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 // Next Imports
 import { useRouter } from 'next/router';
+import Image from "next/legacy/image";
 
 // Mui Imports
 import { Box, Tabs, Tab, AppBar, Toolbar, IconButton, Stack, Avatar, 
@@ -156,7 +157,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     if (pathnameLength.length > 3) {
       setShowTabs(false)
     }  
-  }, [pathName])
+  }, [pathName, pathnameLength.length])
   
 
   
@@ -191,7 +192,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     } else {
       setIsDarkMode(false)
     }
-  }, [])
+  }, [cookie.LightMode])
   
 
 

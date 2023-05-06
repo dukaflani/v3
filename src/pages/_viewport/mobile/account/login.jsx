@@ -10,7 +10,7 @@ import { useTheme } from '@mui/material/styles'
 import Copyright from '@/components/reusableComponents/Copyright';
 import LoginForm from '@/components/reusableComponents/LoginForm';
 
-const login = () => {
+const Login = () => {
   const router = useRouter()
   const theme = useTheme()
 
@@ -53,4 +53,4 @@ const login = () => {
   )
 }
 
-export default login
+export default Login

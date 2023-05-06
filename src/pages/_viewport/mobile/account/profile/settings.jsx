@@ -11,7 +11,7 @@ import Copyright from '@/components/reusableComponents/Copyright';
 import ProfileSettingsForm from '@/components/reusableComponents/ProfileSettingsForm';
 import MobileNavigationLayout from '@/layout/mobile/MobileNavigationLayout'
 
-const settings = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
+const Settings = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const router = useRouter()
     const theme = useTheme()
 
@@ -46,4 +46,4 @@ const settings = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   )
 }
 
-export default settings
+export default Settings

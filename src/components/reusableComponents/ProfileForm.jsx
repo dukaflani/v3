@@ -32,11 +32,11 @@ const ProfileForm = () => {
     const [openErrorDialogue, setOpenErrorDialogue] = useState(false)
     const [userSuccessVariables, setUserSuccessVariables] = useState(null)
     const [userErrorVariables, setUserErrorVariables] = useState(null)
-    const [userPassword, setUserPassword] = useState('') 
-    const [userEmail, setUserEmail] = useState('')
-    const [userUsername, setUserUsername] = useState('')
+    const [userPassword, setUserPassword] = useState("") 
+    const [userEmail, setUserEmail] = useState("")
+    const [userUsername, setUserUsername] = useState("")
     const [passwordCopied, setPasswordCopied] = useState(false)
-    const [copyButtonText, setCopyButtonText] = useState('copy')
+    const [copyButtonText, setCopyButtonText] = useState("copy")
 
 
   
@@ -51,35 +51,35 @@ const ProfileForm = () => {
 
 
     const INITIAL_FORM_STATE = {
-        nationality: '',
-        management: '',
-        booking_email: '',
-        booking_contact: '',
-        about: '',
-        facebook: '',
-        twitter: '',
-        instagram: '',
-        tiktok: '',
-        youtube_channel: '',
-        profile_avatar: ''
+        nationality: "",
+        management: "",
+        booking_email: "",
+        booking_contact: "",
+        about: "",
+        facebook: "",
+        twitter: "",
+        instagram: "",
+        tiktok: "",
+        youtube_channel: "",
+        profile_avatar: ""
     
     }
     
     
     const FORM_VALIDATION = Yup.object().shape({
-        nationality: Yup.string().required('Required'),
-        management: Yup.string().required('Required'),
-        booking_email: Yup.string().required('Required'),
-        booking_contact: Yup.number().integer().typeError('Please enter a valid phone number'),
-        about: Yup.string().required('Required'),
-        facebook: Yup.string().required('Required'),
-        twitter: Yup.string().required('Required'),
-        instagram: Yup.string().required('Required'),
-        tiktok: Yup.string().required('Required'),
-        youtube_channel: Yup.string().required('Required'),
+        nationality: Yup.string().required("Required"),
+        management: Yup.string().required("Required"),
+        booking_email: Yup.string().required("Required"),
+        booking_contact: Yup.number().integer().typeError("Please enter a valid phone number"),
+        about: Yup.string().required("Required"),
+        facebook: Yup.string().required("Required"),
+        twitter: Yup.string().required("Required"),
+        instagram: Yup.string().required("Required"),
+        tiktok: Yup.string().required("Required"),
+        youtube_channel: Yup.string().required("Required"),
         profile_avatar: Yup
             .mixed()
-            .required('Required')
+            .required("Required")
             .test("is-valid-size", "Max allowed size is 300KB", value => value && value?.size <= MAX_FILE_SIZE)
             .test("is-valid-type", "Not a valid image type", value => isValidFileType(value && value?.name?.toLowerCase(), "profile_avatar"))
     })
@@ -128,9 +128,9 @@ const ProfileForm = () => {
 
     useEffect(() => {
         if (passwordCopied) {
-            setCopyButtonText('Copied!')
+            setCopyButtonText("Copied!")
             setTimeout(() => {
-                setCopyButtonText('Copy')
+                setCopyButtonText("Copy")
                 setPasswordCopied(false)
             }, 2000);    
         }
@@ -159,29 +159,29 @@ const ProfileForm = () => {
                             <Typography variant="subtitle1">Account Information:</Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <MyInput required name='nationality' label='Nationality' />
+                            <MyInput required name="nationality" label="Nationality" />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <MyInput required name='management' label='Management' />
+                            <MyInput required name="management" label="Management" />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <MyInput required name='booking_email' label='Booking Email' />
+                            <MyInput required name="booking_email" label="Booking Email" />
                         </Grid>
                         {/* <Grid item xs={12} md={6}>
                             <MySelectInput required name='role' label='Account Type' />
                         </Grid> */}
                         <Grid item xs={12}>
-                            <MyInput required name='booking_contact' label='Booking Contact' />
+                            <MyInput required name="booking_contact" label="Booking Contact" />
                         </Grid>
 
                         <Grid item xs={12} >
                             <Typography variant="subtitle1">Login Information:</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <MyInput required name='about' label='About' />
+                            <MyInput required name="about" label="About" />
                         </Grid>
                         <Grid item xs={12}>
-                            <MyInput name='facebook' label='Facebook' />
+                            <MyInput name="facebook" label="Facebook" />
                         </Grid>
                         <Grid item xs={12}>
                             <MyFileInput name="profile_avatar" />
@@ -196,7 +196,7 @@ const ProfileForm = () => {
                             <MyCheckBox name='termsOfService' legend='Agree to our Terms' label={<Link underline="none" href="/legal/terms_and_conditions">Terms and Conditions</Link>} />
                         </Grid> */}
                         <Grid item xs={12}>
-                            <MySubmitButton is_loading={isLoading}>{isLoading ? 'Creating Account...' : 'Register Account'}</MySubmitButton>
+                            <MySubmitButton is_loading={isLoading}>{isLoading ? "Creating Account..." : "Register Account"}</MySubmitButton>
                         </Grid>
                     </Grid>
                 </Stack>

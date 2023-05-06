@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 // Project Imports
 import VideoResultsCard from './VideoResultsCard'
 
-const videoResultsComponent = ({ isLoading, videos }) => {
+const VideoResultsComponent = ({ isLoading, videos }) => {
 
   const searchTerm = useSelector((state) => state.search.searchTerm)
 
@@ -25,4 +25,4 @@ const videoResultsComponent = ({ isLoading, videos }) => {
   )
 }
 
-export default videoResultsComponent
+export default VideoResultsComponent

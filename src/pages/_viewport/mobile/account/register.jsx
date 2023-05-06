@@ -10,7 +10,7 @@ import { useTheme } from '@mui/material/styles'
 import Copyright from '@/components/reusableComponents/Copyright';
 import RegisterForm from '@/components/reusableComponents/RegisterForm';
 
-const register = () => {
+const Register = () => {
     const router = useRouter()
     const theme = useTheme()
 
@@ -53,4 +53,4 @@ const register = () => {
   )
 }
 
-export default register
+export default Register

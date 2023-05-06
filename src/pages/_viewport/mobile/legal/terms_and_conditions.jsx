@@ -55,7 +55,7 @@ const TermsAndConditions = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                 <ul>
                                     <li>
                                         <Typography variant='body1'>
-                                            1.1 ”Dukaflani” is the trading name of dukaflani.com which operates an e-commerce website (“marketplace”),
+                                            1.1 ”Dukaflani” is the trading name of dukaflani.com which operates an e-commerce website (&ldquo;marketplace&ldquo;),
                                             for the sale and purchase of consumer products and services.
                                         </Typography>
                                     </li>

@@ -25,7 +25,7 @@ import ProductResultsComponent from '@/components/reusableComponents/ProductResu
 import EventResultsComponent from '@/components/reusableComponents/EventResultsComponent'
 import { searchVideos, searchProducts, searchEvents } from '@/axios/axios';
 
-const searchPage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
+const SearchPage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const searchTerm = useSelector((state) => state.search.searchTerm)
     const formattedSearchTerm = searchTerm?.replace(/%2/g, "+")
 
@@ -111,4 +111,4 @@ const searchPage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   )
 }
 
-export default searchPage
+export default SearchPage

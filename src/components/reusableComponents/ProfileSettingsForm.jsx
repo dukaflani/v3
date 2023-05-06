@@ -31,18 +31,18 @@ const ProfileSettingsForm = () => {
     const [openUpdatedProfileDialogue, setOpenUpdatedProfileDialogue] = useState(false)
     const [openerrorUpdatingProfileDialogue, setOpenerrorUpdatingProfileDialogue] = useState(false)
     const [errorMessage, setErrorMessage] = useState(null)
-    const [profile_id, setProfile_id] = useState('')
-    const [profile_management, setProfile_management] = useState('')
+    const [profile_id, setProfile_id] = useState("")
+    const [profile_management, setProfile_management] = useState("")
     const [profile_nationality, setProfile_nationality] = useState(null)
-    const [profile_avatar, setProfile_avatar] = useState('')
-    const [booking_email, setBooking_email] = useState('')
-    const [booking_contact, setBooking_contact] = useState('')
-    const [about, setAbout] = useState('')
-    const [facebook, setFacebook] = useState('')
-    const [twitter, setTwitter] = useState('')
-    const [instagram, setInstagram] = useState('')
-    const [tiktok, setTiktok] = useState('')
-    const [youtube_channel, setYoutube_channel] = useState('')
+    const [profile_avatar, setProfile_avatar] = useState("")
+    const [booking_email, setBooking_email] = useState("")
+    const [booking_contact, setBooking_contact] = useState("")
+    const [about, setAbout] = useState("")
+    const [facebook, setFacebook] = useState("")
+    const [twitter, setTwitter] = useState("")
+    const [instagram, setInstagram] = useState("")
+    const [tiktok, setTiktok] = useState("")
+    const [youtube_channel, setYoutube_channel] = useState("")
     
     
     const currentUser = useSelector((state) => state.auth.userInfo)
@@ -56,17 +56,17 @@ const ProfileSettingsForm = () => {
         onSuccess: (data, _variables, _context) => {
             dispatch(updateProfileInfo(data[0]))
             setProfile_id(data[0]?.id)
-            setProfile_management(data[0]?.management ? data[0]?.management : '')
+            setProfile_management(data[0]?.management ? data[0]?.management : "")
             setProfile_nationality(countriesChoices.filter((country) => country.code === data[0]?.nationality))
-            setProfile_avatar(data[0]?.profile_avatar ? data[0]?.profile_avatar : '')
-            setBooking_email(data[0]?.booking_email ? data[0]?.booking_email : '')
-            setBooking_contact(data[0]?.booking_contact ? data[0]?.booking_contact : '')
-            setAbout(data[0]?.about ? data[0]?.about : '')
-            setFacebook(data[0]?.facebook ? data[0]?.facebook : '')
-            setTwitter(data[0]?.twitter ? data[0]?.twitter : '')
-            setInstagram(data[0]?.instagram ? data[0]?.instagram : '')
-            setTiktok(data[0]?.tiktok ? data[0]?.tiktok : '')
-            setYoutube_channel(data[0]?.youtube_channel ? data[0]?.youtube_channel : '')
+            setProfile_avatar(data[0]?.profile_avatar ? data[0]?.profile_avatar : "")
+            setBooking_email(data[0]?.booking_email ? data[0]?.booking_email : "")
+            setBooking_contact(data[0]?.booking_contact ? data[0]?.booking_contact : "")
+            setAbout(data[0]?.about ? data[0]?.about : "")
+            setFacebook(data[0]?.facebook ? data[0]?.facebook : "")
+            setTwitter(data[0]?.twitter ? data[0]?.twitter : "")
+            setInstagram(data[0]?.instagram ? data[0]?.instagram : "")
+            setTiktok(data[0]?.tiktok ? data[0]?.tiktok : "")
+            setYoutube_channel(data[0]?.youtube_channel ? data[0]?.youtube_channel : "")
             setOpenLoadingProfileDialogue(false)
         },
     },
@@ -123,7 +123,7 @@ const ProfileSettingsForm = () => {
                 code: Yup.string(),
                 label: Yup.string(),
                 phone: Yup.string(),
-            }).required('Required'),
+            }).required("Required"),
             profile_avatar: Yup
                 .mixed()
                 .test(
@@ -136,8 +136,8 @@ const ProfileSettingsForm = () => {
                     "Unsupported Format! Use png, jpg or jpeg",
                     value => value && SUPPORTED_FORMATS.includes(value.type)
                   ),
-            booking_email: Yup.string().email('Please enter a valid email'),
-            booking_contact: Yup.number().integer().typeError('Please enter a valid phone number'),
+            booking_email: Yup.string().email("Please enter a valid email"),
+            booking_contact: Yup.number().integer().typeError("Please enter a valid phone number"),
             about: Yup.string(),
             facebook: Yup.string(),
             twitter: Yup.string(),
@@ -191,7 +191,7 @@ const ProfileSettingsForm = () => {
         formik.setFieldValue("tiktok", tiktok);
         formik.setFieldValue("youtube_channel", youtube_channel);
       }, [profile_id, profile_management, profile_nationality, 
-        booking_email, booking_contact, about, facebook, twitter, instagram, tiktok, youtube_channel]);
+        booking_email, booking_contact, about, facebook, twitter, instagram, tiktok, youtube_channel, formik]);
 
 
   return (
@@ -241,42 +241,42 @@ const ProfileSettingsForm = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
                 <MyTextField 
-                    name='management' 
-                    label='Management' 
+                    name="management" 
+                    label="Management" 
                     helperText={formik.errors.management && formik.touched.management ? formik.errors.management : null} 
                     error={formik.errors.management && formik.touched.management ? true : false} 
                     {...textFieldConfig} 
-                    {...formik.getFieldProps('management')}
+                    {...formik.getFieldProps("management")}
                     />
             </Grid>
             <Grid item xs={12} sm={6}>
                 <MyTextField 
-                    name='booking_email' 
-                    label='Booking Email' 
+                    name="booking_email" 
+                    label="Booking Email" 
                     helperText={formik.errors.booking_email && formik.touched.booking_email ? formik.errors.booking_email : null} 
                     error={formik.errors.booking_email && formik.touched.booking_email ? true : false} 
                     {...textFieldConfig} 
-                    {...formik.getFieldProps('booking_email')}
+                    {...formik.getFieldProps("booking_email")}
                     />
             </Grid>
             <Grid item xs={12} sm={6}>
                 <MyTextField 
-                    name='booking_contact' 
-                    label='Booking Contact' 
+                    name="booking_contact" 
+                    label="Booking Contact" 
                     helperText={formik.errors.booking_contact && formik.touched.booking_contact ? formik.errors.booking_contact : null} 
                     error={formik.errors.booking_contact && formik.touched.booking_contact ? true : false} 
                     {...textFieldConfig} 
-                    {...formik.getFieldProps('booking_contact')}
+                    {...formik.getFieldProps("booking_contact")}
                     />
             </Grid>
             <Grid item xs={12}>
                 <MyTextArea 
-                    name='about' 
-                    label='About' 
+                    name="about" 
+                    label="About" 
                     helperText={formik.errors.about && formik.touched.about ? formik.errors.about : null} 
                     error={formik.errors.about && formik.touched.about ? true : false} 
                     {...textAreaConfig} 
-                    {...formik.getFieldProps('about')}
+                    {...formik.getFieldProps("about")}
                     
                     />
             </Grid>
@@ -285,52 +285,52 @@ const ProfileSettingsForm = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
                 <MyTextField 
-                    name='facebook' 
-                    label='Facebook' 
+                    name="facebook" 
+                    label="Facebook" 
                     helperText={formik.errors.facebook && formik.touched.facebook ? formik.errors.facebook : null} 
                     error={formik.errors.facebook && formik.touched.facebook ? true : false} 
                     {...textFieldConfig} 
-                    {...formik.getFieldProps('facebook')}
+                    {...formik.getFieldProps("facebook")}
                     />
             </Grid>
             <Grid item xs={12} sm={6}>
                 <MyTextField 
-                    name='twitter' 
-                    label='Twitter' 
+                    name="twitter" 
+                    label="Twitter" 
                     helperText={formik.errors.twitter && formik.touched.twitter ? formik.errors.twitter : null} 
                     error={formik.errors.twitter && formik.touched.twitter ? true : false} 
                     {...textFieldConfig} 
-                    {...formik.getFieldProps('twitter')}
+                    {...formik.getFieldProps("twitter")}
                     />
             </Grid>
             <Grid item xs={12} sm={6}>
                 <MyTextField 
-                    name='instagram' 
-                    label='Instagram' 
+                    name="instagram" 
+                    label="Instagram" 
                     helperText={formik.errors.instagram && formik.touched.instagram ? formik.errors.instagram : null} 
                     error={formik.errors.instagram && formik.touched.instagram ? true : false} 
                     {...textFieldConfig} 
-                    {...formik.getFieldProps('instagram')}
+                    {...formik.getFieldProps("instagram")}
                     />
             </Grid>
             <Grid item xs={12} sm={6}>
                 <MyTextField 
-                    name='tiktok' 
-                    label='TikTok' 
+                    name="tiktok" 
+                    label="TikTok" 
                     helperText={formik.errors.tiktok && formik.touched.tiktok ? formik.errors.tiktok : null} 
                     error={formik.errors.tiktok && formik.touched.tiktok ? true : false} 
                     {...textFieldConfig} 
-                    {...formik.getFieldProps('tiktok')}
+                    {...formik.getFieldProps("tiktok")}
                     />
             </Grid>
             <Grid item xs={12}>
                 <MyTextField 
-                    name='youtube_channel' 
-                    label='Youtube Channel' 
+                    name="youtube_channel" 
+                    label="Youtube Channel" 
                     helperText={formik.errors.youtube_channel && formik.touched.youtube_channel ? formik.errors.youtube_channel : null} 
                     error={formik.errors.youtube_channel && formik.touched.youtube_channel ? true : false} 
                     {...textFieldConfig} 
-                    {...formik.getFieldProps('youtube_channel')}
+                    {...formik.getFieldProps("youtube_channel")}
                     />
             </Grid>
             <Grid item xs={12}>

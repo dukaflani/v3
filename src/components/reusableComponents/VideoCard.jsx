@@ -216,5 +216,6 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
     return content
   })
 
+  VideoCard.displayName = 'VideoCard';
 
   export default VideoCard;

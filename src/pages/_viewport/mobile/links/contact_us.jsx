@@ -18,7 +18,7 @@ import Copyright from '@/components/reusableComponents/Copyright';
 
 
 
-const contact_us = () => {
+const ContactUs = () => {
     const router = useRouter()
     const theme = useTheme()
 
@@ -100,4 +100,4 @@ const contact_us = () => {
   )
 }
 
-export default contact_us
+export default ContactUs

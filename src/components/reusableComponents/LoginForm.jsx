@@ -17,15 +17,15 @@ import MyPasswordInput from "../formInputs/MyPasswordInput"
 
 
 const INITIAL_FORM_STATE = {
-    password: '',
-    email: '',
+    password: "",
+    email: "",
     keepLoggedIn: false,
 
 }
 
 const FORM_VALIDATION = Yup.object().shape({
-    password: Yup.string().required('Required'),
-    email: Yup.string().email('Please enter a valid email').required('required'),
+    password: Yup.string().required("Required"),
+    email: Yup.string().email("Please enter a valid email").required("required"),
     keepLoggedIn: Yup.boolean()
 })
 
@@ -54,13 +54,13 @@ const LoginForm = () => {
                         </Stack>
                     </Grid>
                     <Grid item xs={12}>
-                        <MyInput required name='email' label='Email' />
+                        <MyInput required name="email" label="Email" />
                     </Grid>
                     <Grid item xs={12}>
-                        <MyPasswordInput required name='password' label='Password' />
+                        <MyPasswordInput required name="password" label="Password" />
                     </Grid>
                     <Grid item xs={12}>
-                        <MyCheckBox name='keepLoggedIn' legend='Keep you logged in?' label='Yes, remember me.' />
+                        <MyCheckBox name="keepLoggedIn" legend="Keep you logged in?" label="Yes, remember me." />
                     </Grid>
                     <Grid item xs={12}>
                         <MySubmitButton>Login</MySubmitButton>
