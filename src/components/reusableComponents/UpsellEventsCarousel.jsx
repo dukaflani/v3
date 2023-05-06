@@ -13,8 +13,11 @@ import Slider from "react-slick";
 
 
 // Icons
-import { ClockCircleOutlined, EnvironmentOutlined, FlagOutlined, RightOutlined } from "@ant-design/icons";
 import PublicIcon from '@mui/icons-material/Public';
+import InsertInvitationOutlinedIcon from '@mui/icons-material/InsertInvitationOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
+
 
 
 
@@ -116,16 +119,21 @@ const ProductsCarouselDukaflani = ({ color1, color2, icon, upsellEvents, promote
                                 <Typography gutterBottom className='line-clamp-1 line-clamp' variant='body2'>{upsellEvent?.title}</Typography>
                                   <Stack spacing={0.5}>
                                     <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-                                      <EnvironmentOutlined style={{fontSize: 12}} />
+                                      <LocationOnOutlinedIcon sx={{fontSize: 15}} />
                                       <Typography className='line-clamp-1 line-clamp' variant='caption'>{upsellEvent?.venue}</Typography>
                                     </Stack>
                                     <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-                                      <FlagOutlined style={{fontSize: 12}} />
+                                      <FlagOutlinedIcon sx={{fontSize: 15}} />
                                       <Typography className='line-clamp-1 line-clamp' variant='caption'>{upsellEvent?.location}</Typography>
                                     </Stack>
                                       <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                                         <PublicIcon sx={{fontSize: 15}} />
                                         <Typography className='line-clamp-1 line-clamp' variant='caption'>{`${upsellEvent?.city}, ${upsellEvent?.country}`}</Typography>
+                                      </Stack>
+                                      <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
+                                        <InsertInvitationOutlinedIcon sx={{fontSize: 15}} />
+                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>{new Date(upsellEvent?.date).toDateString()}</Typography>
+                                        {/* <Typography className='line-clamp-1 line-clamp' variant='caption'>{`${upsellEvent?.date?.split("-").map(Number)[0]} ${months[parseInt(upsellEvent?.date?.split("-").map(Number)[1],10) -1 ]} ${upsellEvent?.date?.split("-").map(Number)[2]}`}</Typography> */}
                                       </Stack>
                                   </Stack>
                               </Stack>

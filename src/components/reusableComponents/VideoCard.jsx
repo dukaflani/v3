@@ -125,7 +125,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                         <CheckCircleIcon sx={{ fontSize: 15, color: theme.myColors.textDark }} />
                       </Tooltip>}
                     </Stack>
-                    <Typography sx={{lineHeight: 1, letterSpacing: 0}} variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'visit' : 'visits'} &bull; {videoUploadTime}</Typography>
+                    <Typography sx={{lineHeight: 1, letterSpacing: 0}} variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>
                   </Stack>
                 </Stack>
               </Grid>

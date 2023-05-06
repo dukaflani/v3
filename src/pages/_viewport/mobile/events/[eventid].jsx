@@ -1,10 +1,17 @@
 // Nextjs Imports
 import Head from "next/head"
 import Image from "next/legacy/image";
+import { useRouter } from "next/router";
 
 //MUI Imports
-import { Avatar, Box, Button, colors, Container, Divider, Grid, Paper, Stack, Typography } from "@mui/material"
+import { Avatar, Box, Button, colors, Container, Divider, Grid, Link, Paper, Skeleton, Stack, Typography } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
+
+// TanStack/React-Query
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+
+// NPM Imports
+import numeral from 'numeral';
 
 // Icons
 import { ScheduleOutlined } from "@ant-design/icons";
@@ -16,29 +23,51 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import OutlinedFlagTwoToneIcon from '@mui/icons-material/OutlinedFlagTwoTone';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
+import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 
-
-// Components
+// Project Imports
 import MobileNavigationLayout from '@/layout/mobile/MobileNavigationLayout'
 import UpsellEventsCarousel from '@/components/reusableComponents/UpsellEventsCarousel'
 import Copyright from '@/components/reusableComponents/Copyright'
-
-// Project Imports
-import poster1 from '../../../../../public/assets/pictures/event1.jpg'
+import { getCurrentEvent, getCurrentVideoUserProfile, getUpsellEvents } from "@/axios/axios";
 
 
 const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
     const theme = useTheme()
+    const router = useRouter()
+    const { eventid } = router.query
+    const { a } = router.query
+
+    const queryClient = useQueryClient()
+    const { data: event, isLoading: loadingEvent } = useQuery(["current-event", eventid], (eventid) => getCurrentEvent(eventid), {
+        initialData: () => {
+            const eventCache = queryClient.getQueryData(["current-video-events",Number(a)])?.find(event => event?.id == eventid)
+            if(eventCache) {
+                    return eventCache
+                } else {
+                        return undefined
+                    }
+                }
+            })
+
+    const publisherUserID = event?.user ? event?.user : 0
+    const { data: profile, isLoading: loadingProfile } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID))
+
+    const { data: upsellEvents } = useQuery(["upsell-events", publisherUserID], (publisherUserID) => getUpsellEvents(publisherUserID))
+            
+    const time = event?.time
+    const timeArray = time?.split(":").map(Number);
+    const hours = event?.time ? timeArray[0] : null
+    const minutes = event?.time ? timeArray[1] : null
 
 
   return (
     <MobileNavigationLayout setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} >
         <Head>
-          <title>Event title | Khaligraph Jones</title>
-          <meta name="description" content="Watch 'Kwame' by Khaligraph Jones on
-           Dukaflani to get the Lyrics, Streaming Links, Products and Merchandise, Skiza Tunes, The Album, Events and Tour Dates " />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
+            <title>{`Discover ${event?.title} by ${event?.event_organizer} happening at the ${event?.venue} | Dukaflani Events`}</title>
+            <meta name="title" content={`Discover ${event?.title} by ${event?.event_organizer} happening at the ${event?.venue} | Dukaflani Events`} />
+            <meta name="description" content="Discover events from the biggest event organisers in Africa"/>
+            <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
         </Head>
         <Box sx={{backgroundColor: theme.myColors.myBackground, minHeight: '100vh', paddingY: 5}}>
             <Container maxWidth='lg'>
@@ -48,40 +77,42 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                             <Paper square sx={{padding: 2}}>
                                 <Grid container columnSpacing={3}>
                                     <Grid item xs={12} md={4}>
-                                    <Box sx={{position: 'relative', borderRadius: 2,}}>
-                                        <Image 
-                                            src={poster1} 
-                                            layout='responsive'
-                                            alt='product title'
-                                            style={{borderRadius: 6}}
-                                        />
-                                    </Box>
+                                        {!loadingEvent ? (<Box sx={{position: 'relative', borderRadius: 2, background: colors.grey[100]}}>
+                                            <Image 
+                                                src={event?.poster} 
+                                                layout='responsive'
+                                                alt={event?.title}
+                                                height='100%'
+                                                width='100%'
+                                                style={{borderRadius: 6}}
+                                            />
+                                        </Box>) : (<Skeleton animation="wave"  variant="rectangular" sx={{ paddingTop: '100%', width: '100%', borderRadius: 2}} />)}
                                     </Grid>
                                     <Grid item xs={12} md={8}>
                                         <Grid container columnSpacing={4}>
                                             <Grid item xs={12} md={7}>
                                                 <Stack spacing={2}>
                                                     <Stack spacing={1}>
-                                                        <Typography variant="h6" component='h1'>Event Title goes here</Typography>
-                                                        <Typography variant="caption">Event By: Safaricom Live</Typography>
+                                                        {!loadingEvent ? (<Typography variant="h6" component='h1'>{event?.title}</Typography>) : (<Skeleton width="70%" />)}
+                                                        {!loadingEvent ? (<Typography variant="caption">{`Event By: ${event?.event_organizer}`}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
                                                     <Divider/>
                                                     <Box sx={{backgroundColor: '#f48e21', borderRadius: 2}}>
                                                         <Stack sx={{padding: 1}}>
                                                             <Stack direction='row' spacing={1}>
                                                                 <CategoryOutlinedIcon sx={{color: 'white', fontSize: 20}} />
-                                                                <Typography sx={{color: 'white'}} variant="subtitle2">Concert Event</Typography>
+                                                                {!loadingEvent ? (<Typography sx={{color: 'white'}} variant="subtitle2">{event?.event_category}</Typography>) : (<Skeleton width="30%" />)}
                                                             </Stack>
                                                         </Stack>
                                                         <Stack sx={{padding: 0.2}}>
                                                             <Paper sx={{padding: 2, borderBottomLeftRadius: 6, borderBottomRightRadius: 6}} elevation={0} square>
                                                                 <Stack>
                                                                     <Box sx={{paddingBottom: 0.5}}>
-                                                                        <Typography sx={{backgroundColor: colors.blue[50], padding: 0.5, color: colors.blue[500]}} variant="caption">Ticket Prices From</Typography>
+                                                                        {!loadingEvent ? (<Typography sx={{backgroundColor: colors.blue[50], padding: 0.5, color: colors.blue[500]}} variant="caption">{event?.event_ticket_info}</Typography>) : (<Skeleton width="30%" />)}
                                                                     </Box>
-                                                                    <Typography variant="h4">ksh.1,500</Typography>
+                                                                        {!loadingEvent ? (<Typography variant="h4">{`${event?.local_currency}${numeral(event?.local_price).format('0,0')}`}</Typography>) : (<Skeleton width="50%" sx={{paddingTop: 4}} />)}
                                                                     <Box>
-                                                                        <Typography sx={{backgroundColor: colors.green[50], padding: 0.5, color: colors.green[500]}} variant="caption">ticketsasa.com</Typography>
+                                                                        {!loadingEvent ? (<Typography sx={{backgroundColor: colors.green[50], padding: 0.5, color: colors.green[500]}} variant="caption">{`${event?.ticket_platform}`}</Typography>) : (<Skeleton width="40%" />)}
                                                                     </Box>
                                                                     {/* <Box sx={{paddingTop: 1}}>
                                                                         <Stack direction='row' spacing={0.5}>
@@ -99,23 +130,23 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                 </Stack>
                                             </Grid>
                                             <Grid item xs={12} md={5}>
-                                                <Typography variant="subtitle1" gutterBottom>Promoted By:</Typography>
+                                                {event?.is_sponsored ? (<Typography variant="subtitle1" gutterBottom>Sponsored By:</Typography>) : (<Typography variant="subtitle1" gutterBottom>Promoted By:</Typography>)}
                                                 <Stack direction='row' spacing={1}>
                                                 <Box>
-                                                    <Avatar  src='/assets/pictures/wakadinali_profile.jpg' />
+                                                    <Avatar  src={profile?.profile_avatar} />
                                                 </Box>
                                                 <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start'}}>
                                                     <Stack spacing={-0.5}>
                                                         <Stack spacing={0.5} direction='row'>
-                                                            <Typography variant='subtitle2'>Wakadinali</Typography>
-                                                            {true && <CheckCircleIcon sx={{ fontSize: 15, color: theme.myColors.textDark }} />}                   
+                                                            {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
+                                                            {profile?.is_verified == 'True' && <CheckCircleIcon sx={{ fontSize: 15, color: theme.myColors.textDark }} />}                   
                                                         </Stack>
-                                                        <Typography variant='caption'>Artist</Typography>
+                                                        {!loadingProfile ? (<Typography variant='caption'>{profile?.role}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
                                                 </Box>
                                                 </Stack>
                                                 <Box sx={{width: '100%', paddingTop: 1}}>
-                                                    <Button startIcon={<FavoriteBorderOutlinedIcon />} fullWidth variant="contained" size='small'>Join Fanbase</Button>
+                                                    <Button disabled startIcon={<FavoriteBorderOutlinedIcon />} fullWidth variant="contained" size='small'>Join Fanbase</Button>
                                                 </Box>
                                             </Grid>
                                         </Grid>
@@ -135,24 +166,28 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                                             <Stack spacing={1}>
                                                 <Stack direction='row' spacing={1}>
                                                     <LocationOnOutlinedIcon />
-                                                    <Typography variant='body2'>The English Piont Marina</Typography>
+                                                    {!loadingEvent ? (<Typography variant='body2'>{event?.venue}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
                                                 <Stack direction='row' spacing={1}>
                                                     <OutlinedFlagTwoToneIcon />
-                                                    <Typography variant='body2'>Diani, Kenya</Typography>
+                                                    {!loadingEvent ? (<Typography variant='body2'>{event?.location}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
-                                                <Stack direction='row' spacing={1}>
-                                                    <EventOutlinedIcon />
-                                                    <Typography variant='body2'>Fri 03 March 2023</Typography>
+                                                <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
+                                                    <PublicOutlinedIcon fontSize="small" />
+                                                    {!loadingEvent ? (<Typography variant='body2'>{`${event?.city}, ${event?.country}`}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
-                                                <Stack direction='row' spacing={1}>
-                                                    <ScheduleOutlinedIcon />
-                                                    <Typography variant='body2'>18:00hrs</Typography>
+                                                <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
+                                                    <EventOutlinedIcon fontSize="small" />
+                                                    {!loadingEvent ? (<Typography variant='body2'>{new Date(event?.date).toDateString()}</Typography>) : (<Skeleton width="10%" />)}
+                                                </Stack>
+                                                <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
+                                                    <ScheduleOutlinedIcon fontSize="small" />
+                                                    {!loadingEvent ? (<Typography variant='body2'>{`${hours}:${minutes?.toString().padStart(2, '0')}hrs`}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
                                             </Stack>
                                             <Stack>
                                                 <Typography variant="subtitle2">Description</Typography>
-                                                <Typography variant="body1">Event details goes here</Typography>
+                                                {!loadingEvent ? (<Typography variant="body1">{event?.description}</Typography>) : (<Skeleton width="80%" />)}
                                             </Stack>
                                         </Stack>
                                     </Box>
@@ -163,10 +198,12 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                            {/* Upsell Events */}
                             <Box>
                                 <UpsellEventsCarousel
-                                title="Wakadinali Tour Dates"
-                                color1="#f48e21"
-                                color2="#2900be"
-                                icon={<ScheduleOutlined style={{fontSize: 25, color: '#ffffff'}} />}
+                                    promoter={profile?.stage_name}
+                                    upsellEvents={upsellEvents}
+                                    publisherUserID={publisherUserID}
+                                    color1="#f48e21"
+                                    color2="#2900be"
+                                    icon={<ScheduleOutlined style={{fontSize: 25, color: '#ffffff'}} />}
                                 />
                             </Box>
                         </Grid>
@@ -179,9 +216,11 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
             </Container>
         </Box>
         <Container sx={{backgroundColor: theme.myColors.myBackground, position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 99}} maxWidth='lg'>
+        <Link href={event?.ticket_link} underline='none' target="_blank" rel="noopener">
             <Box sx={{width: '100%', paddingBottom: 2}}>
-                <Button startIcon={<LocalActivityOutlinedIcon />}  fullWidth  variant="contained" size='medium'>Buy Tickets</Button>
+                <Button disabled={!event?.ticket_link} startIcon={<LocalActivityOutlinedIcon />}  fullWidth  variant="contained" size='medium'>Buy Tickets</Button>
             </Box>
+        </Link>
         </Container>
     </MobileNavigationLayout>
   )

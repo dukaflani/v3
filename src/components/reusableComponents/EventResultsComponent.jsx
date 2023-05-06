@@ -19,7 +19,7 @@ const EventResultsComponent = ({ isLoading, events }) => {
         {events?.length == 0 && <Typography variant='body2'>{`Oops! Looks like there are no events available for "${searchTerm}"`}</Typography>}
         <Grid container spacing={3}>
           {events?.map((event, i) => (
-              <Grid item xs={6} sm={4} key={i}>
+              <Grid item xs={12} sm={4} key={i}>
                 <EventResultsCard event={event} />
               </Grid>
           ))}

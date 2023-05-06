@@ -18,7 +18,7 @@ const ProductResultsComponent = ({ isLoading, products }) => {
         {products?.length == 0 && <Typography variant='body2'>{`Oops! Looks like there are no products available for "${searchTerm}"`}</Typography>}
         <Grid container spacing={3}>
           {products?.map((product, i) => (
-              <Grid xs={6} md={4}  item key={i}>
+              <Grid xs={12} sm={4}  item key={i}>
                 <ProductResultsCard product={product} />
               </Grid>
           ))}

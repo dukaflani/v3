@@ -91,7 +91,7 @@ const ProfileSettingsForm = () => {
     }, [loadingProfile])
 
 
-    const FILE_SIZE = 300 * 1024;
+    const FILE_SIZE = 1000 * 1024;
     const SUPPORTED_FORMATS = [
       "image/jpg",
       "image/jpeg",
@@ -128,7 +128,7 @@ const ProfileSettingsForm = () => {
                 .mixed()
                 .test(
                     "fileSize",
-                    "Should not be more than 300KB",
+                    "Should not be more than 1MB",
                     value => value && value.size <= FILE_SIZE
                   )
                   .test(

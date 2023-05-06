@@ -46,7 +46,7 @@ import TabEventsCards from '@/components/reusableComponents/TabEventsCards';
 import MoreVideos from '@/components/reusableComponents/MoreVideos';
 
 // Project Imports
-import adposter1 from '../../../../../public/assets/pictures/event1.jpg'
+import adposter from '../../../../../public/assets/media/dukaflani-advert-poster.jpg'
 import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLinks, 
     getCurrentVideoProduct, getCurrentVideoLyrics, getCurrentVideoLyricsVerses,
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
@@ -142,15 +142,15 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   return (
     <NavigationLayout2 setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} >
         <Head>
-            <title>{`Get ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`}</title>
-            <meta name="title" content={`Get ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
+            <title>{`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`}</title>
+            <meta name="title" content={`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
             <meta name="description" content="Buy products from the biggest celebrities and name brands in Africa"/>
             <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
 
             
             <meta property="og:type" content="website"/>
             <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}&tab=links`} />
-            <meta property="og:title" content={`Get ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
+            <meta property="og:title" content={`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
             <meta property="og:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
             <meta 
                 property="og:image" 
@@ -161,7 +161,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
             
             <meta property="twitter:card" content="summary_large_image"/>
             <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}&tab=links`} />
-            <meta property="twitter:title" content={`Get ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
+            <meta property="twitter:title" content={`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
             <meta property="twitter:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
             <meta 
                 property="twitter:image" 
@@ -189,7 +189,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                         <Grid container spacing={1}>
                                             <Grid item xs={12} md={6}>
                                                 <Stack direction='row' spacing={1}>
-                                                    {data?.views_count ? (<Typography variant='body2'>{numeral(data?.views_count).format('0,0')} {data?.views_count == 1 ? 'visit' : 'visits'}</Typography>) : (<Skeleton width="10%" />)}
+                                                    {data?.views_count ? (<Typography variant='body2'>{numeral(data?.views_count).format('0,0')} {data?.views_count == 1 ? 'view' : 'views'}</Typography>) : (<Skeleton width="10%" />)}
                                                     <Box sx={{display: {xs: 'none', md: 'block'}}}>&bull;</Box>
                                                     {data?.date ? (<Typography sx={{display: {xs: 'none', md: 'block'}}} variant='body2'>{new Date(data?.date).toDateString()}</Typography>) : (<Skeleton width="15%" />)}
                                                 </Stack>
@@ -281,14 +281,11 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                 </Box>
                                                 <Box>
                                                     {
-                                                    true ? <Tooltip title='Join Fanbase'>
+                                                    true ?
                                                         <Button disabled startIcon={<FavoriteBorderOutlinedIcon/>} variant='contained' size='small'>Join</Button>
-                                                    </Tooltip>
-                                                    :
-                                                    <Tooltip title='Leave Fanbase'>
+                                                         :
                                                         <Button disabled startIcon={<FavoriteIcon/>} variant='outlined' size='small'>Leave</Button>
-                                                    </Tooltip>
-                                                    }
+                                                   }
                                                 </Box>        
                                             </Stack>
                                         </Box>
@@ -302,11 +299,11 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                 <Box>
                                                     <Grid container spacing={2}>
                                                         <Grid item xs={5}>
-                                                            <Box sx={{position: 'relative'}}>
+                                                            <Box sx={{position: 'relative', backgroundColor: colors.grey[100]}}>
                                                             <Image 
-                                                                src={adposter1} 
+                                                                src={adposter} 
                                                                 layout='responsive'
-                                                                alt='Ad poster'
+                                                                alt={`Ad poster by Dukaflani Marketplace`}
                                                                 height="100%"
                                                                 width="100%"
                                                                 />
@@ -315,14 +312,14 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                         <Grid item xs={7}>
                                                             <Box sx={{height: '100%', width: '100%', display: 'flex', alignItems: 'end', justifyContent: 'start'}}>
                                                                 <Stack sx={{width: '100%'}}>
-                                                                    <Typography className="line-clamp-2 line-clamp" variant='subtitle2'>Ad title goes here and should have a line clamp of two jhbhb jhbjhb hbjhb jhbjh jhbjhb hb hb jhbjhb jhb jh bjh jhbj hjhb </Typography>
+                                                                    <Typography className="line-clamp-2 line-clamp" variant='subtitle2'>Start selling on Dukaflani now!</Typography>
                                                                     <Box sx={{width: '100%', paddingY: 1}}>
-                                                                        <Stack spacing={1} direction='row' sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-                                                                            <Avatar sx={{ width: 24, height: 24 }}  src='/assets/pictures/wakadinali_profile.jpg' />
-                                                                            <Typography className="line-clamp-1 line-clamp" variant='caption'>www.example-domain.com</Typography>
+                                                                        <Stack spacing={0.5} direction='row' sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
+                                                                            <Typography sx={{fontSize: 12, backgroundColor: 'yellow'}} className="line-clamp-1 line-clamp" variant='caption'>Ad</Typography>
+                                                                            <Typography sx={{fontSize: 12, color: 'GrayText'}} className="line-clamp-1 line-clamp" variant='caption'>Dukaflani Marketplace</Typography>
                                                                         </Stack>
                                                                     </Box>
-                                                                    <Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Button startIcon={<InfoOutlinedIcon/>} fullWidth size="small" variant='contained'>Learn More</Button></Box>
+                                                                    <Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Button onClick={() => router.push({ pathname: '/links/contact_us' })} startIcon={<InfoOutlinedIcon/>} fullWidth size="small" variant='contained'>Learn More</Button></Box>
                                                                 </Stack>
                                                             </Box>
                                                         </Grid>

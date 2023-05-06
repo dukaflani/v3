@@ -19,12 +19,10 @@ import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Project imports
-import { getCurrentVideoProduct, getCurrentVideoUserProfile, getUpsellProducts } from "@/axios/axios";
-
-// Components
 import NavigationLayout2 from '@/layout/desktop/NavigationLayout2'
 import UpsellProductsCarousel from '@/components/reusableComponents/UpsellProductsCarousel'
 import Copyright from '@/components/reusableComponents/Copyright'
+import { getCurrentVideoProduct, getCurrentVideoUserProfile, getUpsellProducts } from "@/axios/axios";
 
 
 

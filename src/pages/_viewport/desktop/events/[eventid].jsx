@@ -25,14 +25,12 @@ import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 
-
-// Components
+// Project Imports
 import NavigationLayout2 from '@/layout/desktop/NavigationLayout2'
 import UpsellEventsCarousel from '@/components/reusableComponents/UpsellEventsCarousel'
 import Copyright from '@/components/reusableComponents/Copyright'
-
-// Project Imports
 import { getCurrentEvent, getCurrentVideoUserProfile, getUpsellEvents } from "@/axios/axios";
+
 
 
 const EventPage = ({ setIsDarkMode, isDarkMode }) => {
@@ -106,16 +104,16 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                             <Paper square sx={{padding: 2}}>
                                 <Grid container columnSpacing={3}>
                                     <Grid item xs={12} md={4}>
-                                    {!loadingEvent ? (<Box sx={{position: 'relative', borderRadius: 2, background: colors.grey[100]}}>
-                                        <Image 
-                                            src={event?.poster} 
-                                            layout='responsive'
-                                            alt={event?.title}
-                                            height='100%'
-                                            width='100%'
-                                            style={{borderRadius: 6}}
-                                        />
-                                    </Box>) : (<Skeleton animation="wave"  variant="rectangular" sx={{ paddingTop: '100%', width: '100%', borderRadius: 2}} />)}
+                                        {!loadingEvent ? (<Box sx={{position: 'relative', borderRadius: 2, background: colors.grey[100]}}>
+                                            <Image 
+                                                src={event?.poster} 
+                                                layout='responsive'
+                                                alt={event?.title}
+                                                height='100%'
+                                                width='100%'
+                                                style={{borderRadius: 6}}
+                                            />
+                                        </Box>) : (<Skeleton animation="wave"  variant="rectangular" sx={{ paddingTop: '100%', width: '100%', borderRadius: 2}} />)}
                                     </Grid>
                                     <Grid item xs={12} md={8}>
                                         <Grid container columnSpacing={4}>
@@ -139,7 +137,7 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                                     <Box sx={{paddingBottom: 0.5}}>
                                                                         {!loadingEvent ? (<Typography sx={{backgroundColor: colors.blue[50], padding: 0.5, color: colors.blue[500]}} variant="caption">{event?.event_ticket_info}</Typography>) : (<Skeleton width="30%" />)}
                                                                     </Box>
-                                                                    {!loadingEvent ? (<Typography variant="h4">{`${event?.local_currency}${numeral(event?.local_price).format('0,0')}`}</Typography>) : (<Skeleton width="50%" sx={{paddingTop: 4}} />)}
+                                                                        {!loadingEvent ? (<Typography variant="h4">{`${event?.local_currency}${numeral(event?.local_price).format('0,0')}`}</Typography>) : (<Skeleton width="50%" sx={{paddingTop: 4}} />)}
                                                                     <Box>
                                                                         {!loadingEvent ? (<Typography sx={{backgroundColor: colors.green[50], padding: 0.5, color: colors.green[500]}} variant="caption">{`${event?.ticket_platform}`}</Typography>) : (<Skeleton width="40%" />)}
                                                                     </Box>
@@ -229,12 +227,12 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                            {/* Upsell Events */}
                             <Box>
                                 <UpsellEventsCarousel
-                                promoter={profile?.stage_name}
-                                upsellEvents={upsellEvents}
-                                publisherUserID={publisherUserID}
-                                color1="#f48e21"
-                                color2="#2900be"
-                                icon={<ScheduleOutlined style={{fontSize: 25, color: '#ffffff'}} />}
+                                    promoter={profile?.stage_name}
+                                    upsellEvents={upsellEvents}
+                                    publisherUserID={publisherUserID}
+                                    color1="#f48e21"
+                                    color2="#2900be"
+                                    icon={<ScheduleOutlined style={{fontSize: 25, color: '#ffffff'}} />}
                                 />
                             </Box>
                         </Grid>

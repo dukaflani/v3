@@ -17,10 +17,10 @@ import poster1 from '../../../public/assets/pictures/event1.jpg'
 
 
 // Icons
-import { RightOutlined } from "@ant-design/icons";
+import PublicIcon from '@mui/icons-material/Public';
+import InsertInvitationOutlinedIcon from '@mui/icons-material/InsertInvitationOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import OutlinedFlagTwoToneIcon from '@mui/icons-material/OutlinedFlagTwoTone';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 
 
 
@@ -110,7 +110,7 @@ const ProductsCarouselDukaflani = ({ title, color1, color2, icon, events }) => {
                             <Stack>
                             <Box sx={{ position: "relative", cursor:'pointer', backgroundColor: colors.grey[100]}}>
                               <Image 
-                                  src={event?.poster ? event?.poster : poster1} 
+                                  src={event?.poster} 
                                   layout='responsive'
                                   alt={event?.title}
                                   width="100%"
@@ -122,15 +122,19 @@ const ProductsCarouselDukaflani = ({ title, color1, color2, icon, events }) => {
                                 <Typography gutterBottom className='line-clamp-1 line-clamp' variant='body2'>{event?.title}</Typography>
                                   <Stack spacing={0.5}>
                                     <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-                                      <LocationOnOutlinedIcon sx={{fontSize: 12}} />
+                                      <LocationOnOutlinedIcon sx={{fontSize: 15}} />
                                       <Typography className='line-clamp-1 line-clamp' variant='caption'>{event?.venue}</Typography>
                                     </Stack>
                                     <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-                                      <OutlinedFlagTwoToneIcon sx={{fontSize: 12}} />
+                                      <FlagOutlinedIcon sx={{fontSize: 15}} />
                                       <Typography className='line-clamp-1 line-clamp' variant='caption'>{event?.location}</Typography>
                                     </Stack>
+                                    <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
+                                      <PublicIcon sx={{fontSize: 15}} />
+                                      <Typography className='line-clamp-1 line-clamp' variant='caption'>{`${event?.city}, ${event?.country}`}</Typography>
+                                    </Stack>
                                       <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-                                        <CalendarTodayIcon sx={{fontSize: 12}} />
+                                        <InsertInvitationOutlinedIcon sx={{fontSize: 15}} />
                                         <Typography className='line-clamp-1 line-clamp' variant='caption'>{new Date(event?.date).toDateString()}</Typography>
                                       </Stack>
                                   </Stack>

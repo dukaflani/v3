@@ -34,9 +34,9 @@ const EventResultsCard = ({ event }) => {
   return (
     <Box sx={{paddingTop: 2}}>
       <Stack>
-        <Box>
-          <Typography sx={{color: 'whitesmoke', backgroundColor: theme.myColors.textDark}} variant='caption'>{event?.event_type?.toUpperCase()}</Typography>
-        </Box>
+        {/* <Box>
+          <Typography  sx={{color: 'whitesmoke', backgroundColor: theme.myColors.textDark}} variant='caption'>{event?.event_type?.toUpperCase()}</Typography>
+        </Box> */}
         <Card onClick={() => router.push({ pathname: `/events/${event?.id}`, query: {a: event?.user} }) } square>
             <CardActionArea>
                 <CardMedia
@@ -44,6 +44,9 @@ const EventResultsCard = ({ event }) => {
                     image={event?.poster}
                     title={event?.title}
                     />
+                <Box sx={{padding: 1, backgroundColor: theme.myColors.textDark}}>
+                  <Typography className="line-clamp-1 line-clamp"  sx={{color: 'whitesmoke'}} variant='caption'>{event?.event_type?.toUpperCase()}</Typography>
+                </Box>
                 <CardContent>
                     <Stack spacing={1}>
                         <Stack spacing={0.4}>
@@ -63,7 +66,7 @@ const EventResultsCard = ({ event }) => {
                         <Typography className="line-clamp-2 line-clamp" variant='subtitle2'>{event?.title}</Typography>
                         <Box sx={{border: '1px solid lightgrey', paddingTop: 1}}>
                         <Stack sx={{textAlign: 'center'}}>
-                            <Typography variant='subtitle2'>{`${day} ${monthFormatted?.toUpperCase()} ${year}`}</Typography>
+                            <Typography className="line-clamp-1 line-clamp" variant='subtitle2'>{`${day} ${monthFormatted?.toUpperCase()} ${year}`}</Typography>
                             <Typography variant='caption'>{`${hours}:${minutes?.toString().padStart(2, '0')}hrs`}</Typography>
                         </Stack>
                         </Box>

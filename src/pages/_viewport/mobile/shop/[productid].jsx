@@ -1,38 +1,67 @@
 // Nextjs Imports
 import Head from "next/head"
 import Image from "next/legacy/image";
+import { useRouter } from "next/router";
 
 //MUI Imports
-import { Avatar, Box, Button, colors, Container, Divider, Grid, Paper, Stack, Typography } from "@mui/material"
+import { Avatar, Box, Button, colors, Container, Divider, Grid, Link, Paper, Stack, Skeleton, Typography } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
+
+// NPM Imports
+import numeral from 'numeral';
 
 // Icons
 import { AppstoreOutlined, WhatsAppOutlined, CheckCircleFilled, FireOutlined } from "@ant-design/icons";
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
+// TanStack/React-Query
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
-// Components
+// Project Imports
 import MobileNavigationLayout from '@/layout/mobile/MobileNavigationLayout'
 import UpsellProductsCarousel from '@/components/reusableComponents/UpsellProductsCarousel'
 import Copyright from '@/components/reusableComponents/Copyright'
-
-// Project Imports
-import product from '../../../../../public/assets/pictures/product.jpg'
+import { getCurrentVideoProduct, getCurrentVideoUserProfile, getUpsellProducts } from "@/axios/axios";
 
 
 const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
     const theme = useTheme()
+    const router = useRouter()
+    const { productid } = router.query
+
+
+    const queryClient = useQueryClient()
+    const videoProductID = productid ? productid : 0
+    const { data: product, isLoading: loadingProduct } = useQuery(["current-video-product", videoProductID], (videoProductID) => getCurrentVideoProduct(videoProductID), {
+        initialData: () => {
+            const videoProduct = queryClient.getQueryData(["current-video-product", Number(videoProductID)])
+            if(videoProduct) {
+                return videoProduct
+            } else {
+                return undefined
+            }
+        }
+    })
+
+
+    const publisherUserID = product?.user ? product?.user : 0
+    const { data: profile, isLoading: loadingProfile, isFetching } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID))
+    
+    const { data: upsellProducts } = useQuery(["upsell-products", publisherUserID], (publisherUserID) => getUpsellProducts(publisherUserID))
+    
+    const msg = `Hello ${product?.promoted_by}, I'm interested in the ${product?.title} from ${product?.sold_by} on dukaflani.com`
+    const msg2 = msg.replace(/ /g, "%20")
+    const whatsappLink = `https://wa.me/${product?.whatsapp}?text=${msg2}`
 
 
   return (
     <MobileNavigationLayout setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} >
         <Head>
-          <title>Buy Dukaflani Branded Hoodie - ksh.3,500 | Khaligraph Jones</title>
-          <meta name="description" content="Watch 'Kwame' by Khaligraph Jones on
-           Dukaflani to get the Lyrics, Streaming Links, Products and Merchandise, Skiza Tunes, The Album, Events and Tour Dates " />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
+            <title>{`Buy ${product?.title} - ${product?.local_currency}${numeral(product?.local_price).format('0,0')} | Dukaflani Shopping`}</title>
+            <meta name="title" content={`Buy ${product?.title} - ${product?.local_currency}${numeral(product?.local_price).format('0,0')} | Dukaflani Shopping`} />
+            <meta name="description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+            <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
         </Head>
         <Box sx={{backgroundColor: theme.myColors.myBackground, minHeight: '100vh', paddingY: 5}}>
             <Container maxWidth='lg'>
@@ -42,39 +71,41 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
                             <Paper square sx={{padding: 2}}>
                                 <Grid container columnSpacing={3}>
                                     <Grid item xs={12} md={4}>
-                                    <Box sx={{position: 'relative', borderRadius: 2,}}>
+                                    {!loadingProduct ? (<Box sx={{position: 'relative', borderRadius: 2,}}>
                                         <Image 
-                                            src={product} 
+                                            src={product?.image} 
                                             layout='responsive'
-                                            alt='product title'
+                                            height='100%'
+                                            width='100%'
+                                            alt={product?.title}
                                             style={{borderRadius: 6}}
                                         />
-                                    </Box>
+                                    </Box>) : (<Skeleton animation="wave"  variant="rectangular" sx={{ paddingTop: '100%', width: '100%', borderRadius: 2}} />)}
                                     </Grid>
                                     <Grid item xs={12} md={8}>
                                         <Grid container columnSpacing={4}>
                                             <Grid item xs={12} md={7}>
                                                 <Stack spacing={2}>
                                                     <Stack spacing={1}>
-                                                        <Typography variant="h6" component='h1'>Product Title goes here</Typography>
-                                                        <Typography variant="caption">Sold By: Home Apparel 254</Typography>
+                                                        {!loadingProduct ? (<Typography variant="h6" component='h1'>{product?.title}</Typography>) : (<Skeleton width="70%" />)}
+                                                        {!loadingProduct ? (<Typography variant="caption">{`Sold By: ${product?.sold_by}`}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
                                                     <Divider/>
                                                     <Box sx={{backgroundColor: '#f48e21', borderRadius: 2}}>
                                                         <Stack sx={{padding: 1}}>
                                                             <Stack direction='row' spacing={1}>
                                                                 <CategoryOutlinedIcon sx={{color: 'white', fontSize: 20}} />
-                                                                <Typography sx={{color: 'white'}} variant="subtitle2">Apparel</Typography>
+                                                                {!loadingProduct ? (<Typography sx={{color: 'white'}} variant="subtitle2">{product?.product_category}</Typography>) : (<Skeleton width="30%" />)}
                                                             </Stack>
                                                         </Stack>
                                                         <Stack sx={{padding: 0.2}}>
                                                             <Paper sx={{padding: 2, borderBottomLeftRadius: 6, borderBottomRightRadius: 6}} elevation={0} square>
                                                                 <Stack>
-                                                                    <Typography variant="h4">ksh.3,500</Typography>
+                                                                    {!loadingProduct ? (<Typography variant="h4">{`${product?.local_currency}${numeral(product?.local_price).format('0,0')}`}</Typography>) : (<Skeleton width="50%" sx={{paddingTop: 4}} />)}
                                                                     <Box>
-                                                                        <Typography sx={{backgroundColor: colors.blue[50], padding: 0.5, color: colors.blue[500]}} variant="caption">Available</Typography>
+                                                                        {!loadingProduct ? (<Typography sx={{backgroundColor: colors.blue[50], padding: 0.5, color: colors.blue[500]}} variant="caption">{product?.product_status}</Typography>) : (<Skeleton width="30%" />)}
                                                                     </Box>
-                                                                    <Typography variant="caption">Hurry while stocks last!</Typography>
+                                                                    {!loadingProduct ? (<Typography variant="caption">{product?.status_description}</Typography>) : (<Skeleton width="45%" />)}
                                                                 </Stack>
                                                             </Paper>
                                                         </Stack>
@@ -85,23 +116,23 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
                                                 </Stack>
                                             </Grid>
                                             <Grid item xs={12} md={5}>
-                                                <Typography variant="subtitle1" gutterBottom>Promoted By:</Typography>
+                                                {product?.is_sponsored ? (<Typography variant="subtitle1" gutterBottom>Sponsored By:</Typography>) : (<Typography variant="subtitle1" gutterBottom>Promoted By:</Typography>)}
                                                 <Stack direction='row' spacing={1}>
                                                 <Box>
-                                                    <Avatar  src='/assets/pictures/wakadinali_profile.jpg' />
+                                                    <Avatar  src={profile?.profile_avatar} />
                                                 </Box>
                                                 <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start'}}>
                                                     <Stack spacing={-0.5}>
                                                         <Stack spacing={0.5} direction='row'>
-                                                            <Typography variant='subtitle2'>Wakadinali</Typography>
-                                                            {true && <CheckCircleFilled style={{ fontSize: 13, color: theme.myColors.textDark }} />}                   
+                                                            {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
+                                                            {profile?.is_verified == "True" && <CheckCircleFilled style={{ fontSize: 13, color: theme.myColors.textDark }} />}                   
                                                         </Stack>
-                                                        <Typography variant='caption'>Artist</Typography>
+                                                        {!loadingProfile ? (<Typography variant='caption'>{profile?.role}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
                                                 </Box>
                                                 </Stack>
                                                 <Box sx={{width: '100%', paddingTop: 1}}>
-                                                    <Button startIcon={<FavoriteBorderOutlinedIcon />} fullWidth variant="contained" size='small'>Join Fanbase</Button>
+                                                    <Button disabled startIcon={<FavoriteBorderOutlinedIcon />} fullWidth variant="contained" size='small'>Join Fanbase</Button>
                                                 </Box>
                                             </Grid>
                                         </Grid>
@@ -119,7 +150,7 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
                                     <Box sx={{padding: 1.5}}>
                                         <Stack>
                                             <Typography variant="subtitle2">Description</Typography>
-                                            <Typography variant="body1">Product details goes here</Typography>
+                                            {!loadingProduct ? (<Typography variant="body1">{product?.description}</Typography>) : (<Skeleton width="80%" />)}
                                         </Stack>
                                     </Box>
                                 </Stack>
@@ -129,7 +160,8 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
                             {/* Upsell Products Carousel */}
                             <Box>
                                 <UpsellProductsCarousel
-                                promoter="Wakadinali"
+                                promoter={profile?.stage_name}
+                                upsellProducts={upsellProducts}
                                 color1="#f48e21"
                                 color2="#b723d5"
                                 icon={<FireOutlined style={{fontSize: 25, color: '#ffffff'}}/>}
@@ -145,9 +177,11 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
             </Container>
         </Box>
         <Container sx={{backgroundColor: theme.myColors.myBackground, position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 99}} maxWidth='lg'>
+        <Link href={whatsappLink} underline='none' target="_blank" rel="noopener">
             <Box sx={{width: '100%', paddingBottom: 2}}>
                 <Button startIcon={<WhatsAppOutlined />} sx={{backgroundColor: '#25D366'}} fullWidth  variant="contained" size='medium'>Order on WhatsApp</Button>
             </Box>
+        </Link>
         </Container>
     </MobileNavigationLayout>
   )

@@ -86,24 +86,24 @@ const ProductsComponent = () => {
     {
       name: <Typography sx={ vendorHovered == '0' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Dukaflani Brands</Typography>
     },
-    {
-      name: <Typography sx={ vendorHovered == '1' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Mbichwa</Typography>
-    },
-    {
-      name: <Typography sx={ vendorHovered == '2' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Home 254 Apparel</Typography>
-    },
-    {
-      name: <Typography sx={ vendorHovered == '3' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Vazzi</Typography>
-    },
-    {
-      name: <Typography sx={ vendorHovered == '4' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Kaka Empire</Typography>
-    },
-    {
-      name: <Typography sx={ vendorHovered == '5' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Zozanation</Typography>
-    },
-    {
-      name: <Typography sx={ vendorHovered == '6' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Calif Wear</Typography>
-    },
+    // {
+    //   name: <Typography sx={ vendorHovered == '1' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Mbichwa</Typography>
+    // },
+    // {
+    //   name: <Typography sx={ vendorHovered == '2' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Home 254 Apparel</Typography>
+    // },
+    // {
+    //   name: <Typography sx={ vendorHovered == '3' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Vazzi</Typography>
+    // },
+    // {
+    //   name: <Typography sx={ vendorHovered == '4' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Kaka Empire</Typography>
+    // },
+    // {
+    //   name: <Typography sx={ vendorHovered == '5' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Zozanation</Typography>
+    // },
+    // {
+    //   name: <Typography sx={ vendorHovered == '6' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Calif Wear</Typography>
+    // },
   ]
 
   const categoryDukaflani = 'Dukaflani'

@@ -1,8 +1,11 @@
 // React Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Next Imports
 import { useRouter } from 'next/router';
+
+// NPM Imports
+import { useDispatch, useSelector } from "react-redux";
 
 // MUI Imports
 import { AppBar, Box, Toolbar, Stack, IconButton, Link, Avatar, Typography, InputBase, List, Drawer,
@@ -15,14 +18,39 @@ import { MenuOutlined, ArrowLeftOutlined , MoreOutlined, ShoppingCartOutlined,
   LayoutOutlined, UserOutlined, CloudUploadOutlined, SettingOutlined  } from '@ant-design/icons'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
+// Project Imports
+import { addSearchTerm } from "@/redux/features/search/searchSlice";
+
 
 const HeaderMobile = () => {
+  const searchTerm = useSelector((state) => state.search.searchTerm)
+  const userProfile = useSelector((state) => state.auth.profileInfo)
   const theme = useTheme()
   const router = useRouter()
+  const dispatch = useDispatch()
   const pathName = router.pathname
   const pathnameLength = pathName.split("/")
   const [showSearch, setShowSearch] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [mySearchTerm, setMySearchTerm] = useState(searchTerm)
+
+  const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
+
+  const updateSearchTerm = (e) => {
+    if (e.key === 'Enter') {
+      router.push({pathname: `/results/`, query: { search_query: formattedSearchTerm }})
+      dispatch(addSearchTerm(mySearchTerm))
+    }
+  }
+
+  const updateSearchTermClick = () => {
+      router.push({pathname: `/results/`, query: { search_query: formattedSearchTerm }})
+      dispatch(addSearchTerm(mySearchTerm))
+  }
+
+  useEffect(() => {
+    setMySearchTerm(searchTerm)
+  }, [searchTerm])
 
 
   const navItems = [
@@ -80,9 +108,19 @@ const HeaderMobile = () => {
                 <ArrowLeftOutlined  style={{ fontSize: 16, color: theme.myColors.textDark }} />
             </IconButton>
             <Box sx={{flex: 1,}}>
-              <InputBase autoComplete="true" autoFocus fullWidth id="standard-basic" placeholder="Search Dukaflani" variant="standard" />
+              <InputBase 
+                  autoComplete="true" 
+                  autoFocus 
+                  fullWidth 
+                  id="standard-basic" 
+                  placeholder="Search Dukaflani" 
+                  variant="standard" 
+                  value={mySearchTerm}
+                  onChange={(e) => setMySearchTerm(e.target.value)}
+                  onKeyDown={updateSearchTerm}
+                  />
             </Box>
-            <IconButton edge="start" color="inherit" aria-label="menu" sx={{ ml: 1 }}>
+            <IconButton onClick={updateSearchTermClick} edge="start" color="inherit" aria-label="menu" sx={{ ml: 1 }}>
                 <SearchOutlined  style={{ fontSize: 16, color: theme.myColors.textDark }} />
             </IconButton>
 
@@ -112,7 +150,7 @@ const HeaderMobile = () => {
                 <IconButton edge="start" color="inherit" aria-label="shopping cart">
                   <ShoppingCartOutlined style={{ fontSize: 16, color: theme.myColors.textDark }} />
               </IconButton>
-              <Avatar sx={{ width: 24, height: 24 }} src='/no-image.png' alt='Jidraff Gathura'/>
+              <Avatar sx={{ width: 24, height: 24 }} src={userProfile?.profile_avatar} alt={`${userProfile?.first_name} ${userProfile?.last_name}`}/>
                 <IconButton edge="start" color="inherit" aria-label="more" sx={{marginRight: 1}}>
                   <MoreVertIcon fontSize="small" sx={{ color: theme.myColors.textDark }} />
               </IconButton>
@@ -146,7 +184,7 @@ const HeaderMobile = () => {
                 <nav>
                   <List>
                   {navItems.map((navItem, i) => (
-                    <ListItem disablePadding>
+                    <ListItem key={i} disablePadding>
                       <ListItemButton
                         selected={pathName === navItem.path}
                         onClick={() =>{ 
