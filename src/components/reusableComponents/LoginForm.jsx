@@ -47,7 +47,7 @@ const LoginForm = () => {
                     </Grid>
                     <Grid item xs={12} >
                         <Stack direction="row" spacing={0.5}>
-                            <Typography variant="subtitle2">Don't have an account?</Typography>
+                            <Typography variant="subtitle2">Don&apos;t have an account?</Typography>
                             <Box onClick={() => router.push({ pathname: '/account/register' })} sx={{cursor: 'pointer'}}>
                                 <Typography color='primary' variant="subtitle2">Register here</Typography>
                             </Box>

@@ -285,7 +285,7 @@ const RegisterForm = () => {
                                 <InfoOutlinedIcon fontSize='small' />
                                 <Typography variant="caption">NOTE:</Typography>
                             </Stack>
-                            <Typography variant="caption">We won't show your password again so copy and store it in a safe place.</Typography>
+                            <Typography variant="caption">We won&apos;t show your password again so copy and store it in a safe place.</Typography>
                         </Stack>
                     </Stack>
                 </Stack>

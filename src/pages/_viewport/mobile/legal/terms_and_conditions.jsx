@@ -55,7 +55,7 @@ const TermsAndConditions = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                 <ul>
                                     <li>
                                         <Typography variant='body1'>
-                                            1.1 ”Dukaflani” is the trading name of dukaflani.com which operates an e-commerce website (&ldquo;marketplace&ldquo;),
+                                            1.1 &ldquo;Dukaflani&ldquo; is the trading name of dukaflani.com which operates an e-commerce website (&ldquo;marketplace&ldquo;),
                                             for the sale and purchase of consumer products and services.
                                         </Typography>
                                     </li>
@@ -88,7 +88,7 @@ const TermsAndConditions = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                             </li>
                                             <li>
                                                 <Typography variant='body2'>
-                                                    1.4.3 agree that "you" in these general terms and conditions shall reference both the individual user and the relevant person, 
+                                                    1.4.3 agree that &ldquo;you&ldquo; in these general terms and conditions shall reference both the individual user and the relevant person, 
                                                     company or legal entity unless the context requires otherwise.
                                                 </Typography>
                                             </li>
