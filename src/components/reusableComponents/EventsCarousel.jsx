@@ -1,5 +1,5 @@
 // React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // Next Image
 import Image from "next/legacy/image";
@@ -12,8 +12,6 @@ import { Box, Button, colors, Grid, Paper, Stack, Typography } from "@mui/materi
 // React Slick Carousel
 import Slider from "react-slick";
 
-// Project Imports
-import poster1 from '../../../public/assets/pictures/event1.jpg'
 
 
 // Icons
@@ -37,6 +35,13 @@ function CarouselNextArrow(props) {
 
 function CarouselPrevArrow(props) {
   const { className, style, onClick } = props;
+
+  useEffect(() => {
+    if (onClick) {
+      onClick()
+    }
+  },[])
+  
   return (
     <div
       className={className}
@@ -71,16 +76,16 @@ const ProductsCarouselDukaflani = ({ title, color1, color2, icon, events }) => {
       prevArrow: <CarouselPrevArrow />,
       responsive: [
         {
-          breakpoint: 900,
+          breakpoint: 600,
           settings: {
-            slidesToShow: 3,
+            slidesToShow: 2,
             slidesToScroll: 1,
           }
         },
         {
-          breakpoint: 600,
+          breakpoint: 900,
           settings: {
-            slidesToShow: 2,
+            slidesToShow: 3,
             slidesToScroll: 1,
           }
         },

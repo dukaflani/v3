@@ -1,5 +1,5 @@
 // React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // Next Image
 import Image from "next/legacy/image";
@@ -34,6 +34,14 @@ function CarouselNextArrow(props) {
 
 function CarouselPrevArrow(props) {
   const { className, style, onClick } = props;
+
+  useEffect(() => {
+    if (onClick) {
+      onClick()
+    }
+  },[])
+
+
   return (
     <div
       className={className}

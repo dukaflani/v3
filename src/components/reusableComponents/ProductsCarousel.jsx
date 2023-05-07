@@ -1,5 +1,5 @@
 // React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // Next Image
 import Image from "next/legacy/image";
@@ -15,7 +15,7 @@ import { Box, Button, Grid, Paper, Stack, Typography, Tooltip, colors } from "@m
 import Slider from "react-slick";
 
 // Icons
-import { RightOutlined, UserOutlined } from "@ant-design/icons";
+import {  UserOutlined } from "@ant-design/icons";
 
 
 
@@ -32,6 +32,14 @@ function CarouselNextArrow(props) {
 
 function CarouselPrevArrow(props) {
   const { className, style, onClick } = props;
+
+  useEffect(() => {
+    if (onClick) {
+      onClick()
+    }
+  },[])
+
+
   return (
     <div
       className={className}
