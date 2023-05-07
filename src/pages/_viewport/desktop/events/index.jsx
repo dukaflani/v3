@@ -61,9 +61,9 @@ const EventsHomePage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
             </Container>
           </Paper>
           <EventsHomePageContent value={value} />
-           <Box sx={{display: { xs: 'block', md: 'none' }}}>
+           {/* <Box sx={{display: { xs: 'block', md: 'none' }}}>
             <BottomNavDesktop value={value} setValue={setValue}/>
-          </Box>
+          </Box> */}
         </Box>
       </NavigationLayout2>
 

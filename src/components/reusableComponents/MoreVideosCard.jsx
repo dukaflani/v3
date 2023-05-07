@@ -28,7 +28,7 @@ import { addView } from '@/axios/axios';
 
 
 
-const MoreVideosCard = React.forwardRef(({ video, isLoading }, ref) => {
+const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }, ref) => {
     const theme = useTheme()
     const router = useRouter()
 
@@ -68,6 +68,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading }, ref) => {
        })
        
       const handleVideoClick = () => {
+        setShowMoreVideos(false)
         router.push({pathname: '/watch', query: {v: video.youtube_id}})
         mutate(newView)
       }

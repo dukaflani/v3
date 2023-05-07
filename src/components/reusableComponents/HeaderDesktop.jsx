@@ -223,13 +223,16 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                       indicatorColor="secondary" 
                       aria-label="icon label tabs example">
                         <Tooltip title="Videos">
-                            <Tab icon={<HomeFilled style={{fontSize: 20}} />} />
+                            {/* <Tab icon={<HomeFilled style={{fontSize: 20}} />} /> */}
+                            <Tab label="Videos" />
                         </Tooltip>
                         <Tooltip title="Products">
-                            <Tab icon={<ShopFilled style={{fontSize: 20}} />} />
+                            {/* <Tab icon={<ShopFilled style={{fontSize: 20}} />} /> */}
+                            <Tab label="Shop" />
                         </Tooltip>
                         <Tooltip title="Events">
-                            <Tab icon={<BarcodeOutlined style={{fontSize: 20}} />} />
+                            {/* <Tab icon={<BarcodeOutlined style={{fontSize: 20}} />} /> */}
+                            <Tab label="Events" />
                         </Tooltip>
                   </Tabs>
                 </Box>

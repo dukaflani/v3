@@ -20,6 +20,7 @@ import BottomNavMobile from '@/components/reusableComponents/BottomNavMobile';
 
 
 
+
 export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
   const theme = useTheme()
   const router = useRouter()

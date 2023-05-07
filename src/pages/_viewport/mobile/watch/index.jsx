@@ -163,7 +163,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
             <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
         </Head>
         <Box sx={{backgroundColor: theme.myColors.myBackground, minHeight: '100vh', paddingTop: 5, paddingBottom: 10}}>
-            <Box sx={{position: 'sticky', top: 50, zIndex: 99}} >
+            <Box sx={{position: 'sticky', top: 48, zIndex: 99}} >
                 <Box sx={{backgroundColor: 'black', width: '100%'}}>
                     <Container disableGutters maxWidth='sm'>
                         {data?.youtube_embed_link ? (<Box sx={{position: 'relative', paddingBottom: '56.25%'}}>
@@ -352,7 +352,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                             <Divider/>
                         </Box>
                         <Box>
-                            <MoreVideos/>
+                            <MoreVideos setShowMoreVideos={setShowMoreVideos} />
                         </Box>
                         {/* Copyright */}
                         <Box>

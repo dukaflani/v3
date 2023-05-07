@@ -63,9 +63,9 @@ const ShopHomePage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
             </Container>
           </Paper>
           <ShopHomePageContent value={value} />
-           <Box sx={{display: { xs: 'block', md: 'none' }}}>
+           {/* <Box sx={{display: { xs: 'block', md: 'none' }}}>
             <BottomNavDesktop value={value} setValue={setValue}/>
-          </Box>
+          </Box> */}
         </Box>
       </NavigationLayout2>
 

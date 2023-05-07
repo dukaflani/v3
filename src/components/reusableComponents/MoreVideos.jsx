@@ -17,7 +17,7 @@ import MoreVideosCard from "./MoreVideosCard";
 
 
 
-const MoreVideos = () => {
+const MoreVideos = ({ setShowMoreVideos }) => {
     const router = useRouter()
     const { v } = router.query
 
@@ -66,9 +66,9 @@ const MoreVideos = () => {
 
     const content2 = filteredVideoArr?.map((filteredVideo, i) => {
         if (filteredVideoArr?.length === i + 1) {
-            return  <Box sx={{paddingTop: 2}} key={i} ref={lastVideoRef} ><MoreVideosCard isLoading={isLoading} video={filteredVideo} /></Box>
+            return  <Box sx={{paddingTop: 2}} key={i} ref={lastVideoRef} ><MoreVideosCard setShowMoreVideos={setShowMoreVideos} isLoading={isLoading} video={filteredVideo} /></Box>
         } else {
-            return  <Box sx={{paddingTop: 2}} key={i}><MoreVideosCard isLoading={isLoading} video={filteredVideo} /></Box>
+            return  <Box sx={{paddingTop: 2}} key={i}><MoreVideosCard setShowMoreVideos={setShowMoreVideos} isLoading={isLoading} video={filteredVideo} /></Box>
         }
     })
 

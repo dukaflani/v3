@@ -75,7 +75,7 @@ const content = data?.pages?.map(pg => {
 
   return (
       <Box>
-        <Grid container rowSpacing={1} columnSpacing={2}>
+        <Grid container rowSpacing={5} columnSpacing={2}>
           { content }
         </Grid>
         { error?.response?.status === 404 ? <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Typography variant='body2'>No More Videos...</Typography></Box> : <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><CircularProgress /></Box> }

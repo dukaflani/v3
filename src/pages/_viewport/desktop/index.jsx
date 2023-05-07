@@ -20,6 +20,7 @@ import BottomNavDesktop from '@/components/reusableComponents/BottomNavDesktop';
 
 
 
+
 export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
   const router = useRouter()
   const theme = useTheme()
