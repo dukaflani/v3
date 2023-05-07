@@ -54,7 +54,7 @@ const Leaderboard3Ads = () => {
               <Box >
                 <HourglassOutlined style={{fontSize: 25, color: '#ffffff'}}/>
               </Box>
-              <Typography sx={{color: 'white'}} variant='subtitle1'>Limited Slots Available</Typography>
+              <Typography sx={{color: 'white'}} variant='subtitle1'>Hurry&#33;</Typography>
             </Stack>
             <Button onClick={() => router.push({ pathname: '/links/contact_us' })} size='small' variant='text' style={{color: 'white'}} endIcon={<RightOutlined style={{color: 'white', fontSize: 15}} />}>Details</Button>
           </Stack>
