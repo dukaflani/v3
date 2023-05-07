@@ -40,7 +40,7 @@ function CarouselPrevArrow(props) {
     if (onClick) {
       onClick()
     }
-  },[])
+  },[onClick])
   
   return (
     <div
