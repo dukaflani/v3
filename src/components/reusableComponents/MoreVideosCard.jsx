@@ -68,8 +68,8 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
        })
        
       const handleVideoClick = () => {
-        setShowMoreVideos(false)
         router.push({pathname: '/watch', query: {v: video.youtube_id}})
+        setShowMoreVideos(false)
         mutate(newView)
       }
 
@@ -97,6 +97,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
                                      onClick={(e) => {
                                         e.preventDefault()
                                         router.push({pathname: '/watch', query: {v: video.youtube_id}})
+                                        setShowMoreVideos(false)
                                         mutate(newView)
                                       }}
                                       title={video.title}
