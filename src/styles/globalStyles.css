@@ -1,3 +1,8 @@
+body {
+	overflow-x: hidden;
+  }
+
+
 iframe{
 	position: absolute;
 	top: 0;

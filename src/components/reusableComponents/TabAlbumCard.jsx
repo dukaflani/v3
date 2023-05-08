@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 // MUI Imports
-import { Box, Card, CardActionArea, CardContent, CardMedia, Divider, Link, Stack, Typography, colors } from '@mui/material'
+import { Box, Card, CardActionArea, CardContent, CardMedia, Divider, Link, Stack, Tooltip, Typography, colors } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // Icons
@@ -59,7 +59,7 @@ export const TabAlbumTrackCard = ({ albumTrackHovered, i, albumTrack }) => {
               <Typography className="line-clamp-1 line-clamp" variant='caption'>{albumTrack?.featuring ? `ft. ${albumTrack?.featuring}` : "Solo Project"}</Typography>
             </Stack>
             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', paddingLeft: 1}} >
-              {albumTrack?.video ? <PlayCircleIcon onClick={handleVideoClick} sx={{color: theme.myColors.textDark}} /> : <PlayCircleIcon sx={{color: colors.grey[100]}} />}
+              {albumTrack?.video ? <Tooltip title='Play' placement="top" ><PlayCircleIcon onClick={handleVideoClick} sx={{color: theme.myColors.textDark}} /></Tooltip> : <PlayCircleIcon sx={{color: colors.grey[100]}} />}
             </Box>
           </Box>
         </CardContent>

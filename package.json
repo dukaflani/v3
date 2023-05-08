@@ -36,6 +36,7 @@
     "react-copy-to-clipboard": "^5.1.0",
     "react-datepicker": "^4.11.0",
     "react-dom": "18.2.0",
+    "react-gtm-module": "^2.0.11",
     "react-linkify": "^1.0.0-alpha",
     "react-redux": "^8.0.5",
     "react-slick": "^0.29.0",

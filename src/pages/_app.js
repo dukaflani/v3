@@ -1,3 +1,6 @@
+// Google Tag Manager Module
+import TagManager from 'react-gtm-module'
+
 // Font imports
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -11,7 +14,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 // React Imports
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Nextjs Imports
 import { useRouter } from 'next/router';
@@ -40,6 +43,17 @@ const queryClient = new QueryClient();
 
 
 export default function App({ Component, pageProps }) {
+
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID || " ";
+  const tagManagerArgs = {
+    gtmId,
+  };
+
+  useEffect(() => {
+    TagManager.initialize(tagManagerArgs);
+  }, [])
+
+
   const router = useRouter()
   const { page } = router.query
   const [isDarkMode, setIsDarkMode] = useState(false)

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 
 // MUI Imports
-import { Autocomplete, Box, Button, CircularProgress, Dialog, DialogActions, 
+import { Autocomplete, Avatar, Box, Button, CircularProgress, Dialog, DialogActions, 
     DialogContent, DialogTitle, Grid, Stack, TextField, Typography } from "@mui/material"
 
 // NPM Imports
@@ -348,7 +348,8 @@ const ProfileSettingsForm = () => {
                 :
                 <img style={{ width: '100px', height: '100px' }} src={profile_avatar ? profile_avatar : '/assets/pictures/no-image.png'} alt=''/>
             } */}  
-                <img style={{ width: '100px', height: '100px' }} src={user_profile != null ? user_profile?.profile_avatar : '/assets/pictures/no-image.png'} alt=''/>
+                <Avatar variant="rounded" sx={{height: 100, width: 100}} src={user_profile?.profile_avatar}  />
+                {/* <img style={{ width: '100px', height: '100px' }} src={user_profile != null ? user_profile?.profile_avatar : '/assets/pictures/no-image.png'} alt=''/> */}
                 </Stack>
             </Grid>
             <Grid item xs={12}>
