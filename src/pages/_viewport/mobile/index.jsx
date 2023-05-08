@@ -43,7 +43,7 @@ export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
                 <div style={{display:'flex', flexDirection:'column', alignItems: 'start', justifyContent: 'center', }}>
                     <span style={{marginRight: 10, fontSize: 13, fontWeight: 'bold', lineHeight: 1.1}} className="line-clamp-1 line-clamp">{adString}</span>
                     <div style={{display:'flex', flexDirection:'row', marginTop: -2,}}>
-                      <span style={{ fontSize: 12, backgroundColor: 'yellow', paddingLeft: 5, paddingRight: 5}}>Ad</span>
+                      <span style={{marginRight: 3, fontSize: 12, backgroundColor: 'yellow', paddingLeft: 3, paddingRight: 3}}>Ad</span>
                       <span style={{ fontSize: 12, color: 'GrayText', width: 250, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>Dukaflani Marketplace</span>
                     </div>
                 </div>
