@@ -26,22 +26,22 @@ const HomePageContent = ({ value }) => {
           <Stack 
               spacing={2} 
               sx={{ minHeight: '100vh', paddingTop: 2, position: 'fixed', top: 110, left: 30}}>
-            <Tooltip title="Dashboard" placement="right">
+            <Tooltip title="Profile" placement="right">
               <IconButton>
                 <LayoutOutlined style={{ fontSize: 24 }} />
               </IconButton>    
             </Tooltip>
-            <Tooltip title="Profile" placement="right">
+            <Tooltip title="User Settings" placement="right">
               <IconButton>
                 <UserOutlined style={{ fontSize: 24 }} />
               </IconButton>    
             </Tooltip>
-            <Tooltip title="Upload" placement="right">
+            <Tooltip title="Creator's Hub" placement="right">
               <IconButton>
                 <CloudUploadOutlined style={{ fontSize: 24 }} />
               </IconButton>    
             </Tooltip>
-            <Tooltip title="Settings" placement="right">
+            <Tooltip title="Profle Settings" placement="right">
               <IconButton>
                 <SettingOutlined style={{ fontSize: 24 }} />
               </IconButton>    
