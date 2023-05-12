@@ -2,7 +2,7 @@
 import { useRouter } from 'next/router'
 
 // MUI Imports
-import { Box, Button, Card, CardActionArea, CardContent, Stack, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // Icons
@@ -39,7 +39,6 @@ export const TabEventCard = ({ event, videoUserID }) => {
           <Typography sx={{color: 'whitesmoke', backgroundColor: theme.myColors.textDark}} variant='caption'>{event?.event_type?.toUpperCase()}</Typography>
         </Box>
         <Card onClick={() => router.push({ pathname: `/events/${event?.id}`, query: {a: videoUserID} }) } square>
-          <CardActionArea>
               <CardContent>
                 <Stack spacing={1}>
                   <Stack spacing={0.4}>
@@ -68,7 +67,6 @@ export const TabEventCard = ({ event, videoUserID }) => {
                   </Box>
                 </Stack>
               </CardContent>
-          </CardActionArea>
         </Card>
       </Stack>
     </Box>
@@ -76,14 +74,14 @@ export const TabEventCard = ({ event, videoUserID }) => {
 }
 
 
-const TabEventsCards = ({ data, events, videoUserID }) => {
+const TabEventsCards = ({ data, events, videoUserID, loadingEvents }) => {
   return (
     <Box>
         <Stack spacing={2}>
             <Box>
                 <Stack>
-                    <Typography variant="subtitle2">EVENTS & TOUR DATED</Typography>
-                    <Typography variant="caption">{`Discover events featuring both performance or appearances by ${data?.stage_name}`}</Typography>
+                    <Typography variant="subtitle2">EVENTS & TOUR DATES</Typography>
+                    {loadingEvents ? (<Typography variant="caption">Loading music collection...</Typography>) : (<Typography variant="caption">{`Discover events featuring both performance or appearances by ${data?.stage_name}`}</Typography>)}
                 </Stack>
             </Box>
             {events?.length == 0 && <Card>

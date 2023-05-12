@@ -16,7 +16,7 @@ export const TabLyricsVerseCard = ({ verse }) => {
 }
 
 
-const TabLyricsCard = ({ data, lyrics, verses }) => {
+const TabLyricsCard = ({ data, lyrics, verses, loadingLyrics, loadingLyricVerse }) => {
   return (
     <Box>
         <Stack spacing={2}>
@@ -29,7 +29,7 @@ const TabLyricsCard = ({ data, lyrics, verses }) => {
             <Card square>
               <CardContent>
                 <Stack spacing={2}>
-                  <Box>
+                  {loadingLyrics ? (<Typography variant="caption">Loading lyrics...</Typography>) : (<Box>
                     <Stack spacing={0.5}>
                         <Stack>
                           <Stack spacing={-0.5} direction="column">
@@ -74,15 +74,15 @@ const TabLyricsCard = ({ data, lyrics, verses }) => {
                           </Stack>
                         </Stack>
                     </Stack>
-                  </Box>
+                  </Box>)}
                   <Divider/>
-                  <Box>
+                  {loadingLyricVerse ? (<Typography variant="caption">Loading verses...</Typography>) : (<Box>
                   {verses?.map((verse, i) => (
                           <Box key={i}>
                               <TabLyricsVerseCard verse={verse} />
                           </Box>
                       ))}
-                  </Box>
+                  </Box>)}
                 </Stack>
               </CardContent>
             </Card>

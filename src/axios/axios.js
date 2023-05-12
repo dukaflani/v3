@@ -88,6 +88,13 @@ export const getCurrentVideoEvents = async (user_id) => {
 }
 
 
+export const getCurrentVideoMediaTours = async (user_id) => {
+    const currentVideoUserID = user_id?.queryKey[1]
+    const response = await api.get(`/store/media-tour/?user=${currentVideoUserID}`)
+    return response.data
+}
+
+
 export const getCurrentEvent = async ( event_id ) => {
     const eventID = event_id?.queryKey[1]
     const response = await api.get(`/store/events/${eventID}/`)

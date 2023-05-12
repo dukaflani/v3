@@ -69,7 +69,7 @@ export const TabAlbumTrackCard = ({ albumTrackHovered, i, albumTrack }) => {
 }
 
 
-const TabAlbumCard = ({ album, data, albumTracks }) => {
+const TabAlbumCard = ({ album, data, albumTracks, loadingAlbum, loadingTracks }) => {
   const theme = useTheme()
   const [albumHovered, setAlbumHovered] = useState(false)
 
@@ -102,6 +102,7 @@ const TabAlbumCard = ({ album, data, albumTracks }) => {
                     {album?.id == 1 ? <Typography variant="caption">No album found</Typography>
                      : 
                      <Typography variant="caption">{`Explore more from ${album?.title} the ${album?.album_type} by ${data?.stage_name}`}</Typography>}
+                     {loadingAlbum && <Typography variant="caption">Loading music collection...</Typography>}
                 </Stack>
             </Box>
             {album?.id != 1 && <Card square>

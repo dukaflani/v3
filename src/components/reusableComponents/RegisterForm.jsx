@@ -232,11 +232,11 @@ const RegisterForm = () => {
                             <MyPasswordInput required name="confirmPassword" label="Confirm Password" />
                         </Grid>
                         <Grid item xs={12}>
-                            <MyCheckBox name="termsOfService" legend="Terms and Conditions" label={
+                            <MyCheckBox name="termsOfService" legend="Please read & accept" label={
                                 <Stack direction="row" spacing={0.4}>
                                     <Typography variant="body1">I agree to the</Typography>
                                     <Box onClick={() => router.push({ pathname: '/legal/terms_and_conditions' })} sx={{cursor: 'pointer'}}>
-                                        <Typography color='primary' variant="body1">Ts&Cs</Typography>
+                                        <Typography color='primary' variant="body1">Dukalani Terms and Conditions</Typography>
                                     </Box>
                                 </Stack>
                             } />

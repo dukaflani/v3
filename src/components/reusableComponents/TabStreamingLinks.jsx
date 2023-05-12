@@ -22,7 +22,7 @@ export const StreamingLinksCard = ({ cardHovered, i, streamingLink }) => {
         <Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
           <CardMedia
             component="img"
-            sx={{ width: 136 }}
+            sx={{ width: 135, height: 85 }}
             image={streamingLink?.logo}
             title={streamingLink?.streaming_service.replace('_', ' ')}
             alt={streamingLink?.streaming_service.replace('_', ' ')}
@@ -57,7 +57,7 @@ export const StreamingLinksDefaultCard = ({ defaultCardHovered, youtubeID }) => 
         <Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
           <CardMedia
             component="img"
-            sx={{ width: 136 }}
+            sx={{ width: 135, height: 85 }}
             image= "https://dukaflani-user-uploads.s3.amazonaws.com/default/YouTube.png"
             title="YouTube"
             alt="YouTube"
@@ -84,7 +84,7 @@ export const StreamingLinksDefaultCard = ({ defaultCardHovered, youtubeID }) => 
 
 
 
-const TabStreamingLinks = ({ streamingLinks, data, youtubeID }) => {
+const TabStreamingLinks = ({ streamingLinks, data, youtubeID, loadingLinks }) => {
   const [cardHovered, setCardHovered] = useState(null)
   const [defaultCardHovered, setDefaultCardHovered] = useState(null)
 
@@ -114,7 +114,7 @@ const TabStreamingLinks = ({ streamingLinks, data, youtubeID }) => {
                     <Typography variant="caption">{`Click on the links below to stream or download ${data?.song_title} by ${data?.stage_name}`}</Typography>
                 </Stack>
             </Box>
-            <Box>
+            {loadingLinks ? (<Typography variant="caption">Loading streaming & download links...</Typography>) : (<Box>
               {data && <Box
                 onMouseEnter={handleMouseInDefaultCard}
                 onMouseLeave={handleMouseOutDefaultCard}
@@ -130,7 +130,7 @@ const TabStreamingLinks = ({ streamingLinks, data, youtubeID }) => {
                         <StreamingLinksCard streamingLink={streamingLink} cardHovered={cardHovered} i={i} />
                     </Box>
                 ))}
-            </Box>
+            </Box>)}
         </Stack>
     </Box>
   )

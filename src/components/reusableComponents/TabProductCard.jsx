@@ -2,7 +2,7 @@
 import { useRouter } from "next/router"
 
 // MUI Imports
-import { Box, Stack, Typography, Card, CardMedia, CardContent, colors, Button, CardActionArea } from "@mui/material"
+import { Box, Stack, Typography, Card, CardMedia, CardContent, colors, Button } from "@mui/material"
 
 // NPM Imports
 import numeral from 'numeral';
@@ -13,7 +13,7 @@ import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 
 
 
-const TabProductCard = ({ product, data }) => {
+const TabProductCard = ({ product, data, loadingProduct }) => {
     const router = useRouter()
 
 
@@ -26,9 +26,8 @@ const TabProductCard = ({ product, data }) => {
                     <Typography variant="caption">{`Buy products promoted or sold by ${data?.stage_name}`}</Typography>
                 </Stack>
             </Box>
-            <Box>
+            {loadingProduct ? (<Typography variant="caption">Loading product card...</Typography>) : (<Box>
                 <Card onClick={() => router.push({ pathname: `/shop/${product?.id}` })} square>
-                    <CardActionArea>
                         <CardMedia
                             sx={{ height: 320 }}
                             image={product?.image}
@@ -65,9 +64,8 @@ const TabProductCard = ({ product, data }) => {
                                 </Stack>
                             </Box>
                         </CardContent>
-                    </CardActionArea>
                 </Card>
-            </Box>
+            </Box>)}
         </Stack>
     </Box>
   )

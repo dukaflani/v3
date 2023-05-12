@@ -33,6 +33,7 @@ import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlin
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { RadioOutlined } from '@mui/icons-material';
 
 
 // Components
@@ -44,13 +45,14 @@ import TabSkizaCards from '@/components/reusableComponents/TabSkizaCards';
 import TabAlbumCard from '@/components/reusableComponents/TabAlbumCard';
 import TabEventsCards from '@/components/reusableComponents/TabEventsCards';
 import MoreVideos from '@/components/reusableComponents/MoreVideos';
+import TabMediaTourCard from '@/components/reusableComponents/TabMediaTourCard';
 
 // Project Imports
 import adposter from '../../../../../public/assets/media/dukaflani-advert-poster.jpg'
 import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLinks, 
     getCurrentVideoProduct, getCurrentVideoLyrics, getCurrentVideoLyricsVerses,
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
-    getCurrentVideoEvents } from '@/axios/axios';
+    getCurrentVideoEvents, getCurrentVideoMediaTours } from '@/axios/axios';
 
 
 
@@ -99,32 +101,35 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
         }
     })
 
+    
+
     const videoProfileUserID = data?.user ? data?.user : 0
     const { data: profile, isLoading, isFetching } = useQuery(["current-video-profile", videoProfileUserID], (videoProfileUserID) => getCurrentVideoUserProfile(videoProfileUserID))
     
     const videoLinksID = data?.links ? data?.links : 0
-    const { data: streamingLinks } = useQuery(["current-video-streaming-links", videoLinksID], (videoLinksID) => getCurrentVideoStreamingLinks(videoLinksID))
+    const { data: streamingLinks, isLoading: loadingLinks } = useQuery(["current-video-streaming-links", videoLinksID], (videoLinksID) => getCurrentVideoStreamingLinks(videoLinksID))
     
     const videoProductID = data?.product ? data?.product : 0
-    const { data: product } = useQuery(["current-video-product", videoProductID], (videoProductID) => getCurrentVideoProduct(videoProductID))
+    const { data: product, isLoading: loadingProduct } = useQuery(["current-video-product", videoProductID], (videoProductID) => getCurrentVideoProduct(videoProductID))
     
     const videoLyricsID = data?.lyrics ? data?.lyrics : 0
-    const { data: lyrics } = useQuery(["current-video-lyrics", videoLyricsID], (videoLyricsID) => getCurrentVideoLyrics(videoLyricsID))
+    const { data: lyrics, isLoading: loadingLyrics } = useQuery(["current-video-lyrics", videoLyricsID], (videoLyricsID) => getCurrentVideoLyrics(videoLyricsID))
     
     const videoLyricsVersesID = data?.lyrics ? data?.lyrics : 0
-    const { data: lyrics_verses } = useQuery(["current-video-lyrics-verses", videoLyricsVersesID], (videoLyricsVersesID) => getCurrentVideoLyricsVerses(videoLyricsVersesID))
+    const { data: lyrics_verses, isLoading: loadingLyricVerse } = useQuery(["current-video-lyrics-verses", videoLyricsVersesID], (videoLyricsVersesID) => getCurrentVideoLyricsVerses(videoLyricsVersesID))
     
     const videoSkizaID = data?.skiza ? data?.skiza : 0
-    const { data: skiza_list } = useQuery(["current-video-skiza-list", videoSkizaID], (videoSkizaID) => getCurrentVideoSkizaTuneList(videoSkizaID))
+    const { data: skiza_list, isLoading: loadingSkiza } = useQuery(["current-video-skiza-list", videoSkizaID], (videoSkizaID) => getCurrentVideoSkizaTuneList(videoSkizaID))
     
     const videoAlbumID = data?.album ? data?.album : 0
-    const { data: album } = useQuery(["current-video-album", videoAlbumID], (videoAlbumID) => getCurrentVideoAlbum(videoAlbumID))
+    const { data: album, isLoading: loadingAlbum } = useQuery(["current-video-album", videoAlbumID], (videoAlbumID) => getCurrentVideoAlbum(videoAlbumID))
     
     const videoAlbumTracksID = data?.album ? data?.album : 0
-    const { data: albumTracks } = useQuery(["current-video-album-tracks", videoAlbumTracksID], (videoAlbumTracksID) => getCurrentVideoAlbumTracks(videoAlbumTracksID))
+    const { data: albumTracks, isLoading: loadingTracks } = useQuery(["current-video-album-tracks", videoAlbumTracksID], (videoAlbumTracksID) => getCurrentVideoAlbumTracks(videoAlbumTracksID))
     
     const videoUserID = data?.user ? data?.user : 0
-    const { data: events } = useQuery(["current-video-events", videoUserID], (videoUserID) => getCurrentVideoEvents(videoUserID))
+    const { data: events, isLoading: loadingEvents } = useQuery(["current-video-events", videoUserID], (videoUserID) => getCurrentVideoEvents(videoUserID))
+    const { data: mediaTours, isLoading: loadingMediaTours } = useQuery(["current-video-media-tours", videoUserID], (videoUserID) => getCurrentVideoMediaTours(videoUserID))
 
 
     const rawFanBaseCount = profile?.fanbase_count ? profile?.fanbase_count : 0
@@ -341,17 +346,19 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                                 <Tab icon={<PhonelinkRingOutlinedIcon />} iconPosition='start' label="Skiza Tunes" />
                                                                 <Tab icon={<LibraryMusicOutlinedIcon />} iconPosition='start' label="Album" />
                                                                 <Tab icon={<EventAvailableOutlinedIcon />} iconPosition='start' label="Events" />
+                                                                <Tab icon={<RadioOutlined />} iconPosition='start' label="Media" />
                                                             </Tabs>
                                                         </Box>
-                                                        <Box>
+                                                       <Box>
                                                             {
                                                                 {
-                                                                    0: <TabStreamingLinks streamingLinks={streamingLinks} data={data} youtubeID={v} />,
-                                                                    1: <TabProductCard product={product} data={data} />,
-                                                                    2: <TabLyricsCard  data={data} lyrics={lyrics} verses={lyrics_verses}  />,
-                                                                    3: <TabSkizaCards data={data} skiza={skiza_list}   />,
-                                                                    4: <TabAlbumCard  data={data} album={album} albumTracks={albumTracks}  />,
-                                                                    5: <TabEventsCards  data={data} events={events} videoUserID={videoUserID} />,
+                                                                    0: <TabStreamingLinks loadingLinks={loadingLinks} streamingLinks={streamingLinks} data={data} youtubeID={v} />,
+                                                                    1: <TabProductCard loadingProduct={loadingProduct} product={product} data={data} />,
+                                                                    2: <TabLyricsCard loadingLyrics={loadingLyrics} loadingLyricVerse={loadingLyricVerse} data={data} lyrics={lyrics} verses={lyrics_verses}  />,
+                                                                    3: <TabSkizaCards loadingSkiza={loadingSkiza} data={data} skiza={skiza_list}   />,
+                                                                    4: <TabAlbumCard loadingAlbum={loadingAlbum} loadingTracks={loadingTracks}  data={data} album={album} albumTracks={albumTracks}  />,
+                                                                    5: <TabEventsCards loadingEvents={loadingEvents}  data={data} events={events} videoUserID={videoUserID} />,
+                                                                    6: <TabMediaTourCard loadingMediaTours={loadingMediaTours} data={data} mediaTours={mediaTours} />,
                                                                 }[tabPosition]
                                                             }
                                                         </Box>
@@ -370,6 +377,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                     3: <Typography variant='caption'>Terms & Conditions Apply</Typography>,
                                                     4: <Typography variant='caption'>&copy; {new Date().getFullYear()} {`${data?.stage_name}. All Rights Reserved`}</Typography>,
                                                     5: <Typography variant='caption'>Terms & Conditions Apply</Typography>,
+                                                    6: <Typography variant='caption'>Terms & Conditions Apply</Typography>,
                                                 }[tabPosition]
                                             }
                                         </Box>

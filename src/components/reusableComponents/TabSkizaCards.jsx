@@ -50,7 +50,7 @@ export const TabSkizaTuneCard = ({ skizaTune }) => {
 }
 
 
-const TabSkizaCards = ({ skiza, data }) => {
+const TabSkizaCards = ({ skiza, data, loadingSkiza }) => {
 
   const lastSkizaCard = skiza?.length - 1
 
@@ -64,7 +64,7 @@ const TabSkizaCards = ({ skiza, data }) => {
                     <Typography variant="caption">{`Follow the instructions below to set ${data?.song_title} as your ringback tune`}</Typography>
                 </Stack>
             </Box>
-            <Card square>
+            {loadingSkiza ? (<Typography variant="caption">Loading skiza tunes...</Typography>) : (<Card square>
               {skiza?.length == 0 && <CardContent>
                 <Typography variant="body2">No Skiza Tunes Found</Typography>
                 </CardContent>}
@@ -77,7 +77,7 @@ const TabSkizaCards = ({ skiza, data }) => {
                     </Box>
                 ))}
               </CardContent>}
-            </Card>
+            </Card>)}
         </Stack>
     </Box>
   )
