@@ -12,17 +12,9 @@ export default function handler(req, res) {
                     maxAge: 60 * 60 * 24 * 365,
                     sameSite: 'strict',
                     path: '/',
+                    domain: process.env.COOKIE_DOMAIN
                 }
             ),
-            // cookie.serialize(
-            //     'access', accessToken, {
-            //         httpOnly: true,
-            //         secure: process.env.NODE_ENV !== 'development',
-            //         maxAge: 60 * 60 * 24 * 364,
-            //         sameSite: 'strict',
-            //         path: '/',
-            //     }
-            // ),
 
         ]);
         res.status(200).json({ message: 'Cookie Successfully Baked. Yummmy!!!' })

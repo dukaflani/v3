@@ -6,7 +6,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router';
 
 //  Mui Imports
-import { Box, Button, Container, Paper, Stack, Typography } from '@mui/material'
+import { Box, Button, Container, Paper } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // Icons

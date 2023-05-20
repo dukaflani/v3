@@ -1,31 +1,12 @@
 // MUI Imports
-import { TextField, MenuItem, Select, FormControl, InputLabel, FormHelperText } from "@mui/material"
+import { TextField, MenuItem } from "@mui/material"
 
 // NPM Imports
 import { useField, useFormikContext } from "formik"
-import React from "react";
-
-const currencies = [
-  {
-    value: 'USER',
-    label: 'User',
-  },
-  {
-    value: 'ARTIST',
-    label: 'Artist',
-  },
-  {
-    value: 'VENDOR',
-    label: 'Vendor',
-  },
-  {
-    value: 'PROMOTER',
-    label: 'Promoter',
-  },
-];
 
 
-const MySelectInput = ({ name, label, ...otherProps }) => {
+
+const MySelectInput = ({ name, label, data, ...otherProps }) => {
 
   const { setFieldValue } = useFormikContext()
 
@@ -57,7 +38,7 @@ const MySelectInput = ({ name, label, ...otherProps }) => {
   return (
     <>
         <TextField {...selectConfig} label={label} >
-          {currencies?.map((option, i) => (
+          {data?.map((option, i) => (
             <MenuItem key={i} value={option.value}>
               {option.label}
             </MenuItem>

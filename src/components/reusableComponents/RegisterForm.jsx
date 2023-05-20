@@ -47,6 +47,25 @@ const RegisterForm = () => {
     const [passwordCopied, setPasswordCopied] = useState(false)
     const [copyButtonText, setCopyButtonText] = useState("copy")
 
+    const accountTypes = [
+        {
+          value: 'USER',
+          label: 'User',
+        },
+        {
+          value: 'ARTIST',
+          label: 'Artist',
+        },
+        {
+          value: 'VENDOR',
+          label: 'Vendor',
+        },
+        {
+          value: 'PROMOTER',
+          label: 'Promoter',
+        },
+      ];
+
 
     const INITIAL_FORM_STATE = {
         username: "",
@@ -210,7 +229,7 @@ const RegisterForm = () => {
                             <MyInput required name="username" label="Username" />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <MySelectInput required name="role" label="Account Type" />
+                            <MySelectInput required name="role" label="Account Type" data={accountTypes} />
                         </Grid>
                         <Grid item xs={12}>
                             <MyInput required name="stage_name" label="Stage Name/Brand Name" />

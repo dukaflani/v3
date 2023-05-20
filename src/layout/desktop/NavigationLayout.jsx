@@ -1,5 +1,4 @@
 // NPM Imports
-import cookie from 'cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { useQuery } from '@tanstack/react-query'
 
