@@ -9,7 +9,7 @@ import Head from "next/head"
 import { useQuery } from '@tanstack/react-query';
 
 // MUI Imports
-import { Avatar, Box, Container, Stack, Tab, Tabs, Typography, colors } from "@mui/material"
+import { Avatar, Box, Container, Paper, Stack, Tab, Tabs, Typography, colors } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
 
 // NPM Imports
@@ -68,7 +68,7 @@ const SearchPage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
         <meta property="twitter:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
         <meta property="twitter:image" content="https://dukaflani-user-uploads.s3.ap-south-1.amazonaws.com/branding/dukaflani-social-media-cover-potrait.png"/>
       </Head>
-        <Box sx={{minHeight: '100vh', backgroundColor: theme.myColors.myBackground, paddingTop: 5, paddingBottom: 10}}>
+        <Paper sx={{minHeight: '100vh', paddingTop: 5, paddingBottom: 10}}>
             <Container maxWidth='lg'>
                 <Container sx={{paddingTop: 3}} maxWidth='md'>
                     <Stack direction='row' spacing={2} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
@@ -78,7 +78,7 @@ const SearchPage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                         <Typography variant='h5'>Search Results</Typography>
                     </Stack>
                 </Container>
-                    <Box sx={{ width: '100%', backgroundColor: theme.myColors.myBackground, borderBottom: '1px solid lightGray' }}>
+                    <Box sx={{ width: '100%', borderBottom: '1px solid lightGray' }}>
                         <Container maxWidth='md'>
                             <Tabs value={tabValue} onChange={handleChange} >
                                 <Tab label={videos?.length > 0 ? `Videos (${videos?.length})` : 'Videos (0)'} />
@@ -99,7 +99,7 @@ const SearchPage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                         </Box>
                     </Container>
             </Container>
-        </Box>
+        </Paper>
     </NavigationLayout2>
     </>
   )

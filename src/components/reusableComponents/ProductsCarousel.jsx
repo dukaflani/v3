@@ -16,6 +16,8 @@ import Slider from "react-slick";
 
 // Icons
 import {  UserOutlined } from "@ant-design/icons";
+import { useDispatch } from 'react-redux';
+import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 
 
@@ -54,6 +56,7 @@ function CarouselPrevArrow(props) {
 
 const ProductsCarouselDukaflani = ({ title, color1, color2, icon, products }) => {
     const router = useRouter()
+    const dispatch = useDispatch()
     const [productHovered, setProductHovered] = useState(null)
   
     const handleMouseEnter = (index) => {
@@ -134,7 +137,10 @@ const ProductsCarouselDukaflani = ({ title, color1, color2, icon, products }) =>
                             </Box>
                             </Stack>
                             <Box sx={{padding: 0.5}}>
-                              <Button onClick={() => router.push({ pathname: `/shop/${product?.id}` })} variant='text' size='small' fullWidth >View Details</Button>
+                              <Button onClick={() => {
+                                dispatch(pageHasChanged(true))
+                                router.push({ pathname: `/shop/${product?.id}` })
+                                }} variant='text' size='small' fullWidth >View Details</Button>
                             </Box>
                           </Paper>
                       </Box>

@@ -26,7 +26,7 @@ const TabLyricsCard = ({ data, lyrics, verses, loadingLyrics, loadingLyricVerse 
                     <Typography variant="caption">{`Learn the lyrics to ${data?.song_title} by ${data?.stage_name} as written by ${lyrics?.writer}`}</Typography>
                 </Stack>
             </Box>
-            <Card square>
+            <Card variant="outlined" square>
               <CardContent>
                 <Stack spacing={2}>
                   {loadingLyrics ? (<Typography variant="caption">Loading lyrics...</Typography>) : (<Box>

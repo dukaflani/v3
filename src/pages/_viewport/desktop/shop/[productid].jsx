@@ -4,14 +4,16 @@ import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 
 //MUI Imports
-import { Avatar, Box, Button, colors, Container, Divider, Grid, Link, Paper, Skeleton, Stack, Typography } from "@mui/material"
+import { Avatar, Box, Button, colors, Container, Divider, Grid, Link, Paper, Skeleton, Stack, Typography, useMediaQuery } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
 
 // NPM Imports
+import { useSelector } from "react-redux";
 import numeral from 'numeral';
 
 // Icons
-import { WhatsAppOutlined, CheckCircleFilled, FireOutlined } from "@ant-design/icons";
+import { WhatsAppOutlined, FireOutlined } from "@ant-design/icons";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
@@ -27,13 +29,15 @@ import { getCurrentVideoProduct, getCurrentVideoUserProfile, getUpsellProducts }
 
 
 const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
+    const is_darkMode = useSelector((state) => state.theme.isDarkMode)
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
     const router = useRouter()
     const { productid } = router.query
 
     
     const queryClient = useQueryClient()
-    const videoProductID = productid ? productid : 0
+    const videoProductID = productid 
     const { data: product, isLoading: loadingProduct } = useQuery(["current-video-product", videoProductID], (videoProductID) => getCurrentVideoProduct(videoProductID), {
         initialData: () => {
             const videoProduct = queryClient.getQueryData(["current-video-product", Number(videoProductID)])
@@ -42,14 +46,19 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
             } else {
                 return undefined
             }
-        }
+        },
+        enabled: !!videoProductID
     })
 
 
-    const publisherUserID = product?.user ? product?.user : 0
-    const { data: profile, isLoading: loadingProfile, isFetching } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID))
+    const publisherUserID = product?.user 
+    const { data: profile, isLoading: loadingProfile, isFetching } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID), {
+        enabled: !!publisherUserID
+    })
     
-    const { data: upsellProducts } = useQuery(["upsell-products", publisherUserID], (publisherUserID) => getUpsellProducts(publisherUserID))
+    const { data: upsellProducts } = useQuery(["upsell-products", publisherUserID], (publisherUserID) => getUpsellProducts(publisherUserID), {
+        enabled: !!publisherUserID
+    })
     
     const msg = `Hello ${product?.promoted_by}, I'm interested in the ${product?.title} from ${product?.sold_by} on dukaflani.com`
     const msg2 = msg.replace(/ /g, "%20")
@@ -86,12 +95,12 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
                 content={product?.image} 
                 />
       </Head>
-        <Box sx={{backgroundColor: theme.myColors.myBackground, minHeight: '100vh', paddingTop: 5}}>
+        <Paper sx={{minHeight: '100vh', paddingTop: 5}}>
             <Container maxWidth='lg'>
                 <Box>
                     <Grid container sx={{padding: 5}} rowSpacing={3}>
                         <Grid item xs={12}>
-                            <Paper square sx={{padding: 2}}>
+                            <Paper variant="outlined" square sx={{padding: 2}}>
                                 <Grid container columnSpacing={3}>
                                     <Grid item xs={12} md={4}>
                                     {!loadingProduct ? (<Box sx={{position: 'relative', borderRadius: 2,}}>
@@ -150,7 +159,7 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
                                                     <Stack spacing={-0.5}>
                                                         <Stack spacing={0.5} direction='row'>
                                                             {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
-                                                            {profile?.is_verified == "True" && <CheckCircleFilled style={{ fontSize: 13, color: theme.myColors.textDark }} />}                   
+                                                            {profile?.is_verified == "True" && <CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} />}                   
                                                         </Stack>
                                                         {!loadingProfile ? (<Typography variant='caption'>{profile?.role}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
@@ -166,7 +175,7 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
                             </Paper>
                         </Grid>
                         <Grid item xs={12}>
-                            <Paper square>
+                            <Paper variant="outlined" square>
                                 <Stack>
                                     <Box sx={{padding: 1.5}}>
                                         <Typography variant="h6">Product Details</Typography>
@@ -200,7 +209,7 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
                     <Copyright/>
                 </Box>
             </Container>
-        </Box>
+        </Paper>
 
     </NavigationLayout2>
   )

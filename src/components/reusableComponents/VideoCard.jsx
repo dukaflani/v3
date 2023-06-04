@@ -8,6 +8,7 @@ import Image from "next/legacy/image";
 // NPM Imports
 import numeral from 'numeral'
 import { formatDistanceStrict } from 'date-fns'
+import { useDispatch, useSelector } from 'react-redux';
 
 // Tanstack/React Query
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -15,7 +16,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 // MUI Imports
 import { Box, Grid, Typography, Avatar, IconButton, Stack, Tooltip, Link, 
-  Skeleton, Menu, MenuItem, List, ListItem, ListItemText, ListItemAvatar, colors } from "@mui/material"
+  Skeleton, Menu, MenuItem, List, ListItem, ListItemText, ListItemAvatar, colors, useMediaQuery } from "@mui/material"
 import { useTheme } from '@mui/material/styles';
   
   
@@ -26,12 +27,16 @@ import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 
 // Project Imports
 import { addView } from '@/axios/axios';
+import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 
 
 const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
-    const router = useRouter()
+    const is_darkMode = useSelector((state) => state.theme.isDarkMode)
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+    const router = useRouter() 
     const theme = useTheme()
+    const dispatch = useDispatch()
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -70,6 +75,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
      })
      
     const handleVideoClick = () => {
+      dispatch(pageHasChanged(true))
       router.push({pathname: '/watch', query: {v: video.youtube_id}})
       mutate(newView)
     }
@@ -105,6 +111,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                 <Link 
                   onClick={(e) => {
                     e.preventDefault()
+                    dispatch(pageHasChanged(true))
                     router.push({pathname: '/watch', query: {v: video.youtube_id}})
                     mutate(newView)
                   }}
@@ -112,7 +119,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                   className="line-clamp-2 line-clamp"
                   variant='subtitle2'
                   underline="none"
-                  sx={{color: theme.myColors.textDark }}
+                  sx={ is_darkMode === "dark" || prefersDarkMode === true ? {color: colors.grey[100], cursor: 'pointer'  } : is_darkMode === "light" && prefersDarkMode === true ?  {color: colors.grey[800], cursor: 'pointer'  } : {color: colors.grey[800], cursor: 'pointer'  }}
                   >
                     {video.title}
                   </Link>
@@ -122,7 +129,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                         <Typography sx={{letterSpacing: 0}} className="line-clamp-1 line-clamp" variant='body2'>{video.stage_name}</Typography>
                       </Tooltip>
                       {video.verified && <Tooltip title='Verified' placement="top" >
-                        <CheckCircleIcon sx={{ fontSize: 15, color: theme.myColors.textDark }} />
+                        <CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} />
                       </Tooltip>}
                     </Stack>
                     <Typography sx={{lineHeight: 1, letterSpacing: 0}} variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>
@@ -189,7 +196,10 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                 >
                   <MenuItem onClick={handleClose}>
                     <List>
-                      <ListItem onClick={() => router.push({ pathname: `/shop/${video?.product}` })} disableGutters>
+                      <ListItem onClick={() => {
+                        dispatch(pageHasChanged(true))
+                        router.push({ pathname: `/shop/${video?.product}` })
+                    }} disableGutters>
                         <ListItemAvatar>
                           <Avatar>
                             <LocalOfferOutlinedIcon /> 

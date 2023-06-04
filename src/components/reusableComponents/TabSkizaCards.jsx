@@ -1,5 +1,5 @@
 // MUI Imports
-import { Box, Card, CardContent, Divider, Grid, Stack, Typography } from '@mui/material'
+import { Box, Card, CardContent, Divider, Grid, Stack, Typography, colors } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 export const TabSkizaTuneCard = ({ skizaTune }) => {
@@ -10,7 +10,7 @@ export const TabSkizaTuneCard = ({ skizaTune }) => {
     <Box sx={{paddingBottom: 1, paddingTop: 3}}>
       <Stack>
         <Box>
-          <Typography sx={{color: 'whitesmoke', backgroundColor: theme.myColors.textDark}} variant='button'>{skizaTune?.country ? skizaTune?.country : "---"}</Typography>
+          <Typography sx={{color: 'whitesmoke', backgroundColor: colors.grey[800]}} variant='button'>{skizaTune?.country ? skizaTune?.country : "---"}</Typography>
         </Box>
         <Grid container>
           <Grid xs={4} item>
@@ -64,7 +64,7 @@ const TabSkizaCards = ({ skiza, data, loadingSkiza }) => {
                     <Typography variant="caption">{`Follow the instructions below to set ${data?.song_title} as your ringback tune`}</Typography>
                 </Stack>
             </Box>
-            {loadingSkiza ? (<Typography variant="caption">Loading skiza tunes...</Typography>) : (<Card square>
+            {loadingSkiza ? (<Typography variant="caption">Loading skiza tunes...</Typography>) : (<Card variant='outlined' square>
               {skiza?.length == 0 && <CardContent>
                 <Typography variant="body2">No Skiza Tunes Found</Typography>
                 </CardContent>}

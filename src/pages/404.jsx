@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Head from "next/head"
 
 // MUI Imports
-import { Box, Card, CardContent, Container, Link, Stack, Typography } from "@mui/material"
+import { Box, Card, CardContent, Container, Link, Paper, Stack, Typography } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
 
 // Project imports
@@ -22,7 +22,7 @@ const NotFound = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
     </Head>
-    <Box sx={{minHeight: '100vh', backgroundColor: theme.myColors.myBackground}}>
+    <Paper sx={{minHeight: '100vh'}}>
         <Container maxWidth="md">
         <Stack sx={{minHeight: '100vh', paddingTop: 2 }} spacing={3}>
                 <Link 
@@ -36,7 +36,7 @@ const NotFound = () => {
                 </Box>
                 </Link>
                 <Box >
-                    <Card square>
+                    <Card variant='outlined' square>
                         <CardContent>
                             <Stack spacing={2}>
                                 <Typography variant='h6'>Oops...</Typography>
@@ -55,7 +55,7 @@ const NotFound = () => {
                 </Box>
         </Stack>
         </Container>
-    </Box>
+    </Paper>
 </>
   )
 }

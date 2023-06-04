@@ -6,7 +6,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router';
 
 //  Mui Imports
-import { Box, Button, Container, Paper } from '@mui/material'
+import { AppBar, Box, Button, Container, Paper, Toolbar } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // Icons
@@ -28,7 +28,7 @@ export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
   const adString = 'Start selling on Dukaflani now!'
   
   return (
-    <>
+    <Paper>
       <NavigationLayout setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} value={value} setValue={setValue} >
       <Head>
         <title>Dukaflani — Buy Celebrity Merchandise</title>
@@ -50,23 +50,7 @@ export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
         <meta property="twitter:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
         <meta property="twitter:image" content="https://dukaflani-user-uploads.s3.ap-south-1.amazonaws.com/branding/dukaflani-social-media-cover-potrait.png"/>
       </Head>
-        <Box sx={{backgroundColor: theme.myColors.myBackground, minHeight: '100vh', paddingTop: 5, paddingBottom: 10}}>
-          <Paper elevation={0} sx={{backgroundColor: theme.myColors.myBackground, paddingBottom: 0.4, paddingTop: 1, position: 'sticky', top: 47, zIndex: 999}}>
-            <Container maxWidth='lg'>
-              <div style={{display:'flex', flexDirection:'row', alignItems: 'start', justifyContent: 'center'}}>
-                <div style={{display:'flex', flexDirection:'column',}}>
-                    <span style={{marginRight: 10, fontSize: 13, fontWeight: 'bold', lineHeight: 1.1}} className="line-clamp-1 line-clamp">{adString}</span>
-                    <div style={{display:'flex', flexDirection:'row', marginTop: -2}}>
-                      <span style={{marginRight: 6, fontSize: 12, backgroundColor: 'yellow', paddingLeft: 5, paddingRight: 5}}>Ad</span>
-                      <span style={{marginRight: 6, fontSize: 12, color: 'GrayText', width: 250, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>Dukaflani Marketplace</span>
-                    </div>
-                </div>
-                <div>
-                  <Button startIcon={<InfoOutlinedIcon/>} onClick={() => router.push({ pathname: '/links/contact_us' })} size="small">Learn How</Button>
-                </div>
-              </div>
-            </Container>
-          </Paper>
+        <Box sx={{minHeight: '100vh', paddingTop: 15, paddingBottom: 10}}>
           <HomePageContent value={value} />
            <Box sx={{display: { xs: 'block', md: 'none' }}}>
             <BottomNavDesktop value={value} setValue={setValue}/>
@@ -75,6 +59,6 @@ export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
       </NavigationLayout>
 
       <NavbarAdDesktopModal open={open} setOpen={setOpen} />
-    </>
+    </Paper>
   )
 }

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Head from "next/head"
 
 // MUI Imports
-import { Box, Card, CardContent, Container, Stack } from "@mui/material"
+import { Box, Card, CardContent, Container, Paper, Stack } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
 
 // Project imports
@@ -25,11 +25,11 @@ const Settings = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
     </Head>
-    <Box sx={{minHeight: '100vh', backgroundColor: theme.myColors.myBackground}}>
+    <Paper sx={{minHeight: '100vh'}}>
         <Container maxWidth="sm">
         <Stack sx={{minHeight: '100vh', paddingTop: 10 }} spacing={3}>
                 <Box >
-                    <Card sx={{backgroundColor: theme.myColors.myBackground}} variant='outlined'>
+                    <Card variant='outlined'>
                         <CardContent sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                             <ProfileSettingsForm/>
                         </CardContent>
@@ -40,7 +40,7 @@ const Settings = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                 </Box>
         </Stack>
         </Container>
-    </Box>
+    </Paper>
     </NavigationLayout2>
 </>
   )

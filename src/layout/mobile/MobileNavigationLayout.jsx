@@ -1,3 +1,6 @@
+// React Imports
+import { useEffect, useState } from 'react'
+
 // NPM Imports
 import { useDispatch, useSelector } from 'react-redux'
 import { useQuery } from '@tanstack/react-query'
@@ -15,22 +18,29 @@ const MobileNavigationLayout = ({ children, setIsDarkMode, isDarkMode, value, se
     onSuccess: (data, _variables, _context) => {
       dispatch(updateUserInfo(data))
     },
+    enabled: !!newToken
   })
-
-
-  const userID = currentUser?.id ? currentUser?.id : 0
+  
+  
+  const userID = currentUser?.id 
   const { data: userProfile, isLoading: loadingProfile } = useQuery(["user-profile", userID], (userID) => getUserProfile(userID), {
     onSuccess: (data, _variables, _context) => {
       dispatch(updateProfileInfo(data[0]))
+    },
+    enabled: !!userID
+  })
+  
+  // Get refresh token
+  const [myRefreshToken, setMyRefreshToken] = useState(null)
+  const { data: refreshToken } = useQuery(['refresh-token'], getRefreshToken, {
+    onSuccess: (data, _variables, _context) => {
+      setMyRefreshToken(data)
     }
   })
-
-  // Get refresh token
-  const { data: refreshToken } = useQuery(['refresh-token'], getRefreshToken)
-
+  
   // Renew access token
   const currentRefreshToken = {
-    refresh: refreshToken ? refreshToken : '',
+    refresh: myRefreshToken,
   }
   const { data: newAccessToken } = useQuery(['new-access-token', currentRefreshToken],  (currentRefreshToken) => renewAccessToken (currentRefreshToken), {
     onSuccess: (data, _variables, _context) => {
@@ -38,7 +48,18 @@ const MobileNavigationLayout = ({ children, setIsDarkMode, isDarkMode, value, se
       dispatch(updateToken(data?.access))
     },
     refetchInterval: 270000,
+    enabled: !!myRefreshToken
   })
+  
+  // On Logout
+  const deleteToken = useSelector((state) => state.auth.deleteRefreshToken) 
+
+  useEffect(() => {
+    if (deleteToken) {
+      setMyRefreshToken(null)
+    }
+    
+  }, [deleteToken])
   
 
   return (

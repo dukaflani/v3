@@ -10,13 +10,15 @@ import { useRouter } from 'next/router';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 // NPM Imports
+import { useSelector } from 'react-redux';
 import numeral from 'numeral';
 import { formatDistanceStrict } from 'date-fns'
 import Linkify from 'react-linkify';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 // MUI Imports
-import { Box, Container, Paper, Skeleton, Tab, Tabs, Typography, Stack, Avatar, Button, Grid, Drawer, Divider, IconButton, colors } from '@mui/material'
+import { Box, Container, Paper, Skeleton, Tab, Tabs, Typography, 
+    Stack, Avatar, Button, Grid, Drawer, Divider, IconButton, colors, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // Icons
@@ -58,6 +60,8 @@ import Copyright from '@/components/reusableComponents/Copyright';
 
 
 const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
+    const is_darkMode = useSelector((state) => state.theme.isDarkMode)
+   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
     const router = useRouter()
     const { v } = router.query
@@ -100,33 +104,53 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
         }
     })
 
-    const videoProfileUserID = data?.user ? data?.user : 0
-    const { data: profile, isLoading, isFetching } = useQuery(["current-video-profile", videoProfileUserID], (videoProfileUserID) => getCurrentVideoUserProfile(videoProfileUserID))
+    const videoProfileUserID = data?.user
+    const { data: profile, isLoading, isFetching } = useQuery(["current-video-profile", videoProfileUserID], (videoProfileUserID) => getCurrentVideoUserProfile(videoProfileUserID), {
+        enabled: !!videoProfileUserID
+    })
     
-    const videoLinksID = data?.links ? data?.links : 0
-    const { data: streamingLinks, isLoading: loadingLinks } = useQuery(["current-video-streaming-links", videoLinksID], (videoLinksID) => getCurrentVideoStreamingLinks(videoLinksID))
+    const videoLinksID = data?.links 
+    const { data: streamingLinks, isLoading: loadingLinks } = useQuery(["current-video-streaming-links", videoLinksID], (videoLinksID) => getCurrentVideoStreamingLinks(videoLinksID), {
+        enabled: !!videoLinksID
+    })
     
-    const videoProductID = data?.product ? data?.product : 0
-    const { data: product, isLoading: loadingProduct } = useQuery(["current-video-product", videoProductID], (videoProductID) => getCurrentVideoProduct(videoProductID))
+    const videoProductID = data?.product 
+    const { data: product, isLoading: loadingProduct } = useQuery(["current-video-product", videoProductID], (videoProductID) => getCurrentVideoProduct(videoProductID), {
+        enabled: !!videoProductID
+    })
     
-    const videoLyricsID = data?.lyrics ? data?.lyrics : 0
-    const { data: lyrics, isLoading: loadingLyrics } = useQuery(["current-video-lyrics", videoLyricsID], (videoLyricsID) => getCurrentVideoLyrics(videoLyricsID))
+    const videoLyricsID = data?.lyrics
+    const { data: lyrics, isLoading: loadingLyrics } = useQuery(["current-video-lyrics", videoLyricsID], (videoLyricsID) => getCurrentVideoLyrics(videoLyricsID), {
+        enabled: !!videoLyricsID
+    })
     
-    const videoLyricsVersesID = data?.lyrics ? data?.lyrics : 0
-    const { data: lyrics_verses, isLoading: loadingLyricVerse } = useQuery(["current-video-lyrics-verses", videoLyricsVersesID], (videoLyricsVersesID) => getCurrentVideoLyricsVerses(videoLyricsVersesID))
+    const videoLyricsVersesID = data?.lyrics 
+    const { data: lyrics_verses, isLoading: loadingLyricVerse } = useQuery(["current-video-lyrics-verses", videoLyricsVersesID], (videoLyricsVersesID) => getCurrentVideoLyricsVerses(videoLyricsVersesID), {
+        enabled: !!videoLyricsVersesID
+    })
     
-    const videoSkizaID = data?.skiza ? data?.skiza : 0
-    const { data: skiza_list, isLoading: loadingSkiza } = useQuery(["current-video-skiza-list", videoSkizaID], (videoSkizaID) => getCurrentVideoSkizaTuneList(videoSkizaID))
+    const videoSkizaID = data?.skiza 
+    const { data: skiza_list, isLoading: loadingSkiza } = useQuery(["current-video-skiza-list", videoSkizaID], (videoSkizaID) => getCurrentVideoSkizaTuneList(videoSkizaID), {
+        enabled: !!videoSkizaID
+    })
     
-    const videoAlbumID = data?.album ? data?.album : 0
-    const { data: album, isLoading: loadingAlbum } = useQuery(["current-video-album", videoAlbumID], (videoAlbumID) => getCurrentVideoAlbum(videoAlbumID))
+    const videoAlbumID = data?.album 
+    const { data: album, isLoading: loadingAlbum } = useQuery(["current-video-album", videoAlbumID], (videoAlbumID) => getCurrentVideoAlbum(videoAlbumID), {
+        enabled: !!videoAlbumID
+    })
     
-    const videoAlbumTracksID = data?.album ? data?.album : 0
-    const { data: albumTracks, isLoading: loadingTracks } = useQuery(["current-video-album-tracks", videoAlbumTracksID], (videoAlbumTracksID) => getCurrentVideoAlbumTracks(videoAlbumTracksID))
+    const videoAlbumTracksID = data?.album 
+    const { data: albumTracks, isLoading: loadingTracks } = useQuery(["current-video-album-tracks", videoAlbumTracksID], (videoAlbumTracksID) => getCurrentVideoAlbumTracks(videoAlbumTracksID), {
+        enabled: !!videoAlbumTracksID
+    })
     
-    const videoUserID = data?.user ? data?.user : 0
-    const { data: events, isLoading: loadingEvents } = useQuery(["current-video-events", videoUserID], (videoUserID) => getCurrentVideoEvents(videoUserID))
-    const { data: mediaTours, isLoading: loadingMediaTours } = useQuery(["current-video-media-tours", videoUserID], (videoUserID) => getCurrentVideoMediaTours(videoUserID))
+    const videoUserID = data?.user 
+    const { data: events, isLoading: loadingEvents } = useQuery(["current-video-events", videoUserID], (videoUserID) => getCurrentVideoEvents(videoUserID), {
+        enabled: !!videoUserID
+    })
+    const { data: mediaTours, isLoading: loadingMediaTours } = useQuery(["current-video-media-tours", videoUserID], (videoUserID) => getCurrentVideoMediaTours(videoUserID), {
+        enabled: !!videoUserID
+    })
 
     
     const uploadDate = data?.date ? data?.date : new Date()
@@ -167,7 +191,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
             <meta name="description" content="Buy products from the biggest celebrities and name brands in Africa"/>
             <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
         </Head>
-        <Box sx={{backgroundColor: theme.myColors.myBackground, minHeight: '100vh', paddingTop: 5, paddingBottom: 10}}>
+        <Paper sx={{ minHeight: '100vh', paddingTop: 5, paddingBottom: 10}}>
             <Box sx={{position: 'sticky', top: 48, zIndex: 99}} >
                 <Box sx={{backgroundColor: 'black', width: '100%'}}>
                     <Container disableGutters maxWidth='sm'>
@@ -176,7 +200,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                         </Box>) : (<Skeleton animation="wave"  variant="rectangular" sx={{ paddingTop: '56.25%', width: '100%'}} />)}
                     </Container>
                 </Box>
-                <Paper square sx={{display: 'flex', justifyContent: 'center'}}>
+                <Paper variant="outlined" square sx={{display: 'flex', justifyContent: 'center'}}>
                     <Tabs
                         variant="scrollable"
                         scrollButtons
@@ -198,7 +222,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
             <Container sx={{paddingTop: 3}} maxWidth='sm'>
                 <Stack spacing={1.5}>
                     <Box onClick={() => setShowSongDetails(true)}>
-                    {data?.title ? (<Typography gutterBottom sx={{lineHeight: 1, fontWeight: "bold", color: colors.grey[800]}} variant='subtitle1' component='h1'>{data?.title}</Typography>) : (<Skeleton width="80%" />)}
+                    {data?.title ? (<Typography gutterBottom sx={{lineHeight: 1, fontWeight: "bold", color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant='subtitle1' component='h1'>{data?.title}</Typography>) : (<Skeleton width="80%" />)}
                     <Stack sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}} direction='row' spacing={1}>
                             {data?.genre_title ? (<Typography sx={{color: '#1976d2'}} variant='button'>{data?.genre_title}</Typography>) : (<Skeleton width="10%" />)}
                             {data?.views_count ? (<Typography variant='caption'>{formatedViewCount} {data?.views_count == 1 ? 'view' : 'views'}</Typography>) : (<Skeleton width="10%" />)}
@@ -211,7 +235,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                         <Box sx={{paddingX: 1, display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                             <Stack spacing={0.5} direction='row'>
                                 {data?.stage_name ? (<Typography className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography>) : (<Skeleton width="100%" />)}
-                                {data?.verified && <CheckCircleIcon sx={{ fontSize: 13, color: theme.myColors.textDark }} />}
+                                {data?.verified && <CheckCircleIcon sx={{ fontSize: 13, color: colors.grey[800] }} />}
                             </Stack>
                         </Box>
                         <Box sx={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'start', paddingX: 1}}>
@@ -221,7 +245,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                             <FavoriteBorderOutlinedIcon fontSize='small' />
                         </IconButton>
                     </Box>
-                    <Paper variant='outlined' sx={{ backgroundColor: theme.myColors.myBackground, padding: 1 }}>
+                    <Paper variant='outlined' sx={{ padding: 1 }}>
                         <Stack>
                             <Typography variant='subtitle2'>SPONSORED:</Typography>
                             <Grid direction='row' container columnSpacing={1}>
@@ -283,11 +307,11 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                     }[tabPosition]
                 }
             </Box>
-        </Box>
-        <Container sx={{backgroundColor: theme.myColors.myBackground, position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 99}} maxWidth='sm'>
-            <Box sx={{width: '100%', paddingBottom: 2}}>
+        </Paper>
+        <Container sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 99}} maxWidth='sm'>
+            <Paper elevation={0} square sx={{width: '100%', paddingBottom: 2}}>
                 <Button onClick={() => setShowMoreVideos(true)} startIcon={<OndemandVideoOutlinedIcon />} fullWidth  variant="contained" size='medium'>Show more videos</Button>
-            </Box>
+            </Paper>
         </Container>
     </MobileNavigationLayout>
 
@@ -298,19 +322,19 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
              onClose={() => setShowSongDetails(false)}
              anchor='bottom'
         >
-            <Box sx={{ backgroundColor: theme.myColors.myBackground}}>
+            <Box>
                 <Container sx={{height: '60vh'}} maxWidth='sm'>
                     <Stack spacing={2}>
-                        <Box sx={{paddingTop: 3, position: 'sticky', top: 0, backgroundColor: theme.myColors.myBackground, zIndex: 99}}>
-                            <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                                <Typography variant='subtitle1'>INFO:</Typography>
+                        <Box sx={{paddingTop: 3, position: 'sticky', top: 0, zIndex: 99999}}>
+                            <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
+                                {/* <Typography variant='subtitle1'>INFO:</Typography> */}
                                 <Box onClick={() => setShowSongDetails(false)}>
                                     <CloseOutlinedIcon />
                                 </Box>
                             </Box>
-                            <Divider/>
+                            {/* <Divider/> */}
                         </Box>
-                        <Box>
+                        <Box sx={{zIndex: 9}}>
                             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly'}}>
                                 <Box sx={{textAlign: 'center'}}>
                                     {data?.views_count ? (<Typography variant='subtitle2'>{numeral(data?.views_count).format('0,0')}</Typography>) : (<Skeleton width="10%" />)}
@@ -347,17 +371,17 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
              onClose={() => setShowMoreVideos(false)}
              anchor='bottom'
         >
-            <Box sx={{ backgroundColor: theme.myColors.myBackground}}>
+            <Box>
                 <Container sx={{ height: '60vh'}} maxWidth='sm'>
                     <Stack>
-                        <Box sx={{paddingTop: 3, position: 'sticky', top: 0, backgroundColor: theme.myColors.myBackground, zIndex: 99}}>
-                            <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                                <Typography variant='subtitle1'>MORE VIDEOS:</Typography>
+                        <Box sx={{paddingTop: 3, position: 'sticky', top: 0, zIndex: 99}}>
+                            <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
+                                {/* <Typography variant='subtitle1'>MORE VIDEOS:</Typography> */}
                                 <Box onClick={() => setShowMoreVideos(false)}>
                                     <CloseOutlinedIcon />
                                 </Box>
                             </Box>
-                            <Divider/>
+                            {/* <Divider/> */}
                         </Box>
                         <Box onClick={() => setShowMoreVideos(false)}>
                             <MoreVideos setShowMoreVideos={setShowMoreVideos} />

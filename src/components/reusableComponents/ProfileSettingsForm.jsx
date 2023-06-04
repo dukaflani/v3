@@ -46,10 +46,10 @@ const ProfileSettingsForm = () => {
     
     
     const currentUser = useSelector((state) => state.auth.userInfo)
-    const accessToken = useSelector((state) => state.auth.token)
     const user_profile = useSelector((state) => state.auth.profileInfo)
+    const accessToken = useSelector((state) => state.auth.token)
 
-    const userID = currentUser?.id ? currentUser?.id : 0
+    const userID = currentUser?.id 
     const { data: userProfile, isLoading: loadingProfile } = useQuery(["user-profile", userID], (userID) => getUserProfile(userID),
     
     {
@@ -69,6 +69,7 @@ const ProfileSettingsForm = () => {
             setYoutube_channel(data[0]?.youtube_channel ? data[0]?.youtube_channel : "")
             setOpenLoadingProfileDialogue(false)
         },
+        enabled: !!userID
     },
     )
 

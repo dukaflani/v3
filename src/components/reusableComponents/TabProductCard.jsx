@@ -1,20 +1,29 @@
 // Nextjs Imports
 import { useRouter } from "next/router"
+import Image from "next/legacy/image";
 
 // MUI Imports
 import { Box, Stack, Typography, Card, CardMedia, CardContent, colors, Button } from "@mui/material"
 
 // NPM Imports
 import numeral from 'numeral';
+import { useDispatch } from "react-redux";
 
 // Icons
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
+import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
 
 
 
 
 const TabProductCard = ({ product, data, loadingProduct }) => {
     const router = useRouter()
+    const dispatch = useDispatch()
+
+    const handleProductClick = () => {
+        dispatch(pageHasChanged(true))
+        router.push({ pathname: `/shop/${product?.id}`})
+    }
 
 
   return (
@@ -27,12 +36,23 @@ const TabProductCard = ({ product, data, loadingProduct }) => {
                 </Stack>
             </Box>
             {loadingProduct ? (<Typography variant="caption">Loading product card...</Typography>) : (<Box>
-                <Card onClick={() => router.push({ pathname: `/shop/${product?.id}` })} square>
-                        <CardMedia
+                <Card variant="outlined" onClick={handleProductClick} square>
+                        {/* <CardMedia
                             sx={{ height: 320 }}
                             image={product?.image}
                             title={product?.title}
-                        />
+                        /> */}
+                        <Box 
+                            sx={{ backgroundColor: colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
+                            >
+                            <Image 
+                                src={product?.image} 
+                                layout='responsive'
+                                alt={product?.title}
+                                width='100%'
+                                height={100}
+                                />
+                        </Box>
                         {product?.is_sponsored ? <Box sx={{padding:0.5, backgroundColor: colors.blue[100]}}>
                             <Typography sx={{color: colors.blue[800]}} variant="body2">Sponsored</Typography>
                         </Box>

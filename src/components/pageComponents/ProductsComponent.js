@@ -6,11 +6,14 @@ import Image from "next/legacy/image";
 import { useRouter } from 'next/router';
 
 // MUI Imports
-import { Box, Divider, Grid, Paper, Stack, Typography, colors, Link } from "@mui/material"
+import { Box, Divider, Grid, Paper, Stack, Typography, colors, Link, useMediaQuery } from "@mui/material"
 import { useTheme } from '@mui/material/styles';
 
 // React Slick Carousel
 import Slider from "react-slick";
+
+// NPM Imports
+import { useSelector } from 'react-redux';
 
 // TanStack/React-Query
 import { useQuery } from '@tanstack/react-query';
@@ -36,6 +39,8 @@ import { ApiTwoTone,  CheckCircleOutlined, DollarCircleTwoTone, HeartOutlined,
 
 
 const ProductsComponent = () => {
+  const is_darkMode = useSelector((state) => state.theme.isDarkMode)
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const router = useRouter()
   const adPostersArray = [adposter1, adposter2, adposter3, adposter4]
   const [categoryHovered, setCategoryHovered] = useState('')
@@ -61,48 +66,48 @@ const ProductsComponent = () => {
 
   const storeCategories = [
     {
-      name: <Typography sx={ categoryHovered == '0' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Dukaflani Brands</Typography>,
-      icon: <CheckCircleOutlined style={ categoryHovered == '0' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: theme.myColors.textDark}} />,
+      name: <Typography sx={ categoryHovered == '0' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Dukaflani Brands</Typography>,
+      icon: <CheckCircleOutlined style={ categoryHovered == '0' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} />,
       link: '#dukaflani'
     },
     {
-      name: <Typography sx={ categoryHovered == '1' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Apparel</Typography>,
-      icon: <SkinOutlined style={ categoryHovered == '1' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: theme.myColors.textDark}} />,
+      name: <Typography sx={ categoryHovered == '1' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Apparel</Typography>,
+      icon: <SkinOutlined style={ categoryHovered == '1' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} />,
       link: '#apparel'
     },
     {
-      name: <Typography sx={ categoryHovered == '2' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Wellness</Typography>,
-      icon: <HeartOutlined style={ categoryHovered == '2' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: theme.myColors.textDark}} />,
+      name: <Typography sx={ categoryHovered == '2' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Wellness</Typography>,
+      icon: <HeartOutlined style={ categoryHovered == '2' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} />,
       link: '#wellness'
     },
     {
-      name: <Typography sx={ categoryHovered == '3' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Electronics</Typography>,
-      icon: <TabletOutlined style={ categoryHovered == '3' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: theme.myColors.textDark}} />,
+      name: <Typography sx={ categoryHovered == '3' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Electronics</Typography>,
+      icon: <TabletOutlined style={ categoryHovered == '3' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} />,
       link: '#electronics'
     },
   ]
 
   const topVendors = [
     {
-      name: <Typography sx={ vendorHovered == '0' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Dukaflani Brands</Typography>
+      name: <Typography sx={ vendorHovered == '0' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Dukaflani Brands</Typography>
     },
     // {
-    //   name: <Typography sx={ vendorHovered == '1' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Mbichwa</Typography>
+    //   name: <Typography sx={ vendorHovered == '1' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Mbichwa</Typography>
     // },
     // {
-    //   name: <Typography sx={ vendorHovered == '2' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Home 254 Apparel</Typography>
+    //   name: <Typography sx={ vendorHovered == '2' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Home 254 Apparel</Typography>
     // },
     // {
-    //   name: <Typography sx={ vendorHovered == '3' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Vazzi</Typography>
+    //   name: <Typography sx={ vendorHovered == '3' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Vazzi</Typography>
     // },
     // {
-    //   name: <Typography sx={ vendorHovered == '4' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Kaka Empire</Typography>
+    //   name: <Typography sx={ vendorHovered == '4' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Kaka Empire</Typography>
     // },
     // {
-    //   name: <Typography sx={ vendorHovered == '5' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Zozanation</Typography>
+    //   name: <Typography sx={ vendorHovered == '5' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Zozanation</Typography>
     // },
     // {
-    //   name: <Typography sx={ vendorHovered == '6' ? {color: '#1976d2'} : {color: theme.myColors.textDark}} variant="caption">Calif Wear</Typography>
+    //   name: <Typography sx={ vendorHovered == '6' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Calif Wear</Typography>
     // },
   ]
 
@@ -128,7 +133,7 @@ const ProductsComponent = () => {
       <Box>
         <Grid container spacing={2}>
           <Grid md={2} sx={{ display: {xs:'none', md:'block'}}} item>
-            <Paper square sx={{padding: 1, height: '100%'}}>
+            <Paper variant='outlined' square sx={{padding: 1, height: '100%'}}>
                 {storeCategories.map((category, i) => (
                   <Link underline='none' key={i} href={category?.link}>
                     <Stack 
@@ -188,7 +193,7 @@ const ProductsComponent = () => {
           </Grid>
           <Grid sm={3} sx={{ display: {xs:'none', sm:'block'}}} item>
             <Stack spacing={2} sx={{height:'100%'}}>
-            <Paper square sx={{padding: 1, height: '50%'}}>
+            <Paper variant='outlined' square sx={{padding: 1, height: '50%'}}>
               <Stack onClick={() => router.push({ pathname: '/links/contact_us' })} sx={{display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent: 'space-evenly', height: '100%'}}>
                 <Stack direction='row' spacing={1} sx={{display: 'flex', alignItems:'center', cursor: 'pointer'}}>
                   <DollarCircleTwoTone style={{fontSize: 25}} twoToneColor='#1976d2'/>
@@ -214,13 +219,15 @@ const ProductsComponent = () => {
               </Stack>
             </Paper>
             <Paper sx={{width: '100%', height: '50%'}}>
+            <Link href='https://hub.dukaflani.com' underline='none' target="_blank" rel="noopener">
               <Box sx={{display: 'flex', alignItems: 'center', justifyContent:'center'}} className='animated-gradient'>
                 <Stack sx={{textAlign: 'center'}} spacing={1}>
                   <Typography sx={{color: 'white'}} variant='caption'>GET STARTED</Typography>
                   <Typography onClick={() => router.push({ pathname: '/links/contact_us' })} sx={{color: 'white', border: '2px solid white', cursor: 'pointer'}} variant='h6'>LOGIN</Typography>
-                  <Typography sx={{color: 'white', letterSpacing: 3}} variant='body1'>VENDOR HUB!</Typography>
+                  <Typography sx={{color: 'white', letterSpacing: 3}} variant='body1'>CREATOR&apos;S HUB!</Typography>
                 </Stack>
               </Box>
+              </Link>
             </Paper>
             </Stack>
           </Grid>
@@ -281,7 +288,7 @@ const ProductsComponent = () => {
       </Box>
       {/* About Dukaflani */}
       <Box>
-        <Paper square sx={{padding: 2, marginTop: 3}}>
+        <Paper variant='outlined' square sx={{padding: 2, marginTop: 3}}>
           <Stack>
             <Typography variant='h6' component='h1'>Dukaflani - Buy Celebrity Merchandise</Typography>
             <Typography variant='body1'>

@@ -1,6 +1,11 @@
 // MUI Imports
-import { Avatar, Box, Card, colors, CardContent, CardHeader, Stack, Typography, CardMedia } from '@mui/material'
+import { Avatar, Box, Card, colors, CardContent, CardHeader, 
+    Stack, Typography, CardMedia } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+
+// NextJS Imports
+import Image from "next/legacy/image";
+
 
 // Icons
 import { RadioOutlined, LiveTvOutlined, YouTube } from '@mui/icons-material';
@@ -15,7 +20,7 @@ export const MediaTourCard = ({ mediaTour }) => {
 
     return (
         <Box sx={{paddingTop: 2}}>
-            <Card square>
+            <Card variant='outlined' square>
                     <CardHeader
                         avatar={
                         <Avatar sx={{backgroundColor: "#1976d2"}} variant='rounded' >
@@ -29,16 +34,27 @@ export const MediaTourCard = ({ mediaTour }) => {
                         subheader={
                             <Stack direction="row" spacing={0.5}>
                                 <Typography variant='caption'>{mediaTour?.station_type}</Typography>
-                                <Typography sx={{color: theme.myColors.textDark}} variant='caption'>from</Typography>
+                                <Typography sx={{color: colors.grey[800]}} variant='caption'>from</Typography>
                                 <Typography variant='caption'>{countriesChoices.filter((country) => country.code === mediaTour?.country)[0]?.label}</Typography> 
                             </Stack>
                         }
                     />
-                    <CardMedia
+                    {/* <CardMedia
                         sx={{ height: 300 }}
                         image={mediaTour?.poster}
                         title={mediaTour?.title}
-                    />
+                    /> */}
+                    <Box 
+                        sx={{ backgroundColor: colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
+                        >
+                        <Image 
+                            src={mediaTour?.poster}
+                            layout='responsive'
+                            alt={mediaTour?.title}
+                            width='100%'
+                            height={100}
+                            />
+                    </Box>
                     <CardContent>
                         <Stack>
                             <Stack sx={{display: "flex", justifyContent: "start", alignItems: "center"}} direction="row" spacing={1}>

@@ -32,7 +32,7 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
 
 
     const queryClient = useQueryClient()
-    const videoProductID = productid ? productid : 0
+    const videoProductID = productid 
     const { data: product, isLoading: loadingProduct } = useQuery(["current-video-product", videoProductID], (videoProductID) => getCurrentVideoProduct(videoProductID), {
         initialData: () => {
             const videoProduct = queryClient.getQueryData(["current-video-product", Number(videoProductID)])
@@ -41,14 +41,19 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
             } else {
                 return undefined
             }
-        }
+        },
+        enabled: !!videoProductID
     })
 
 
-    const publisherUserID = product?.user ? product?.user : 0
-    const { data: profile, isLoading: loadingProfile, isFetching } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID))
+    const publisherUserID = product?.user 
+    const { data: profile, isLoading: loadingProfile, isFetching } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID), {
+        enabled: !!publisherUserID
+    })
     
-    const { data: upsellProducts } = useQuery(["upsell-products", publisherUserID], (publisherUserID) => getUpsellProducts(publisherUserID))
+    const { data: upsellProducts } = useQuery(["upsell-products", publisherUserID], (publisherUserID) => getUpsellProducts(publisherUserID), {
+        enabled: !!publisherUserID
+    })
     
     const msg = `Hello ${product?.promoted_by}, I'm interested in the ${product?.title} from ${product?.sold_by} on dukaflani.com`
     const msg2 = msg.replace(/ /g, "%20")
@@ -63,12 +68,12 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
             <meta name="description" content="Buy products from the biggest celebrities and name brands in Africa"/>
             <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
         </Head>
-        <Box sx={{backgroundColor: theme.myColors.myBackground, minHeight: '100vh', paddingY: 5}}>
+        <Paper sx={{ minHeight: '100vh', paddingY: 5}}>
             <Container maxWidth='lg'>
                 <Box>
                     <Grid container sx={{paddingTop: 5}} rowSpacing={3}>
                         <Grid item xs={12}>
-                            <Paper square sx={{padding: 2}}>
+                            <Paper variant="outlined" square sx={{padding: 2}}>
                                 <Grid container columnSpacing={3}>
                                     <Grid item xs={12} md={4}>
                                     {!loadingProduct ? (<Box sx={{position: 'relative', borderRadius: 2,}}>
@@ -125,7 +130,7 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
                                                     <Stack spacing={-0.5}>
                                                         <Stack spacing={0.5} direction='row'>
                                                             {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
-                                                            {profile?.is_verified == "True" && <CheckCircleFilled style={{ fontSize: 13, color: theme.myColors.textDark }} />}                   
+                                                            {profile?.is_verified == "True" && <CheckCircleFilled style={{ fontSize: 13, color: colors.grey[800] }} />}                   
                                                         </Stack>
                                                         {!loadingProfile ? (<Typography variant='caption'>{profile?.role}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
@@ -141,7 +146,7 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
                             </Paper>
                         </Grid>
                         <Grid item xs={12}>
-                            <Paper square>
+                            <Paper variant="outlined" square>
                                 <Stack>
                                     <Box sx={{padding: 1.5}}>
                                         <Typography variant="h6">Product Details</Typography>
@@ -175,12 +180,12 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
                     <Copyright/>
                 </Box>
             </Container>
-        </Box>
-        <Container sx={{backgroundColor: theme.myColors.myBackground, position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 99}} maxWidth='lg'>
+        </Paper>
+        <Container sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 99}} maxWidth='lg'>
         <Link href={whatsappLink} underline='none' target="_blank" rel="noopener">
-            <Box sx={{width: '100%', paddingBottom: 2}}>
+            <Paper elevation={0} square sx={{width: '100%', paddingBottom: 2}}>
                 <Button startIcon={<WhatsAppOutlined />} sx={{backgroundColor: '#25D366'}} fullWidth  variant="contained" size='medium'>Order on WhatsApp</Button>
-            </Box>
+            </Paper>
         </Link>
         </Container>
     </MobileNavigationLayout>

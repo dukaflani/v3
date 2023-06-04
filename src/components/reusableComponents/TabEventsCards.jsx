@@ -2,8 +2,11 @@
 import { useRouter } from 'next/router'
 
 // MUI Imports
-import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Stack, Typography, colors } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+
+// NPM Imports
+import { useDispatch } from 'react-redux';
 
 // Icons
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
@@ -13,11 +16,13 @@ import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 
 // Project imports
 import { months } from '@/data/months';
+import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 
 export const TabEventCard = ({ event, videoUserID }) => {
   const theme = useTheme()
   const router = useRouter()
+  const dispatch = useDispatch()
 
   const date = event?.date
   const time = event?.time
@@ -31,14 +36,18 @@ export const TabEventCard = ({ event, videoUserID }) => {
   const hours = event?.time ? timeArray[0] : null
   const minutes = event?.time ? timeArray[1] : null
 
+  const handleEventClick = () => {
+    dispatch(pageHasChanged(true))
+    router.push({ pathname: `/events/${event?.id}`, query: {a: videoUserID} })
+  }
 
   return (
     <Box sx={{paddingTop: 2}}>
       <Stack>
         <Box>
-          <Typography sx={{color: 'whitesmoke', backgroundColor: theme.myColors.textDark}} variant='caption'>{event?.event_type?.toUpperCase()}</Typography>
+          <Typography sx={{color: 'whitesmoke', backgroundColor: colors.grey[800]}} variant='caption'>{event?.event_category?.toUpperCase()}</Typography>
         </Box>
-        <Card onClick={() => router.push({ pathname: `/events/${event?.id}`, query: {a: videoUserID} }) } square>
+        <Card variant="outlined" onClick={handleEventClick} square>
               <CardContent>
                 <Stack spacing={1}>
                   <Stack spacing={0.4}>

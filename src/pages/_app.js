@@ -8,7 +8,6 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 // Global CSS Styles
-import { myLightTheme, myDarkTheme } from '@/styles/theme';
 import '@/styles/globalStyles.css'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -16,11 +15,9 @@ import "slick-carousel/slick/slick-theme.css";
 // React Imports
 import { useEffect, useState } from 'react';
 
-// Nextjs Imports
-import { useRouter } from 'next/router';
 
 // MUI Imports
-import { ThemeProvider, CssBaseline } from '@mui/material'
+import {  CssBaseline } from '@mui/material'
 
 // TanStack/React-Query
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -33,8 +30,7 @@ import { Provider } from 'react-redux';
 
 // Project Imports
 import store from '@/redux/app/store';
-import { renewAccessToken } from '@/axios/axios';
-import { updateToken } from '@/redux/features/auth/authSlice';
+import MyThemeProvider from '@/components/reusableComponents/MyThemeProvider';
 
 
 
@@ -54,25 +50,22 @@ export default function App({ Component, pageProps }) {
   }, [])
 
 
-  const router = useRouter()
-  const { page } = router.query
-  const [isDarkMode, setIsDarkMode] = useState(false)
   const [value, setValue] = useState(0)
-
-  
-  
+  const [isDarkMode, setIsDarkMode] = useState(false)
 
 
 
   return (
-      <ThemeProvider theme={isDarkMode ? myDarkTheme : myLightTheme}>
+      <>
           <CssBaseline />
           <QueryClientProvider client={queryClient}>
             <Provider store={store}>
-              <Component {...pageProps} setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} value={value} setValue={setValue} />
+              <MyThemeProvider>
+                <Component {...pageProps} setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} value={value} setValue={setValue} />
+              </MyThemeProvider>
             </Provider>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
-      </ThemeProvider>
+      </>
     )
 }

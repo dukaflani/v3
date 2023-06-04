@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Head from "next/head"
 
 // MUI Imports
-import { Box, Card, CardContent, Container, Link, Stack, Typography } from "@mui/material"
+import { Box, Card, CardContent, Container, Link, Paper, Stack, Typography } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
 
 // Icons
@@ -44,7 +44,7 @@ const ContactUs = () => {
         <meta property="twitter:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
         <meta property="twitter:image" content="https://dukaflani-user-uploads.s3.ap-south-1.amazonaws.com/branding/dukaflani-social-media-cover-potrait.png"/>
       </Head>
-        <Box sx={{minHeight: '100vh', backgroundColor: theme.myColors.myBackground}}>
+        <Paper sx={{minHeight: '100vh'}}>
             <Container maxWidth="md">
             <Stack sx={{minHeight: '100vh', paddingTop: 2 }} spacing={3}>
                     <Link 
@@ -58,7 +58,7 @@ const ContactUs = () => {
                     </Box>
                     </Link>
                     <Box >
-                        <Card square>
+                        <Card variant="outlined" square>
                             <CardContent>
                                 <Stack spacing={2}>
                                     <Typography variant='h6'>Contact us</Typography>
@@ -95,7 +95,7 @@ const ContactUs = () => {
                     </Box>
             </Stack>
             </Container>
-        </Box>
+        </Paper>
     </>
   )
 }

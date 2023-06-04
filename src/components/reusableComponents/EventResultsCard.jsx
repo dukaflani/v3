@@ -1,8 +1,9 @@
 // NextJs Imports
 import { useRouter } from 'next/router'
+import Image from "next/legacy/image";
 
 // MUI Imports
-import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Stack, Typography } from '@mui/material'
+import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Stack, Typography, colors } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // Icons
@@ -13,10 +14,13 @@ import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 
 // Project imports
 import { months } from '@/data/months';
+import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
+import { useDispatch } from 'react-redux';
 
 const EventResultsCard = ({ event }) => {
   const theme = useTheme()
   const router = useRouter()
+  const dispatch = useDispatch()
 
   const date = event?.date
   const time = event?.time
@@ -31,21 +35,38 @@ const EventResultsCard = ({ event }) => {
   const minutes = event?.time ? timeArray[1] : null
 
 
+  const handleEventClick = () => {
+    dispatch(pageHasChanged(true))
+    router.push({ pathname: `/events/${event?.id}`, query: {a: event?.user} })
+  }
+
+
   return (
     <Box sx={{paddingTop: 2}}>
       <Stack>
         {/* <Box>
-          <Typography  sx={{color: 'whitesmoke', backgroundColor: theme.myColors.textDark}} variant='caption'>{event?.event_type?.toUpperCase()}</Typography>
+          <Typography  sx={{color: 'whitesmoke', backgroundColor: colors.grey[800]}} variant='caption'>{event?.event_category?.toUpperCase()}</Typography>
         </Box> */}
-        <Card onClick={() => router.push({ pathname: `/events/${event?.id}`, query: {a: event?.user} }) } square>
+        <Card variant='outlined' onClick={handleEventClick} square>
             <CardActionArea>
-                <CardMedia
+                {/* <CardMedia
                     sx={{ height: 200 }}
                     image={event?.poster}
                     title={event?.title}
-                    />
-                <Box sx={{padding: 1, backgroundColor: theme.myColors.textDark}}>
-                  <Typography className="line-clamp-1 line-clamp"  sx={{color: 'whitesmoke'}} variant='caption'>{event?.event_type?.toUpperCase()}</Typography>
+                    /> */}
+                <Box 
+                    sx={{ backgroundColor: colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
+                    >
+                    <Image 
+                        src={event?.poster}
+                        layout='responsive'
+                        alt={event?.title}
+                        width='100%'
+                        height={100}
+                        />
+                </Box>
+                <Box sx={{padding: 1, backgroundColor: colors.grey[800]}}>
+                  <Typography className="line-clamp-1 line-clamp"  sx={{color: 'whitesmoke'}} variant='caption'>{event?.event_category?.toUpperCase()}</Typography>
                 </Box>
                 <CardContent>
                     <Stack spacing={1}>

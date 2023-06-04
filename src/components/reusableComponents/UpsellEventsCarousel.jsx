@@ -17,6 +17,8 @@ import PublicIcon from '@mui/icons-material/Public';
 import InsertInvitationOutlinedIcon from '@mui/icons-material/InsertInvitationOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
+import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
+import { useDispatch } from 'react-redux';
 
 
 
@@ -56,6 +58,7 @@ function CarouselPrevArrow(props) {
 
 const ProductsCarouselDukaflani = ({ color1, color2, icon, upsellEvents, promoter, publisherUserID }) => {
     const router = useRouter()
+    const dispatch = useDispatch()
     const [productHovered, setProductHovered] = useState(null)
   
     const handleMouseEnter = (index) => {
@@ -148,7 +151,10 @@ const ProductsCarouselDukaflani = ({ color1, color2, icon, upsellEvents, promote
                             </Box>
                             </Stack>
                             <Box sx={{padding: 0.5}}>
-                              <Button onClick={() => router.push({ pathname: `/events/${upsellEvent?.id}`, query: {a: publisherUserID} }) } variant='text' size='small' fullWidth >Event Details</Button>
+                              <Button onClick={() => {
+                                dispatch(pageHasChanged(true))
+                                router.push({ pathname: `/events/${upsellEvent?.id}`, query: {a: publisherUserID} }) 
+                                }} variant='text' size='small' fullWidth >Event Details</Button>
                             </Box>
                           </Paper>
                       </Box>

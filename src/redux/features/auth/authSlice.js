@@ -5,6 +5,7 @@ const initialState = {
     token: '',
     userInfo: null,
     profileInfo: null,
+    deleteRefreshToken: false
 }
 
 
@@ -25,6 +26,7 @@ const authSlice = createSlice({
             state.token = ''
             state.userInfo = null
             state.profileInfo = null
+            state.deleteRefreshToken = true
         }
     }
 })

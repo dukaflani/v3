@@ -47,13 +47,18 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                 } else {
                         return undefined
                     }
-                }
+                },
+                enabled: !!eventid
             })
 
-    const publisherUserID = event?.user ? event?.user : 0
-    const { data: profile, isLoading: loadingProfile } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID))
+    const publisherUserID = event?.user 
+    const { data: profile, isLoading: loadingProfile } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID), {
+        enabled: !!publisherUserID
+    })
 
-    const { data: upsellEvents } = useQuery(["upsell-events", publisherUserID], (publisherUserID) => getUpsellEvents(publisherUserID))
+    const { data: upsellEvents } = useQuery(["upsell-events", publisherUserID], (publisherUserID) => getUpsellEvents(publisherUserID), {
+        enabled: !!publisherUserID
+    })
             
     const time = event?.time
     const timeArray = time?.split(":").map(Number);
@@ -69,12 +74,12 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
             <meta name="description" content="Discover events from the biggest event organisers in Africa"/>
             <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
         </Head>
-        <Box sx={{backgroundColor: theme.myColors.myBackground, minHeight: '100vh', paddingY: 5}}>
+        <Paper sx={{ minHeight: '100vh', paddingY: 5}}>
             <Container maxWidth='lg'>
                 <Box>
                     <Grid container sx={{paddingTop: 5}} rowSpacing={3}>
                         <Grid item xs={12}>
-                            <Paper square sx={{padding: 2}}>
+                            <Paper variant="outlined" square sx={{padding: 2}}>
                                 <Grid container columnSpacing={3}>
                                     <Grid item xs={12} md={4}>
                                         {!loadingEvent ? (<Box sx={{position: 'relative', borderRadius: 2, background: colors.grey[100]}}>
@@ -139,7 +144,7 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                     <Stack spacing={-0.5}>
                                                         <Stack spacing={0.5} direction='row'>
                                                             {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
-                                                            {profile?.is_verified == 'True' && <CheckCircleIcon sx={{ fontSize: 15, color: theme.myColors.textDark }} />}                   
+                                                            {profile?.is_verified == 'True' && <CheckCircleIcon sx={{ fontSize: 15, color: colors.grey[800] }} />}                   
                                                         </Stack>
                                                         {!loadingProfile ? (<Typography variant='caption'>{profile?.role}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
@@ -155,7 +160,7 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                             </Paper>
                         </Grid>
                         <Grid item xs={12}>
-                            <Paper square>
+                            <Paper variant="outlined" square>
                                 <Stack>
                                     <Box sx={{padding: 1.5}}>
                                         <Typography variant="h6">Event Details</Typography>
@@ -214,12 +219,12 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                     <Copyright/>
                 </Box>
             </Container>
-        </Box>
-        <Container sx={{backgroundColor: theme.myColors.myBackground, position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 99}} maxWidth='lg'>
+        </Paper>
+        <Container sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 99}} maxWidth='lg'>
         <Link href={event?.ticket_link} underline='none' target="_blank" rel="noopener">
-            <Box sx={{width: '100%', paddingBottom: 2}}>
+            <Paper elevation={0} square sx={{width: '100%', paddingBottom: 2}}>
                 <Button disabled={!event?.ticket_link} startIcon={<LocalActivityOutlinedIcon />}  fullWidth  variant="contained" size='medium'>Buy Tickets</Button>
-            </Box>
+            </Paper>
         </Link>
         </Container>
     </MobileNavigationLayout>

@@ -1,8 +1,11 @@
 // React Imports
 import { useState } from "react"
 
+// NextJS Imports
+import Image from "next/legacy/image";
+
 // MUI Imports
-import { Box, Typography, Stack, Paper, CardContent, CardMedia, Card, CardActionArea, Grid, Link } from "@mui/material"
+import { Box, Typography, Stack, Paper, CardContent, CardMedia, Card, CardActionArea, Grid, Link, colors } from "@mui/material"
 
 // Project Imports
 // import logo from '../../public/assets/pictures/Apple-Music.png'
@@ -17,16 +20,27 @@ export const StreamingLinksCard = ({ cardHovered, i, streamingLink }) => {
 
   return (
     <Link href={streamingLink?.link} underline="none" target="_blank" rel="noopener">
-      <Card sx={{width: '100%', marginTop: 1, cursor: 'pointer'}} elevation={cardHovered == i ? 5 : cardHovered == null ? 0 : 0}>
+      <Card variant="outlined" sx={{width: '100%', marginTop: 1, cursor: 'pointer'}} elevation={cardHovered == i ? 5 : cardHovered == null ? 0 : 0}>
         <CardActionArea>
         <Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-          <CardMedia
+          {/* <CardMedia
             component="img"
             sx={{ width: 135, height: 85 }}
             image={streamingLink?.logo}
             title={streamingLink?.streaming_service.replace('_', ' ')}
             alt={streamingLink?.streaming_service.replace('_', ' ')}
-          />
+          /> */}
+          <Box 
+              sx={{ backgroundColor: colors.grey[200], width: 260,  position: "relative", cursor:'pointer'}}
+              >
+              <Image 
+                  src={streamingLink?.logo}
+                  layout='responsive'
+                  alt={streamingLink?.streaming_service.replace('_', ' ')}
+                  width={260}
+                  height={170}
+                  />
+          </Box>
           <CardContent sx={{width: '100%'}}>
             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: "space-between"}}>
               <Box>
@@ -52,16 +66,27 @@ export const StreamingLinksDefaultCard = ({ defaultCardHovered, youtubeID }) => 
 
   return (
     <Link href={`https://www.youtube.com/watch?v=${youtubeID}`} underline="none" target="_blank" rel="noopener">
-      <Card sx={{width: '100%', marginTop: 1, cursor: 'pointer'}} elevation={defaultCardHovered == "a" ? 5 : defaultCardHovered == null ? 0 : 0}>
+      <Card variant="outlined" sx={{width: '100%', marginTop: 1, cursor: 'pointer'}} elevation={defaultCardHovered == "a" ? 5 : defaultCardHovered == null ? 0 : 0}>
         <CardActionArea>
         <Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-          <CardMedia
+          {/* <CardMedia
             component="img"
             sx={{ width: 135, height: 85 }}
             image= "https://dukaflani-user-uploads.s3.amazonaws.com/default/YouTube.png"
             title="YouTube"
             alt="YouTube"
-          />
+          /> */}
+          <Box 
+              sx={{ backgroundColor: colors.grey[200], width: 260,  position: "relative", cursor:'pointer'}}
+              >
+              <Image 
+                  src="https://dukaflani-user-uploads.s3.amazonaws.com/default/YouTube.png"
+                  layout='responsive'
+                  alt="YouTube"
+                  width={260}
+                  height={170}
+                  />
+          </Box>
           <CardContent sx={{width: '100%',}}>
             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: "space-between"}}>
               <Box>

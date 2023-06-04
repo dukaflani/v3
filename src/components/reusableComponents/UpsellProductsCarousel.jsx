@@ -18,6 +18,8 @@ import numeral from 'numeral';
 
 // Icons
 import { UserOutlined } from "@ant-design/icons";
+import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
+import { useDispatch } from 'react-redux';
 
 
 
@@ -56,6 +58,7 @@ function CarouselPrevArrow(props) {
 
 const ProductsCarouselDukaflani = ({ promoter, color1, color2, icon, upsellProducts }) => {
     const router = useRouter()
+    const dispatch = useDispatch()
     const [productHovered, setProductHovered] = useState(null)
   
     const handleMouseEnter = (index) => {
@@ -136,7 +139,10 @@ const ProductsCarouselDukaflani = ({ promoter, color1, color2, icon, upsellProdu
                             </Box>
                             </Stack>
                             <Box sx={{padding: 0.5}}>
-                              <Button onClick={() => router.push({ pathname: `/shop/${upsellProduct?.id}` })} variant='text' size='small' fullWidth >View Details</Button>
+                              <Button onClick={() => {
+                                dispatch(pageHasChanged(true))
+                                router.push({ pathname: `/shop/${upsellProduct?.id}` })
+                                }} variant='text' size='small' fullWidth >View Details</Button>
                             </Box>
                           </Paper>
                       </Box>

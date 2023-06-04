@@ -4,7 +4,8 @@ import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 
 //MUI Imports
-import { Avatar, Box, Button, colors, Container, Divider, Grid, Link, Paper, Skeleton, Stack, Typography } from "@mui/material"
+import { Avatar, Box, Button, colors, Container, Divider, Grid, Link, Paper, Skeleton, 
+    Stack, Typography, useMediaQuery } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
 
 // TanStack/React-Query
@@ -12,6 +13,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 // NPM Imports
 import numeral from 'numeral';
+import { useSelector } from "react-redux";
 
 // Icons
 import { ScheduleOutlined } from "@ant-design/icons";
@@ -34,13 +36,13 @@ import { getCurrentEvent, getCurrentVideoUserProfile, getUpsellEvents } from "@/
 
 
 const EventPage = ({ setIsDarkMode, isDarkMode }) => {
+    const is_darkMode = useSelector((state) => state.theme.isDarkMode)
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
     const router = useRouter()
     const { eventid } = router.query
     const { a } = router.query
 
-    // const currentEventID = eventid ? eventid : 0
-    // const { data: eventX } = useQuery(["current-event", currentEventID], (currentEventID) => getCurrentEvent(currentEventID))
 
     const queryClient = useQueryClient()
     const { data: event, isLoading: loadingEvent } = useQuery(["current-event", eventid], (eventid) => getCurrentEvent(eventid), {
@@ -51,13 +53,18 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                 } else {
                         return undefined
                     }
-                }
+                },
+                enabled: !!eventid
             })
 
-    const publisherUserID = event?.user ? event?.user : 0
-    const { data: profile, isLoading: loadingProfile } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID))
+    const publisherUserID = event?.user 
+    const { data: profile, isLoading: loadingProfile } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID), {
+        enabled: !!publisherUserID
+    })
 
-    const { data: upsellEvents } = useQuery(["upsell-events", publisherUserID], (publisherUserID) => getUpsellEvents(publisherUserID))
+    const { data: upsellEvents } = useQuery(["upsell-events", publisherUserID], (publisherUserID) => getUpsellEvents(publisherUserID), {
+        enabled: !!publisherUserID
+    })
             
     const time = event?.time
     const timeArray = time?.split(":").map(Number);
@@ -96,12 +103,12 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                 content={event?.poster} 
                 />
       </Head>
-        <Box sx={{backgroundColor: theme.myColors.myBackground, minHeight: '100vh', paddingTop: 5}}>
+        <Paper sx={{ minHeight: '100vh', paddingTop: 5}}>
             <Container maxWidth='lg'>
                 <Box>
                     <Grid container sx={{padding: 5}} rowSpacing={3}>
                         <Grid item xs={12}>
-                            <Paper square sx={{padding: 2}}>
+                            <Paper variant="outlined" square sx={{padding: 2}}>
                                 <Grid container columnSpacing={3}>
                                     <Grid item xs={12} md={4}>
                                         {!loadingEvent ? (<Box sx={{position: 'relative', borderRadius: 2, background: colors.grey[100]}}>
@@ -168,7 +175,7 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                     <Stack spacing={-0.5}>
                                                         <Stack spacing={0.5} direction='row'>
                                                             {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
-                                                            {profile?.is_verified == 'True' && <CheckCircleIcon sx={{ fontSize: 15, color: theme.myColors.textDark }} />}                   
+                                                            {profile?.is_verified == 'True' && <CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} />}  
                                                         </Stack>
                                                         {!loadingProfile ? (<Typography variant='caption'>{profile?.role}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
@@ -184,7 +191,7 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                             </Paper>
                         </Grid>
                         <Grid item xs={12}>
-                            <Paper square>
+                            <Paper variant="outlined" square>
                                 <Stack>
                                     <Box sx={{padding: 1.5}}>
                                         <Typography variant="h6">Event Details</Typography>
@@ -243,7 +250,7 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                     <Copyright/>
                 </Box>
             </Container>
-        </Box>
+        </Paper>
 
     </NavigationLayout2>
   )
