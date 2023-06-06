@@ -7,7 +7,7 @@ import Image from "next/legacy/image";
 import { useRouter } from 'next/router';
 
 //  Mui Imports
-import { Avatar, Box, Card, colors, Container, Divider, Grid, Button, Stack, Typography, 
+import { Avatar, Box, Card, colors, Container, Divider, Grid, Button, Stack, Typography, CircularProgress ,
     CardContent, CardActionArea, Tooltip, Tabs, Tab, Paper, Link, Skeleton, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
@@ -205,6 +205,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                             <Grid xs={12} md={8} item>
                                 <Stack>
                                     {data?.youtube_embed_link ? (<Box sx={{position: 'relative', paddingBottom: '56.25%'}}>
+                                        {/* <CircularProgress sx={{ position: 'absolute' }} color="inherit" /> */}
                                         <iframe width='100%' height='100%' src={data?.youtube_embed_link} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                                     </Box>) : (<Skeleton animation="wave"  variant="rectangular" sx={{ paddingTop: '56.25%', width: '100%'}} />)}
                                     <Stack>

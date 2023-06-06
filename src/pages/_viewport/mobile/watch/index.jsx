@@ -61,7 +61,7 @@ import Copyright from '@/components/reusableComponents/Copyright';
 
 const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
-   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
     const router = useRouter()
     const { v } = router.query
@@ -200,7 +200,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                         </Box>) : (<Skeleton animation="wave"  variant="rectangular" sx={{ paddingTop: '56.25%', width: '100%'}} />)}
                     </Container>
                 </Box>
-                <Paper variant="outlined" square sx={{display: 'flex', justifyContent: 'center'}}>
+                <Paper elevation={0} square sx={{display: 'flex', justifyContent: 'center'}}>
                     <Tabs
                         variant="scrollable"
                         scrollButtons
@@ -218,6 +218,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                         <Tab icon={<RadioOutlined />} iconPosition='start' label="Media" />
                     </Tabs>
                 </Paper>
+            <Divider/>
             </Box>
             <Container sx={{paddingTop: 3}} maxWidth='sm'>
                 <Stack spacing={1.5}>
@@ -235,7 +236,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                         <Box sx={{paddingX: 1, display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                             <Stack spacing={0.5} direction='row'>
                                 {data?.stage_name ? (<Typography className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography>) : (<Skeleton width="100%" />)}
-                                {data?.verified && <CheckCircleIcon sx={{ fontSize: 13, color: colors.grey[800] }} />}
+                                {data?.verified && <CheckCircleIcon sx={{ fontSize: 13, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800] }} />}
                             </Stack>
                         </Box>
                         <Box sx={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'start', paddingX: 1}}>

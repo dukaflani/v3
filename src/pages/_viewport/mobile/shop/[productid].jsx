@@ -4,11 +4,13 @@ import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 
 //MUI Imports
-import { Avatar, Box, Button, colors, Container, Divider, Grid, Link, Paper, Stack, Skeleton, Typography } from "@mui/material"
+import { Avatar, Box, Button, colors, Container, Divider, Grid, Link, Paper, Stack, Skeleton, Typography, 
+    useMediaQuery } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
 
 // NPM Imports
 import numeral from 'numeral';
+import { useSelector } from "react-redux";
 
 // Icons
 import { AppstoreOutlined, WhatsAppOutlined, CheckCircleFilled, FireOutlined } from "@ant-design/icons";
@@ -26,6 +28,8 @@ import { getCurrentVideoProduct, getCurrentVideoUserProfile, getUpsellProducts }
 
 
 const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
+    const is_darkMode = useSelector((state) => state.theme.isDarkMode)
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
     const router = useRouter()
     const { productid } = router.query
@@ -130,7 +134,7 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
                                                     <Stack spacing={-0.5}>
                                                         <Stack spacing={0.5} direction='row'>
                                                             {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
-                                                            {profile?.is_verified == "True" && <CheckCircleFilled style={{ fontSize: 13, color: colors.grey[800] }} />}                   
+                                                            {profile?.is_verified == "True" && <CheckCircleFilled style={{ fontSize: 13, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800] }} />}                   
                                                         </Stack>
                                                         {!loadingProfile ? (<Typography variant='caption'>{profile?.role}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>
