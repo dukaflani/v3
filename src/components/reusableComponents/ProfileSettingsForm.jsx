@@ -43,6 +43,7 @@ const ProfileSettingsForm = () => {
     const [instagram, setInstagram] = useState("")
     const [tiktok, setTiktok] = useState("")
     const [youtube_channel, setYoutube_channel] = useState("")
+    const [currentUserUsername, setCurrentUserUsername] = useState("")
     
     
     const currentUser = useSelector((state) => state.auth.userInfo)
@@ -67,6 +68,7 @@ const ProfileSettingsForm = () => {
             setInstagram(data[0]?.instagram ? data[0]?.instagram : "")
             setTiktok(data[0]?.tiktok ? data[0]?.tiktok : "")
             setYoutube_channel(data[0]?.youtube_channel ? data[0]?.youtube_channel : "")
+            setCurrentUserUsername(currentUser?.username)
             setOpenLoadingProfileDialogue(false)
         },
         enabled: !!userID
@@ -88,6 +90,7 @@ const ProfileSettingsForm = () => {
     useEffect(() => {
       if (loadingProfile) {
         setOpenLoadingProfileDialogue(true)
+        
       }
     }, [loadingProfile])
 
@@ -160,11 +163,12 @@ const ProfileSettingsForm = () => {
                 twitter: formik.values.twitter,
                 instagram: formik.values.instagram,
                 tiktok: formik.values.tiktok,
+                username: currentUserUsername,
                 youtube_channel: formik.values.youtube_channel
         })
-        },
-        
+        },    
     })
+
 
 
     const textFieldConfig = {
@@ -192,7 +196,7 @@ const ProfileSettingsForm = () => {
         formik.setFieldValue("tiktok", tiktok);
         formik.setFieldValue("youtube_channel", youtube_channel);
       }, [profile_id, profile_management, profile_nationality, 
-        booking_email, booking_contact, about, facebook, twitter, instagram, tiktok, youtube_channel, formik]);
+        booking_email, booking_contact, about, facebook, twitter, instagram, tiktok, youtube_channel, formik, currentUser]);
 
 
   return (
