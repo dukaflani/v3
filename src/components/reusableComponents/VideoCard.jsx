@@ -124,7 +124,10 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                     {video.title}
                   </Link>
                   <Stack>
-                    <Stack direction="row" spacing={0.5}>
+                    <Stack onClick={() => {
+                       router.push({ pathname: `/${video?.username}` })
+                        dispatch(pageHasChanged(true))
+                        }} direction="row" spacing={0.5}>
                       <Tooltip title={video.stage_name} placement="top" >
                         <Typography sx={{letterSpacing: 0}} className="line-clamp-1 line-clamp" variant='body2'>{video.stage_name}</Typography>
                       </Tooltip>

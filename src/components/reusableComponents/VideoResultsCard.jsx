@@ -111,9 +111,12 @@ const VideoResultsCard = ({ video }) => {
                                      >
                                         {video.title}
                                 </Link>
-                                <Stack direction='row' spacing={0.5}>
-                                <Tooltip title={video.stage_name} placement="top" ><Typography sx={{cursor: 'pointer'}} className="line-clamp-1 line-clamp" variant='body2'>{video.stage_name}</Typography></Tooltip>
-                                {video.verified && <Tooltip title='Verified' placement="top" ><CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} /></Tooltip>}
+                                <Stack onClick={() => {
+                                    router.push({ pathname: `/${video?.username}` })
+                                    dispatch(pageHasChanged(true))
+                                    }} direction='row' spacing={0.5}>
+                                  <Tooltip title={video.stage_name} placement="top" ><Typography sx={{cursor: 'pointer'}} className="line-clamp-1 line-clamp" variant='body2'>{video.stage_name}</Typography></Tooltip>
+                                  {video.verified && <Tooltip title='Verified' placement="top" ><CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} /></Tooltip>}
                                 </Stack>
                                 <Typography variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>
                             </Stack>
