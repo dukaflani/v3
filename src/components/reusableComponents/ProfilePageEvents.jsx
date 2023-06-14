@@ -3,8 +3,7 @@ import { useRouter } from 'next/router'
 import Image from "next/legacy/image";
 
 // MUI Imports
-import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Stack, Typography, colors } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
+import { Box, Button, Card, CardActionArea, CardContent, Stack, Typography, colors, Grid } from '@mui/material'
 
 // NPM Imports
 import { useDispatch } from 'react-redux';
@@ -19,8 +18,9 @@ import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 import { months } from '@/data/months';
 import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
-const EventResultsCard = ({ event }) => {
-  const theme = useTheme()
+
+
+const ProfilePageEventCard = ({ event }) => {
   const router = useRouter()
   const dispatch = useDispatch()
 
@@ -43,19 +43,13 @@ const EventResultsCard = ({ event }) => {
   }
 
 
+
+
   return (
     <Box sx={{paddingTop: 2}}>
       <Stack>
-        {/* <Box>
-          <Typography  sx={{color: 'whitesmoke', backgroundColor: colors.grey[800]}} variant='caption'>{event?.event_category?.toUpperCase()}</Typography>
-        </Box> */}
         <Card variant='outlined' onClick={handleEventClick} square>
             <CardActionArea>
-                {/* <CardMedia
-                    sx={{ height: 200 }}
-                    image={event?.poster}
-                    title={event?.title}
-                    /> */}
                 <Box 
                     sx={{ backgroundColor: colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
                     >
@@ -105,4 +99,20 @@ const EventResultsCard = ({ event }) => {
   )
 }
 
-export default EventResultsCard
+
+const ProfilePageEvents = ({ events, loadingEvents }) => {
+  return (
+    <>
+      {loadingEvents && <div>Loading events...</div>}
+      <Grid container spacing={2}>
+        {events?.map((event, i) => (
+          <Grid item xs={12} sm={6} key={i}>
+            <ProfilePageEventCard  event={event}  />
+          </Grid>
+        ))}
+      </Grid>
+    </>
+  )
+}
+
+export default ProfilePageEvents

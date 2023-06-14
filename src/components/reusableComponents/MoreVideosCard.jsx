@@ -31,9 +31,9 @@ import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 
 const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }, ref) => {
+    const theme = useTheme()
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-    const theme = useTheme()
     const router = useRouter()
     const dispatch = useDispatch()
 
@@ -180,7 +180,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
                             <LocalOfferOutlinedIcon /> 
                           </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary="Go to product details" secondary={`${video?.product_title.substring(0, 20)}...`} />
+                        <ListItemText primary="Go to product details" secondary={`${video?.product_title?.substring(0, 20)}...`} />
                       </ListItem>
                     </List>
                   </MenuItem>

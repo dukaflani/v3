@@ -3,28 +3,34 @@ import { useRouter } from "next/router"
 import Image from "next/legacy/image";
 
 // MUI Imports
-import { Box, Stack, Typography, Card, CardMedia, CardContent, colors, Button, CardActionArea } from "@mui/material"
+import { Box, Stack, Typography, Card, CardContent, colors, Button,
+     CardActionArea, Grid } from "@mui/material"
 
 // NPM Imports
 import numeral from 'numeral';
+
 
 // Icons
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import { useDispatch } from "react-redux";
 import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
 
-const ProductResultsCard = ({ product }) => {
+
+
+
+
+const ProfilePageProductCard = ({ product }) => {
     const router = useRouter()
     const dispatch = useDispatch()
 
 
   return (
-    <Box>
-        <Card variant="outlined" onClick={() => {
+        <Box>
+            <Card variant="outlined" onClick={() => {
             dispatch(pageHasChanged(true))
             router.push({ pathname: `/shop/${product?.id}` })
             }} square>
-            <CardActionArea>
+                <CardActionArea>
                     <Box 
                         sx={{ backgroundColor: colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
                         >
@@ -68,4 +74,23 @@ const ProductResultsCard = ({ product }) => {
   )
 }
 
-export default ProductResultsCard
+
+
+
+const ProfilePageProducts = ({ products, loadingProducts }) => {
+
+  return (
+    <>
+        {loadingProducts && <div>Loading products...</div>}
+        <Grid container spacing={2}>
+            {products?.map((product, i) => (
+                <Grid item xs={12} sm={6} key={i}>
+                    <ProfilePageProductCard  product={product} />
+                </Grid>
+            ))}
+        </Grid>
+    </>
+  )
+}
+
+export default ProfilePageProducts

@@ -173,7 +173,7 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                 </Box>
                                                 <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start'}}>
                                                     <Stack spacing={-0.5}>
-                                                        <Stack spacing={0.5} direction='row'>
+                                                        <Stack onClick={() => router.push({ pathname: `/${profile?.username}` })} sx={{cursor: 'pointer'}} spacing={0.5} direction='row'>
                                                             {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
                                                             {profile?.is_verified == 'True' && <CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} />}  
                                                         </Stack>

@@ -6,12 +6,11 @@ import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 
 // Tanstack/React Query
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // MUI Imports
 import { Box, colors, Grid, IconButton, Link, Stack, Tooltip, Typography,
    Menu, MenuItem, List, ListItem, ListItemText, ListItemAvatar, Avatar, useMediaQuery, } from "@mui/material"
-import { useTheme } from '@mui/material/styles';
 
 // Icons
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -26,11 +25,14 @@ import { useDispatch, useSelector } from 'react-redux';
 // Project Imports
 import { addView } from '@/axios/axios';
 import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
+import { profileVideos } from "@/axios/axios"
 
-const VideoResultsCard = ({ video }) => {
+
+
+
+const ProfilePageVideoCard = ({ video }) => {
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-    const theme = useTheme()
     const router = useRouter()
     const dispatch = useDispatch()
 
@@ -74,6 +76,8 @@ const VideoResultsCard = ({ video }) => {
         router.push({pathname: '/watch', query: {v: video.youtube_id}})
         mutate(newView)
       }
+
+
 
 
 
@@ -172,7 +176,7 @@ const VideoResultsCard = ({ video }) => {
                       <ListItem onClick={() => {
                         dispatch(pageHasChanged(true))
                         router.push({ pathname: `/shop/${video?.product}` })
-                        }} disableGutters>
+                    }} disableGutters>
                         <ListItemAvatar>
                           <Avatar>
                             <LocalOfferOutlinedIcon /> 
@@ -191,4 +195,22 @@ const VideoResultsCard = ({ video }) => {
   )
 }
 
-export default VideoResultsCard
+
+
+
+
+const ProfilePageVideos = ({ videos, loadingVideos }) => {
+
+  return (
+    <>
+        {loadingVideos && <Box>Loading videos...</Box>}
+        {videos?.map((video, i) => (
+            <Box key={i}>
+                <ProfilePageVideoCard video={video} />
+            </Box>
+        ))}
+    </>
+  )
+}
+
+export default ProfilePageVideos

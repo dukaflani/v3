@@ -146,7 +146,7 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                 </Box>
                                                 <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start'}}>
                                                     <Stack spacing={-0.5}>
-                                                        <Stack spacing={0.5} direction='row'>
+                                                        <Stack onClick={() => router.push({ pathname: `/${profile?.username}` })} spacing={0.5} direction='row'>
                                                             {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
                                                             {profile?.is_verified == 'True' && <CheckCircleIcon sx={{ fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800] }} />}                   
                                                         </Stack>

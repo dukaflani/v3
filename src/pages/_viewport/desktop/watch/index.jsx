@@ -178,7 +178,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
 
                 
                 <meta property="og:type" content="website"/>
-                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}&tab=links`} />
+                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}`} />
                 <meta property="og:title" content={`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
                 <meta property="og:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
                 <meta 
@@ -189,7 +189,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
 
                 
                 <meta property="twitter:card" content="summary_large_image"/>
-                <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}&tab=links`} />
+                <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}`} />
                 <meta property="twitter:title" content={`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
                 <meta property="twitter:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
                 <meta 
@@ -302,7 +302,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                         <Stack spacing={-0.2}>
                                                             <Stack spacing={0.5} direction='row'>
                                                                 <Tooltip title='Wakadinali'>
-                                                                    {data?.stage_name ? (<Typography sx={{cursor: 'pointer'}} className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography>) : (<Skeleton width="100%" />)}
+                                                                    {data?.stage_name ? (<Box onClick={() => router.push({ pathname: `/${data?.username}` })} sx={{cursor: 'pointer'}}><Typography className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography></Box>) : (<Skeleton width="100%" />)}
                                                                 </Tooltip>
                                                                 {data?.verified && <Tooltip title='Verified'><CheckCircleIcon sx={{ fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800], cursor: 'pointer' }} /></Tooltip>}                   
                                                             </Stack>

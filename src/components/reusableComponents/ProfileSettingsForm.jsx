@@ -1,5 +1,5 @@
 // React Imports
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 // NextJs Imports
 import { useRouter } from "next/router"
@@ -44,13 +44,21 @@ const ProfileSettingsForm = () => {
     const [tiktok, setTiktok] = useState("")
     const [youtube_channel, setYoutube_channel] = useState("")
     const [currentUserUsername, setCurrentUserUsername] = useState("")
+    const [currentUserObject, setCurrentUserObject] = useState(null)
     
     
     const currentUser = useSelector((state) => state.auth.userInfo)
     const user_profile = useSelector((state) => state.auth.profileInfo)
     const accessToken = useSelector((state) => state.auth.token)
 
-    const userID = currentUser?.id 
+    // useEffect(() => {
+    //     setCurrentUserObject(currentUser)
+    // }, [currentUser])
+
+    useMemo(() => setCurrentUserObject(currentUser), [currentUser])
+    
+
+    const userID = currentUserObject?.id 
     const { data: userProfile, isLoading: loadingProfile } = useQuery(["user-profile", userID], (userID) => getUserProfile(userID),
     
     {
@@ -129,17 +137,17 @@ const ProfileSettingsForm = () => {
                 phone: Yup.string(),
             }).required("Required"),
             profile_avatar: Yup
-                .mixed()
-                .test(
-                    "fileSize",
-                    "Should not be more than 1MB",
-                    value => value && value.size <= FILE_SIZE
-                  )
-                  .test(
-                    "fileFormat",
-                    "Unsupported Format! Use png, jpg or jpeg",
-                    value => value && SUPPORTED_FORMATS.includes(value.type)
-                  ),
+                .mixed(),
+                // .test(
+                //     "fileSize",
+                //     "Should not be more than 1MB",
+                //     value => value && value.size <= FILE_SIZE
+                //   )
+                //   .test(
+                //     "fileFormat",
+                //     "Unsupported Format! Use png, jpg or jpeg",
+                //     value => value && SUPPORTED_FORMATS.includes(value.type)
+                //   ),
             booking_email: Yup.string().email("Please enter a valid email"),
             booking_contact: Yup.number().integer().typeError("Please enter a valid phone number"),
             about: Yup.string(),
@@ -170,7 +178,6 @@ const ProfileSettingsForm = () => {
     })
 
 
-
     const textFieldConfig = {
         fullWidth: true,
         variant: 'outlined',
@@ -182,21 +189,52 @@ const ProfileSettingsForm = () => {
         variant: 'outlined',
       }
 
-      useEffect(() => {
+
+
+    useEffect(() => {
         formik.setFieldValue("id", profile_id);
+    }, [profile_id])
+
+    useEffect(() => {
         formik.setFieldValue("management", profile_management);
+    }, [profile_management])
+
+    useEffect(() => {
         formik.setFieldValue("nationality", profile_nationality && profile_nationality[0]);
-        // formik.setFieldValue("profile_avatar", profile_avatar);
+    }, [profile_nationality])
+
+    useEffect(() => {
         formik.setFieldValue("booking_email", booking_email);
+    }, [booking_email])
+
+    useEffect(() => {
         formik.setFieldValue("booking_contact", booking_contact);
+    }, [booking_contact])
+
+    useEffect(() => {
         formik.setFieldValue("about", about);
+    }, [about])
+
+    useEffect(() => {
         formik.setFieldValue("facebook", facebook);
+    }, [facebook])
+
+    useEffect(() => {
         formik.setFieldValue("twitter", twitter);
+    }, [twitter])
+
+    useEffect(() => {
         formik.setFieldValue("instagram", instagram);
+    }, [instagram])
+
+    useEffect(() => {
         formik.setFieldValue("tiktok", tiktok);
+    }, [tiktok])
+
+    useEffect(() => {
         formik.setFieldValue("youtube_channel", youtube_channel);
-      }, [profile_id, profile_management, profile_nationality, 
-        booking_email, booking_contact, about, facebook, twitter, instagram, tiktok, youtube_channel, formik, currentUser]);
+    }, [youtube_channel])
+    
 
 
   return (
@@ -400,7 +438,7 @@ const ProfileSettingsForm = () => {
                 </Box>
             </DialogContent>
             <DialogActions>
-            <Button onClick={() => router.push({pathname: '/account/profile'})}>View profile</Button>
+            <Button onClick={() => router.push({pathname: `/${currentUserUsername}`})}>View profile</Button>
             <Button color="error" onClick={() => setOpenUpdatedProfileDialogue(false)}>Close</Button>
             </DialogActions>
         </Dialog>

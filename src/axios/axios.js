@@ -217,3 +217,33 @@ export const searchEvents = async ( searchParams ) => {
     const response = await api.get(`/store/events-results-offset/?search=${searchTerm}&limit=20`)
     return response.data.results
 }
+
+export const profilePage = async (profileUsername) => {
+    const profile_username = profileUsername?.queryKey[1]
+    const response = await api.get(`/store/user-profile/?username=${profile_username}`)
+    return response.data[0]
+}
+
+export const profileVideos = async ( userID ) => {
+    const user_id = userID?.queryKey[1]
+    const response = await api.get(`/store/video-results-no-pagination/?user=${user_id}&limit=20`)
+    return response.data.results
+}
+
+export const profileProducts = async ( userID ) => {
+    const user_id = userID?.queryKey[1]
+    const response = await api.get(`/store/products-results-offset/?user=${user_id}&limit=20`)
+    return response.data.results
+}
+
+export const profileEvents = async ( userID ) => {
+    const user_id = userID?.queryKey[1]
+    const response = await api.get(`/store/events-results-offset/?user=${user_id}&limit=20`)
+    return response.data.results
+}
+
+export const profileMediaTours = async (userID) => {
+    const user_id = userID?.queryKey[1]
+    const response = await api.get(`/store/media-tour-offset/?user=${user_id}&limit=20`)
+    return response.data.results
+}

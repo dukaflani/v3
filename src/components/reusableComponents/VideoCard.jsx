@@ -205,7 +205,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                             <LocalOfferOutlinedIcon /> 
                           </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary="Go to product details" secondary={`${video?.product_title.substring(0, 20)}...`} />
+                        <ListItemText primary="Go to product details" secondary={`${video?.product_title?.substring(0, 20)}...`} />
                       </ListItem>
                     </List>
                   </MenuItem>

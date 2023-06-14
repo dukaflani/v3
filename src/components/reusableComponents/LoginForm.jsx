@@ -61,7 +61,6 @@ const LoginForm = () => {
             router.push({ pathname: `/` });
         },
     })
-    console.log("keep me logged in value:", keepMeLoggedIn)
 
     const onSubmit = (values) => {
         setKeepMeLoggedIn(values.keepLoggedIn)
