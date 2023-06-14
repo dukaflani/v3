@@ -303,7 +303,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                     <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start'}}>
                                                         <Stack spacing={-0.2}>
                                                             <Stack spacing={0.5} direction='row'>
-                                                                <Tooltip title='Wakadinali'>
+                                                                <Tooltip title={data?.stage_name}>
                                                                     {data?.stage_name ? (<Box onClick={() => {
                                                                         router.push({ pathname: `/${data?.username}` })
                                                                         dispatch(pageHasChanged(true))
