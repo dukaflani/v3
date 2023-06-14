@@ -22,7 +22,7 @@ import ProfileUserTabs from '@/components/reusableComponents/ProfileUserTabs'
 import ProfileUserItemsTabs from '@/components/reusableComponents/ProfileUserItemsTabs'
 import { profilePage } from '@/axios/axios'
 
-const userProfile = ({ setIsDarkMode, isDarkMode, }) => {
+const UserProfile = ({ setIsDarkMode, isDarkMode, }) => {
     const router = useRouter()
     const { username } = router.query
     const [loadingProfileDialog, setLoadingProfileDialog] = useState(true)
@@ -144,4 +144,4 @@ const userProfile = ({ setIsDarkMode, isDarkMode, }) => {
   )
 }
 
-export default userProfile
+export default UserProfile
