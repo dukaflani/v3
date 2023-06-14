@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 // NPM Imports
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import numeral from 'numeral';
 import { formatDistanceStrict } from 'date-fns'
 import Linkify from 'react-linkify';
@@ -42,6 +42,7 @@ import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLi
     getCurrentVideoProduct, getCurrentVideoLyrics, getCurrentVideoLyricsVerses,
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
     getCurrentVideoEvents, getCurrentVideoMediaTours } from '@/axios/axios';
+import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 // Components
 import MobileNavigationLayout from '@/layout/mobile/MobileNavigationLayout'
@@ -64,6 +65,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
     const router = useRouter()
+    const dispatch = useDispatch()
     const { v } = router.query
     const [tabPosition, setTabPosition] = useState(0)
     const [showSongDetails, setShowSongDetails] = useState(false)
@@ -235,7 +237,10 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                         {data?.profile_avatar ? (<Avatar  src={data?.profile_avatar} alt={data?.stage_name} />) : (<Skeleton animation="wave" variant="circular" width={40} height={40} />)}
                         <Box sx={{paddingX: 1, display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                             <Stack spacing={0.5} direction='row'>
-                                {data?.stage_name ? (<Box onClick={() => router.push({ pathname: `/${data?.username}` })}><Typography className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography></Box>) : (<Skeleton width="100%" />)}
+                                {data?.stage_name ? (<Box onClick={() => {
+                                    router.push({ pathname: `/${data?.username}` })
+                                    dispatch(pageHasChanged(true))
+                                    }}><Typography className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography></Box>) : (<Skeleton width="100%" />)}
                                 {data?.verified && <CheckCircleIcon sx={{ fontSize: 13, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800] }} />}
                             </Stack>
                         </Box>

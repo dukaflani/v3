@@ -15,7 +15,7 @@ import { useTheme } from '@mui/material/styles'
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 // NPM Imports
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import numeral from 'numeral';
 import Linkify from 'react-linkify';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -54,6 +54,7 @@ import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLi
     getCurrentVideoProduct, getCurrentVideoLyrics, getCurrentVideoLyricsVerses,
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
     getCurrentVideoEvents, getCurrentVideoMediaTours } from '@/axios/axios';
+import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 
 
@@ -62,6 +63,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
     const router = useRouter()
+    const dispatch = useDispatch()
     const { v } = router.query
     const [tabPosition, setTabPosition] = useState(0)
     const [showMoreText, setShowMoreText] = useState(false)
@@ -302,7 +304,10 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                         <Stack spacing={-0.2}>
                                                             <Stack spacing={0.5} direction='row'>
                                                                 <Tooltip title='Wakadinali'>
-                                                                    {data?.stage_name ? (<Box onClick={() => router.push({ pathname: `/${data?.username}` })} sx={{cursor: 'pointer'}}><Typography className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography></Box>) : (<Skeleton width="100%" />)}
+                                                                    {data?.stage_name ? (<Box onClick={() => {
+                                                                        router.push({ pathname: `/${data?.username}` })
+                                                                        dispatch(pageHasChanged(true))
+                                                                        }} sx={{cursor: 'pointer'}}><Typography className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography></Box>) : (<Skeleton width="100%" />)}
                                                                 </Tooltip>
                                                                 {data?.verified && <Tooltip title='Verified'><CheckCircleIcon sx={{ fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800], cursor: 'pointer' }} /></Tooltip>}                   
                                                             </Stack>

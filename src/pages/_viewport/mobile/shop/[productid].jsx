@@ -10,7 +10,7 @@ import { useTheme } from '@mui/material/styles'
 
 // NPM Imports
 import numeral from 'numeral';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // Icons
 import { AppstoreOutlined, WhatsAppOutlined, CheckCircleFilled, FireOutlined } from "@ant-design/icons";
@@ -25,6 +25,7 @@ import MobileNavigationLayout from '@/layout/mobile/MobileNavigationLayout'
 import UpsellProductsCarousel from '@/components/reusableComponents/UpsellProductsCarousel'
 import Copyright from '@/components/reusableComponents/Copyright'
 import { getCurrentVideoProduct, getCurrentVideoUserProfile, getUpsellProducts } from "@/axios/axios";
+import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
 
 
 const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
@@ -32,6 +33,7 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
     const router = useRouter()
+    const dispatch = useDispatch()
     const { productid } = router.query
 
 
@@ -132,7 +134,10 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
                                                 </Box>
                                                 <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start'}}>
                                                     <Stack spacing={-0.5}>
-                                                        <Stack onClick={() => router.push({ pathname: `/${profile?.username}` })} spacing={0.5} direction='row'>
+                                                        <Stack onClick={() => {
+                                                             dispatch(pageHasChanged(true))
+                                                            router.push({ pathname: `/${profile?.username}` })
+                                                            }} spacing={0.5} direction='row'>
                                                             {!loadingProfile ? (<Box><Typography variant='subtitle2'>{profile?.stage_name}</Typography></Box>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
                                                             {profile?.is_verified == "True" && <CheckCircleFilled style={{ fontSize: 13, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800] }} />}                   
                                                         </Stack>
