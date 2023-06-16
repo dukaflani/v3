@@ -72,7 +72,7 @@ const ProfileUserItemsTabs = ({ profile }) => {
   return (
     <>
         <Box >
-            <Box>
+            <Box sx={{paddingBottom: 2}}>
                 <Stack sx={{paddingBottom: 2}}>
                     <Box sx={{ width: '100%' }}>
                         <Tabs

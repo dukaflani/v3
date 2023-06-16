@@ -234,13 +234,18 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                         </Stack>
                     </Box>
                     <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-                        {data?.profile_avatar ? (<Avatar  src={data?.profile_avatar} alt={data?.stage_name} />) : (<Skeleton animation="wave" variant="circular" width={40} height={40} />)}
-                        <Box sx={{paddingX: 1, display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-                            <Stack spacing={0.5} direction='row'>
-                                {data?.stage_name ? (<Box onClick={() => {
+                        {data?.profile_avatar ? (<Box onClick={() => {
                                     router.push({ pathname: `/${data?.username}` })
                                     dispatch(pageHasChanged(true))
-                                    }}><Typography className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography></Box>) : (<Skeleton width="100%" />)}
+                                    }} ><Avatar  src={data?.profile_avatar} alt={data?.stage_name} /></Box>) : (<Skeleton animation="wave" variant="circular" width={40} height={40} />)}
+                        <Box 
+                            onClick={() => {
+                                    router.push({ pathname: `/${data?.username}` })
+                                    dispatch(pageHasChanged(true))
+                                    }} 
+                            sx={{paddingX: 1, display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
+                            <Stack spacing={0.5} direction='row'>
+                                {data?.stage_name ? (<Box ><Typography className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography></Box>) : (<Skeleton width="100%" />)}
                                 {data?.verified && <CheckCircleIcon sx={{ fontSize: 13, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800] }} />}
                             </Stack>
                         </Box>
@@ -270,7 +275,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                                         <Typography sx={{lineHeight: 1}} gutterBottom variant='subtitle2'>Start selling on Dukaflani now!</Typography>
                                         <Stack spacing={1.5}>
                                             <Stack direction="row" spacing={0.5}>
-                                                <Typography sx={{fontSize: 12, backgroundColor: 'yellow'}} className="line-clamp-1 line-clamp" variant='caption'>Ad</Typography>
+                                                <Typography sx={{fontSize: 12, backgroundColor: 'yellow', color: colors.grey[800]}} className="line-clamp-1 line-clamp" variant='caption'>Ad</Typography>
                                                 <Typography sx={{fontSize: 12, color: 'GrayText'}} className="line-clamp-1 line-clamp" variant='caption'>Dukaflani Marketplace</Typography>
                                             </Stack>
                                             <Button startIcon={<InfoOutlinedIcon/>} onClick={() => router.push({ pathname: '/links/contact_us' })} variant='text' size='small'>Learn More</Button>

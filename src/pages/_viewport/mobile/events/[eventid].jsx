@@ -143,7 +143,10 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                                             <Grid item xs={12} md={5}>
                                                 {event?.is_sponsored ? (<Typography variant="subtitle1" gutterBottom>Sponsored By:</Typography>) : (<Typography variant="subtitle1" gutterBottom>Promoted By:</Typography>)}
                                                 <Stack direction='row' spacing={1}>
-                                                <Box>
+                                                <Box onClick={() => {
+                                                    dispatch(pageHasChanged(true))
+                                                    router.push({ pathname: `/${profile?.username}` })
+                                                    }}>
                                                     <Avatar  src={profile?.profile_avatar} />
                                                 </Box>
                                                 <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start'}}>

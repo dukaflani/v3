@@ -10,6 +10,7 @@ import { useSelector } from "react-redux"
 // Project Imports
 import ProfileUserContacts from './ProfileUserContacts'
 import ProfileUserAbout from './ProfileUserAbout'
+import Copyright from './Copyright'
 
 
 const ProfileUserTabs = ({ profile }) => {
@@ -52,6 +53,9 @@ const ProfileUserTabs = ({ profile }) => {
                 }
             </Box>
         </Paper>
+        <Box sx={{display: {xs: 'none', sm: 'block'}}}>
+            <Copyright/>
+        </Box>
     </>
   )
 }

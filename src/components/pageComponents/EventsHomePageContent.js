@@ -1,65 +1,22 @@
-// Next Imports
-import { useRouter } from 'next/router';
-
 // MUI Imports
-import { Box, Grid, Stack, Container, IconButton, Tooltip, Link } from "@mui/material"
+import { Box, Grid, Container } from "@mui/material"
 
 // Components
 import EventsComponent from './EventsComponent'
 
 // Icons
-import { UserOutlined, CloudUploadOutlined, LayoutOutlined, SettingOutlined } from '@ant-design/icons'
-import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
-import { useDispatch } from 'react-redux';
+import HomePageSideIcons from '../reusableComponents/HomePageSideIcons';
 
 
 
 
 const HomePageContent = ({ value }) => {
-  const router = useRouter()
-  const dispatch = useDispatch()
 
   return (
     <Box sx={{ flexGrow: 1 }}>
     <Grid container spacing={2}>
       <Grid item md={1}>
-        <Box sx={{display: { xs: 'none', md: 'block' }}}>
-          <Stack 
-              spacing={2} 
-              sx={{ minHeight: '100vh', paddingTop: 2, position: 'fixed', top: 110, left: 30}}>
-            <Tooltip title="Profile" placement="right">
-              <IconButton onClick={() => {
-                dispatch(pageHasChanged(true))
-                router.push({ pathname: '/account/profile' })
-                }}>
-                <LayoutOutlined style={{ fontSize: 24 }} />
-              </IconButton>    
-            </Tooltip>
-            <Tooltip title="User Settings" placement="right">
-              <IconButton onClick={() => {
-                dispatch(pageHasChanged(true))
-                router.push({ pathname: '/' })
-                }}>
-                <UserOutlined style={{ fontSize: 24 }} />
-              </IconButton>    
-            </Tooltip>
-            <Tooltip title="Creator's Hub" placement="right">
-            <Link href='https://hub.dukaflani.com' underline='none' target="_blank" rel="noopener">
-              <IconButton>
-                <CloudUploadOutlined style={{ fontSize: 24 }} />
-              </IconButton>    
-              </Link>
-            </Tooltip>
-            <Tooltip title="Profile Settings" placement="right">
-              <IconButton onClick={() => {
-                dispatch(pageHasChanged(true))
-                router.push({ pathname: '/account/profile/settings' })
-                }}>
-                <SettingOutlined style={{ fontSize: 24 }} />
-              </IconButton>    
-            </Tooltip>
-          </Stack>
-        </Box>
+        <HomePageSideIcons/>
       </Grid>
       <Grid item xs={12} md={11}>
         <Container maxWidth='xl'>

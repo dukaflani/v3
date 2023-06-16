@@ -129,13 +129,16 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
                                             <Grid item xs={12} md={5}>
                                                 {product?.is_sponsored ? (<Typography variant="subtitle1" gutterBottom>Sponsored By:</Typography>) : (<Typography variant="subtitle1" gutterBottom>Promoted By:</Typography>)}
                                                 <Stack direction='row' spacing={1}>
-                                                <Box>
+                                                <Box onClick={() => {
+                                                        dispatch(pageHasChanged(true))
+                                                        router.push({ pathname: `/${profile?.username}` })
+                                                        }}>
                                                     <Avatar  src={profile?.profile_avatar} />
                                                 </Box>
                                                 <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start'}}>
                                                     <Stack spacing={-0.5}>
                                                         <Stack onClick={() => {
-                                                             dispatch(pageHasChanged(true))
+                                                            dispatch(pageHasChanged(true))
                                                             router.push({ pathname: `/${profile?.username}` })
                                                             }} spacing={0.5} direction='row'>
                                                             {!loadingProfile ? (<Box><Typography variant='subtitle2'>{profile?.stage_name}</Typography></Box>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}

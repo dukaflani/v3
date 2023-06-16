@@ -208,7 +208,7 @@ const ProfilePageVideos = ({ videos, loadingVideos }) => {
     <>
         {loadingVideos && <Box>Loading videos...</Box>}
         {videos?.map((video, i) => (
-            <Box key={i}>
+            <Box key={i} sx={{paddingBottom: 2}}>
                 <ProfilePageVideoCard video={video} />
             </Box>
         ))}

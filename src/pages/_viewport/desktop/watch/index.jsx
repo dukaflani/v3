@@ -298,7 +298,10 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                             <Box sx={{ width: '100%'}}>
                                                 <Stack spacing={1} direction='row' sx={{display: 'flex', alignItems: 'center', width: '100%'}}>
                                                     <Box>
-                                                        {data?.profile_avatar ? (<Avatar  src={data?.profile_avatar} alt={data?.stage_name} />) : (<Skeleton animation="wave" variant="circular" width={40} height={40} />)}
+                                                        {data?.profile_avatar ? (<Box onClick={() => {
+                                                                        router.push({ pathname: `/${data?.username}` })
+                                                                        dispatch(pageHasChanged(true))
+                                                                        }}><Avatar  src={data?.profile_avatar} alt={data?.stage_name} /></Box>) : (<Skeleton animation="wave" variant="circular" width={40} height={40} />)}
                                                     </Box>
                                                     <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'start', justifyContent: 'start'}}>
                                                         <Stack spacing={-0.2}>

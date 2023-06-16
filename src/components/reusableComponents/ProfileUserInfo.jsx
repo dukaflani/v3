@@ -56,9 +56,10 @@ const ProfileUserInfo = ({ profile }) => {
                                     <FontAwesomeIcon icon={faFacebook} />
                                 </Grid>
                                 <Grid item xs={11}>
-                                    {profile?.facebook ? (
+                                    {profile?.facebook != "null" ? (
                                         <Link href={profile?.facebook} underline='none' target="_blank" rel="noopener">
-                                            <Typography variant="caption">{profile?.facebook}</Typography>
+                                            {profile?.facebook?.length > 45 ? <Typography variant="caption">{`${profile?.facebook?.substring(0, 20)}...`}</Typography> : <Typography variant="caption">{profile?.facebook}</Typography>}
+                                            {/* <Typography variant="caption">{profile?.facebook}</Typography> */}
                                         </Link>
                                     ) 
                                     : 
@@ -69,9 +70,10 @@ const ProfileUserInfo = ({ profile }) => {
                                     <FontAwesomeIcon icon={faTwitter} />
                                 </Grid>
                                 <Grid item xs={11}>
-                                {profile?.twitter ? (
+                                {profile?.twitter != "null" ? (
                                     <Link href={profile?.twitter} underline='none' target="_blank" rel="noopener">
-                                            <Typography variant="caption">{profile?.twitter}</Typography>
+                                        {profile?.twitter?.length > 45 ? <Typography variant="caption">{`${profile?.twitter?.substring(0, 20)}...`}</Typography> : <Typography variant="caption">{profile?.twitter}</Typography>}
+                                            {/* <Typography variant="caption">{profile?.twitter}</Typography> */}
                                         </Link>
                                     ) 
                                     : 
@@ -82,9 +84,10 @@ const ProfileUserInfo = ({ profile }) => {
                                     <FontAwesomeIcon icon={faInstagram} />
                                 </Grid>
                                 <Grid item xs={11}>
-                                {profile?.instagram ? (
+                                {profile?.instagram != "null" ? (
                                     <Link href={profile?.instagram} underline='none' target="_blank" rel="noopener">
-                                            <Typography variant="caption">{profile?.instagram}</Typography>
+                                        {profile?.instagram?.length > 45 ? <Typography variant="caption">{`${profile?.instagram?.substring(0, 20)}...`}</Typography> : <Typography variant="caption">{profile?.instagram}</Typography>}
+                                            {/* <Typography variant="caption">{profile?.instagram}</Typography> */}
                                         </Link>
                                     ) 
                                     : 
@@ -95,9 +98,10 @@ const ProfileUserInfo = ({ profile }) => {
                                     <FontAwesomeIcon icon={faTiktok} />
                                 </Grid>
                                 <Grid item xs={11}>
-                                {profile?.tiktok ? (
+                                {profile?.tiktok != "null" ? (
                                     <Link href={profile?.tiktok} underline='none' target="_blank" rel="noopener">
-                                            <Typography variant="caption">{profile?.tiktok}</Typography>
+                                        {profile?.tiktok?.length > 45 ? <Typography variant="caption">{`${profile?.tiktok?.substring(0, 20)}...`}</Typography> : <Typography variant="caption">{profile?.tiktok}</Typography>}
+                                            {/* <Typography variant="caption">{profile?.tiktok}</Typography> */}
                                         </Link>
                                     ) 
                                     : 
@@ -108,9 +112,10 @@ const ProfileUserInfo = ({ profile }) => {
                                     <FontAwesomeIcon icon={faYoutube} />
                                 </Grid>
                                 <Grid item xs={11}>
-                                {profile?.youtube_channel ? (
+                                {profile?.youtube_channel != "null" ? (
                                         <Link href={profile?.youtube_channel} underline='none' target="_blank" rel="noopener">
-                                            <Typography variant="caption">{profile?.youtube_channel}</Typography>
+                                            {profile?.youtube_channel?.length > 45 ? <Typography variant="caption">{`${profile?.youtube_channel?.substring(0, 20)}...`}</Typography> : <Typography variant="caption">{profile?.youtube_channel}</Typography>}
+                                            {/* <Typography variant="caption">{profile?.youtube_channel}</Typography> */}
                                         </Link>
                                     ) 
                                     : 
