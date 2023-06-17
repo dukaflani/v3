@@ -259,8 +259,9 @@ const handleLoginRegister = () => {
   
     const handleNavigateToProfile = () => {
       dispatch(pageHasChanged(true))
-      router.push("/account/profile")
+      router.push(`/${currentLoggedInUser?.username}`)
     }
+
     const handleNavigateToProfileSettings = () => {
       dispatch(pageHasChanged(true))
       router.push("/account/profile/settings")
@@ -271,7 +272,7 @@ const navMenuItems = useMemo(() => [
   primaryText: currentLoggedInUser ? currentLoggedInUser?.stage_name : "User not logged in",
   secondaryText: currentLoggedInUser ? currentLoggedInUser?.role : "---",
   icon: currentLoggedInUser ? <Person2OutlinedIcon /> :  <PersonOffOutlined/>,
-  onClick: handleNavigateToProfile
+  onClick: currentLoggedInUser ? handleNavigateToProfile : handleLoginRegister 
 },
 {
   primaryText: "Appearance",
@@ -286,7 +287,7 @@ const navMenuItems2 = useMemo(() => [
   primaryText: "Profile",
   secondaryText: "Settings",
   icon: <SettingsApplicationsOutlinedIcon/>,
-  onClick: handleNavigateToProfileSettings
+  onClick: currentLoggedInUser ? handleNavigateToProfileSettings : handleLoginRegister
 },
 // {
 //   primaryText: "User",

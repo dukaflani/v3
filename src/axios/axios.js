@@ -197,6 +197,11 @@ export const updateProfile = async ({ id, accessToken, ...profileInfo }) => {
     return response.data
 }
 
+export const searchPageProfileLink = async (searchParams) => {
+    const searchTerm = searchParams?.queryKey[1]
+    const response = await api.get(`/store/user-profile/?search=${searchTerm}`)
+    return response.data[0]
+}
 
 export const searchVideos = async ( searchParams ) => {
     const searchTerm = searchParams?.queryKey[1]

@@ -1,27 +1,22 @@
 // React Imports
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 // MUI Imports
-import { useMediaQuery, Paper, Box, Stack, Tabs, Tab, Divider } from '@mui/material'
-
-// NPM Imports
-import { useSelector } from "react-redux"
+import {  Box, Stack, Tabs, Tab, Divider } from '@mui/material'
 
 // Tanstack Query
 import { useQuery } from "@tanstack/react-query"
 
 // Project Imports
-import ProfileUserAbout from './ProfileUserAbout'
 import ProfilePageVideos from './ProfilePageVideos'
 import ProfilePageProducts from './ProfilePageProducts'
 import { profileEvents, profileMediaTours, profileProducts, profileVideos } from '@/axios/axios'
 import ProfilePageEvents from './ProfilePageEvents'
 import ProfilePageMediaTours from './ProfilePageMediaTours'
+import { isAdminOrArtistProfile, isPromoterProfile, isVendorProfile } from '@/utils/checkRole'
 
 
 const ProfileUserItemsTabs = ({ profile }) => {
-    const is_darkMode = useSelector((state) => state.theme.isDarkMode)
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const [value, setValue] = useState("videos")
 
     const handleChange = (event, newValue) => {
@@ -67,6 +62,48 @@ const ProfileUserItemsTabs = ({ profile }) => {
         }
     })
 
+    const tabButtons = useMemo(
+        () => [
+            ...isAdminOrArtistProfile(profile) ? [
+                {
+                    value: "videos",
+                    label: "Videos",
+                },
+                {
+                    value: "products",
+                    label: "Products",
+                },
+                {
+                    value: "events",
+                    label: "Events",
+                },
+                {
+                    value: "media",
+                    label: "Media Tours",
+                },
+            ] : [],
+            ...isVendorProfile(profile) ? [
+                {
+                    value: "products",
+                    label: "Products",
+                },
+                {
+                    value: "media",
+                    label: "Media Tours",
+                },
+            ] : [],
+            ...isPromoterProfile(profile) ? [
+                {
+                    value: "events",
+                    label: "Events",
+                },
+                {
+                    value: "media",
+                    label: "Media Tours",
+                },
+            ] : []
+        ], [profile])
+
 
 
   return (
@@ -83,10 +120,9 @@ const ProfileUserItemsTabs = ({ profile }) => {
                             scrollButtons
                             allowScrollButtonsMobile
                         >
-                            <Tab value="videos" label="Videos" />
-                            <Tab value="products" label="Products" />
-                            <Tab value="events" label="Events" />
-                            <Tab value="media" label="Media Tours" />
+                            {tabButtons?.map((tabButton, i) => (
+                                <Tab key={i} value={tabButton.value} label={tabButton.label} />
+                            ))}
                         </Tabs>
                     </Box>
                     <Divider/>

@@ -23,7 +23,7 @@ import MobileNavigationLayout from '@/layout/mobile/MobileNavigationLayout'
 import VideoResultsComponent from '@/components/reusableComponents/VideoResultsComponent'
 import ProductResultsComponent from '@/components/reusableComponents/ProductResultsComponent'
 import EventResultsComponent from '@/components/reusableComponents/EventResultsComponent'
-import { searchVideos, searchProducts, searchEvents } from '@/axios/axios';
+import { searchVideos, searchProducts, searchEvents, searchPageProfileLink } from '@/axios/axios';
 
 const SearchPage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const searchTerm = useSelector((state) => state.search.searchTerm)
@@ -39,9 +39,19 @@ const SearchPage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
       };
 
 
-    const { data: videos, isLoading: loadingVideos, isFetching: fetchingVideos } = useQuery(["video-results", search_query], (search_query) => searchVideos(search_query))
-    const { data: products, isLoading: loadingProducts, isFetching: fetchingProducts } = useQuery(["product-results", search_query], (search_query) => searchProducts(search_query))
-    const { data: events, isLoading: loadingEvents, isFetching: fetchingEvents } = useQuery(["event-results", search_query], (search_query) => searchEvents(search_query))
+    const { data: profile, isLoading: loadingProfile, isFetching: fetchingProfile } = useQuery(["profile-result", search_query], (search_query) => searchPageProfileLink(search_query), {
+        enabled: !!search_query
+    })
+    const { data: videos, isLoading: loadingVideos, isFetching: fetchingVideos } = useQuery(["video-results", search_query], (search_query) => searchVideos(search_query), {
+        enabled: !!search_query
+    })
+    const { data: products, isLoading: loadingProducts, isFetching: fetchingProducts } = useQuery(["product-results", search_query], (search_query) => searchProducts(search_query), {
+        enabled: !!search_query
+    })
+    const { data: events, isLoading: loadingEvents, isFetching: fetchingEvents } = useQuery(["event-results", search_query], (search_query) => searchEvents(search_query), {
+        enabled: !!search_query
+    })
+
    
 
 

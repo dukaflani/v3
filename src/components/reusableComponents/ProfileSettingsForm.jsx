@@ -44,6 +44,7 @@ const ProfileSettingsForm = () => {
     const [tiktok, setTiktok] = useState("")
     const [youtube_channel, setYoutube_channel] = useState("")
     const [currentUserUsername, setCurrentUserUsername] = useState("")
+    const [currentUserStageName, setCurrentUserStageName] = useState("")
     const [currentUserObject, setCurrentUserObject] = useState(null)
     
     
@@ -77,6 +78,7 @@ const ProfileSettingsForm = () => {
             setTiktok(data[0]?.tiktok ? data[0]?.tiktok : "")
             setYoutube_channel(data[0]?.youtube_channel ? data[0]?.youtube_channel : "")
             setCurrentUserUsername(currentUser?.username)
+            setCurrentUserStageName(currentUser?.stage_name)
             setOpenLoadingProfileDialogue(false)
         },
         enabled: !!userID
@@ -172,6 +174,7 @@ const ProfileSettingsForm = () => {
                 instagram: formik.values.instagram,
                 tiktok: formik.values.tiktok,
                 username: currentUserUsername,
+                stage_name2: currentUserStageName,
                 youtube_channel: formik.values.youtube_channel
         })
         },    
