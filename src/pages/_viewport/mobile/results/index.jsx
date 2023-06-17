@@ -107,7 +107,7 @@ const SearchPage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                         <Box sx={{paddingTop: 3}}>
                             {
                                 {
-                                    0: <VideoResultsComponent isLoading={loadingVideos} videos={videos} />,
+                                    0: <VideoResultsComponent isLoading={loadingVideos} videos={videos} profile={profile} />,
                                     1: <ProductResultsComponent isLoading={loadingProducts} products={products} />,
                                     2: <EventResultsComponent isLoading={loadingEvents} events={events} />,
                                 }[tabValue]
