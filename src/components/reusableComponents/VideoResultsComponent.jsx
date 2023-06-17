@@ -52,7 +52,10 @@ const VideoResultsComponent = ({ isLoading, videos, profile }) => {
         <Grid container>
           {profile && <Grid item xs={12} sx={{display: {xs: 'block', sm: 'none'}, paddingY: 2}}>
             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-              <Stack direction="row" spacing={2} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+              <Stack onClick={() => {
+                        dispatch(pageHasChanged(true))
+                        router.push({ pathname: `/${profile?.username}` })
+                    }} direction="row" spacing={2} sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <Avatar sx={{height: 60, width: 60}} src={profile?.profile_avatar} />
                 <Stack>
                   <Stack direction="row" spacing={1} sx={{cursor: 'pointer'}}>
@@ -144,10 +147,14 @@ const VideoResultsComponent = ({ isLoading, videos, profile }) => {
            {profile && <Card variant="outlined">
               <CardHeader
                   avatar={
-                    <Avatar src={profile?.profile_avatar} />
+                    <Box onClick={() => {
+                      dispatch(pageHasChanged(true))
+                      router.push({ pathname: `/${profile?.username}` })
+                  }}>
+                      <Avatar src={profile?.profile_avatar} />
+                    </Box>
                   }
                   action={
-                    // <Button onClick={() => router.push({ pathname: `/${profile?.username}` })} size='small' variant='contained'>View</Button>
                     <>
                         <IconButton 
                             size='small' 
@@ -218,7 +225,10 @@ const VideoResultsComponent = ({ isLoading, videos, profile }) => {
                     </>
                   }
                   title={
-                    <Stack direction="row" spacing={1} sx={{cursor: 'pointer'}}>
+                    <Stack onClick={() => {
+                      dispatch(pageHasChanged(true))
+                      router.push({ pathname: `/${profile?.username}` })
+                  }} direction="row" spacing={1} sx={{cursor: 'pointer'}}>
                       <Tooltip title={profile?.stage_name} placement="top" >
                         <Typography variant="body2">{profile?.stage_name}</Typography>
                       </Tooltip>
