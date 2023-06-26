@@ -42,7 +42,7 @@ export const TabEventCard = ({ event, videoUserID }) => {
   }
 
   return (
-    <Box sx={{paddingTop: 2}}>
+    <Box sx={event?.id == 1 ? {display: 'none'} : {paddingTop: 2}}>
       <Stack>
         <Box>
           <Typography sx={{color: 'whitesmoke', backgroundColor: colors.grey[800]}} variant='caption'>{event?.event_category?.toUpperCase()}</Typography>

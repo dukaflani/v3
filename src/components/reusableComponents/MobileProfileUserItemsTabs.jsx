@@ -17,7 +17,7 @@ import { isAdminOrArtistProfile, isPromoterProfile, isVendorProfile } from '@/ut
 
 
 const ProfileUserItemsTabs = ({ profile }) => {
-    const [value, setValue] = useState("videos")
+    const [value, setValue] = useState("Links")
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -66,8 +66,8 @@ const ProfileUserItemsTabs = ({ profile }) => {
         () => [
             ...isAdminOrArtistProfile(profile) ? [
                 {
-                    value: "videos",
-                    label: "Videos",
+                    value: "Links",
+                    label: "Links",
                 },
                 {
                     value: "products",
@@ -128,7 +128,7 @@ const ProfileUserItemsTabs = ({ profile }) => {
                 </Stack>
                 {
                     {
-                        "videos": <ProfilePageVideos videos={videos} loadingVideos={loadingVideos} />,
+                        "Links": <ProfilePageVideos videos={videos} loadingVideos={loadingVideos} />,
                         "products": <ProfilePageProducts products={products} loadingProducts={loadingProducts} />,
                         "events": <ProfilePageEvents events={events} loadingEvents={loadingEvents} />,
                         "media": <ProfilePageMediaTours mediaTours={mediaTours} loadingMediaTours={loadingMediaTours} />,

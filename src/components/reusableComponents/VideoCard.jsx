@@ -32,6 +32,7 @@ import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 
 const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
+    const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const router = useRouter() 
@@ -62,7 +63,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
 
     const newView = {
       video: video?.id,
-      user: 1,
+      user: currentLoggedInUser ? currentLoggedInUser?.id : 1,
       time: new Date()
     }
 
@@ -82,7 +83,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
 
     const cardBody = (
       <>
-        <Box sx={{ minHeight: 260}}>
+        <Box sx={video?.id == 1 ? {display: 'none'} : { minHeight: 260}}>
         <Box sx={{ width: '100%', height: '100%', maxWidth: 350, margin: 'auto'}}>
           {video.thumbnail ? (
             <Box 
@@ -135,7 +136,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                         <CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} />
                       </Tooltip>}
                     </Stack>
-                    <Typography sx={{lineHeight: 1, letterSpacing: 0}} variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>
+                    <Typography sx={{lineHeight: 1, letterSpacing: 0}} variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'click' : 'clicks'} &bull; {videoUploadTime}</Typography>
                   </Stack>
                 </Stack>
               </Grid>

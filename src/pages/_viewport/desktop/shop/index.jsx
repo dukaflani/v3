@@ -28,21 +28,21 @@ const ShopHomePage = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
       <Head>
         <title>Dukaflani Shopping — Buy Celebrity Merchandise</title>
         <meta name="title" content="Dukaflani Shopping — Buy Celebrity Merchandise"/>
-        <meta name="description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+        <meta name="description" content="A dynamic link-in-bio solution built for the modern African Artist with support for streaming links, merchandise, lyrics, skiza tunes, albums, events and media tours"/>
         <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
 
         
         <meta property="og:type" content="website"/>
         <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/shop`} />
         <meta property="og:title" content="Dukaflani Shopping — Buy Celebrity Merchandise"/>
-        <meta property="og:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+        <meta property="og:description" content="A dynamic link-in-bio solution built for the modern African Artist with support for streaming links, merchandise, lyrics, skiza tunes, albums, events and media tours"/>
         <meta property="og:image" content="https://dukaflani-user-uploads.s3.ap-south-1.amazonaws.com/branding/dukaflani-social-media-cover-potrait.png"/>
 
         
         <meta property="twitter:card" content="summary_large_image"/>
         <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/shop`} />
         <meta property="twitter:title" content="Dukaflani Shopping — Buy Celebrity Merchandise"/>
-        <meta property="twitter:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+        <meta property="twitter:description" content="A dynamic link-in-bio solution built for the modern African Artist with support for streaming links, merchandise, lyrics, skiza tunes, albums, events and media tours"/>
         <meta property="twitter:image" content="https://dukaflani-user-uploads.s3.ap-south-1.amazonaws.com/branding/dukaflani-social-media-cover-potrait.png"/>
       </Head>
         <Paper sx={{ minHeight: '100vh', paddingTop: 15, paddingBottom: 10}}>

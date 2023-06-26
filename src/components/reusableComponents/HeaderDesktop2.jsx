@@ -339,7 +339,7 @@ useEffect(() => {
                       textColor="secondary"
                       indicatorColor="secondary" 
                       aria-label="icon label tabs example">
-                        <Tooltip title="Videos">
+                        <Tooltip title="Links">
                             <Tab icon={<HomeFilled style={{fontSize: 20}} />} />
                         </Tooltip>
                         <Tooltip title="Products">

@@ -32,6 +32,7 @@ import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }, ref) => {
     const theme = useTheme()
+    const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const router = useRouter()
@@ -60,7 +61,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
 
     const newView = {
         video: video?.id,
-        user: 1,
+        user: currentLoggedInUser ? currentLoggedInUser?.id : 1,
         time: new Date()
       }
   
@@ -81,7 +82,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
 
     const cardBody = (
         <>
-            <Grid container columnSpacing={2}>
+            <Grid container columnSpacing={2} sx={video?.id == 1 && {display: "none"}}>
                 <Grid item xs={4}>
                     <Box onClick={handleVideoClick} sx={{backgroundColor: colors.grey[200], width: '100%', position: 'relative', borderRadius: 2, cursor:'pointer'}}>
                         <Image 
@@ -120,7 +121,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
                                   <Tooltip title={video.stage_name} placement="top" ><Typography sx={{cursor: 'pointer'}} className="line-clamp-1 line-clamp" variant='body2'>{video.stage_name}</Typography></Tooltip>
                                   {video.verified && <Tooltip title='Verified' placement="top" ><CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} /></Tooltip>}
                                 </Stack>
-                                <Typography variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>
+                                <Typography variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'click' : 'clicks'} &bull; {videoUploadTime}</Typography>
                             </Stack>
                         </Box>
                         <Box>

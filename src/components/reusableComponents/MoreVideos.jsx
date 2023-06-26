@@ -89,7 +89,7 @@ const MoreVideos = ({ setShowMoreVideos }) => {
             {content2}
         </Box>
         <Box sx={{paddingTop: 2}}>
-        { error?.response?.status === 404 ? <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Typography variant='body2'>No More Videos...</Typography></Box> : <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><CircularProgress /></Box> }
+        { error?.response?.status === 404 ? <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Typography variant='body2'>No More Links...</Typography></Box> : <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><CircularProgress /></Box> }
         </Box>
         </>
     )

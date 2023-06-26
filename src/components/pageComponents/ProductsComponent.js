@@ -13,7 +13,7 @@ import { useTheme } from '@mui/material/styles';
 import Slider from "react-slick";
 
 // NPM Imports
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // TanStack/React-Query
 import { useQuery } from '@tanstack/react-query';
@@ -24,14 +24,16 @@ import Leaderboard3Ads from '@/components/reusableComponents/Leaderboard3Ads'
 import ProductsCarouselDukaflani from '@/components/reusableComponents/ProductsCarouselDukaflani'
 import Copyright from '@/components/reusableComponents/Copyright'
 import ProductsCarousel from '@/components/reusableComponents/ProductsCarousel'
-import adposter1 from '../../../public/assets/pictures/dukaflani-ad-poster1.png'
-import adposter2 from '../../../public/assets/pictures/dukaflani-ad-poster2.png'
-import adposter3 from '../../../public/assets/pictures/dukaflani-ad-poster3.png'
-import adposter4 from '../../../public/assets/pictures/dukaflani-ad-poster4.png'
+import adposter1 from '../../../public/assets/pictures/dukaflani-ad-poster5.png'
+import adposter2 from '../../../public/assets/pictures/dukaflani-ad-poster1.png'
+import adposter3 from '../../../public/assets/pictures/dukaflani-ad-poster2.png'
+import adposter4 from '../../../public/assets/pictures/dukaflani-ad-poster3.png'
+import adposter5 from '../../../public/assets/pictures/dukaflani-ad-poster4.png'
+import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 
 // Icons
-import { ApiTwoTone,  CheckCircleOutlined, DollarCircleTwoTone, HeartOutlined,  
+import { ApiTwoTone,  BarcodeOutlined,  CheckCircleOutlined, DollarCircleTwoTone, HeartOutlined,  
   QuestionCircleTwoTone, SkinOutlined, TabletOutlined } from "@ant-design/icons";
   import Face3OutlinedIcon from '@mui/icons-material/Face3Outlined';
 
@@ -42,10 +44,11 @@ const ProductsComponent = () => {
   const is_darkMode = useSelector((state) => state.theme.isDarkMode)
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const router = useRouter()
-  const adPostersArray = [adposter1, adposter2, adposter3, adposter4]
+  const adPostersArray = [adposter1, adposter2, adposter3, adposter4, adposter5]
   const [categoryHovered, setCategoryHovered] = useState('')
   const [vendorHovered, setVendorHovered] = useState('')
   const theme = useTheme()
+  const dispatch = useDispatch()
 
   const handleMouseIn = (index) => {
     setCategoryHovered(index)
@@ -84,6 +87,11 @@ const ProductsComponent = () => {
       name: <Typography sx={ categoryHovered == '3' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Electronics</Typography>,
       icon: <TabletOutlined style={ categoryHovered == '3' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} />,
       link: '#electronics'
+    },
+    {
+      name: <Typography sx={ categoryHovered == '3' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Albums</Typography>,
+      icon: <BarcodeOutlined style={ categoryHovered == '3' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} />,
+      link: '#albums'
     },
   ]
 
@@ -125,6 +133,9 @@ const ProductsComponent = () => {
   
   const categoryElectronics = 'Electronics'
   const { data: electronicsProducts } = useQuery(["electronics-products", categoryElectronics], (categoryElectronics) => getProductByCategory(categoryElectronics))
+  
+  const categoryAlbums = 'Albums'
+  const { data: albumsProducts } = useQuery(["electronics-products", categoryAlbums], (categoryAlbums) => getProductByCategory(categoryAlbums))
   
 
   return (
@@ -194,7 +205,10 @@ const ProductsComponent = () => {
           <Grid sm={3} sx={{ display: {xs:'none', sm:'block'}}} item>
             <Stack spacing={2} sx={{height:'100%'}}>
             <Paper variant='outlined' square sx={{padding: 1, height: '50%'}}>
-              <Stack onClick={() => router.push({ pathname: '/links/contact_us' })} sx={{display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent: 'space-evenly', height: '100%'}}>
+              <Stack onClick={() => {
+                dispatch(pageHasChanged(true))
+                router.push({ pathname: '/links/contact_us' })
+                }} sx={{display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent: 'space-evenly', height: '100%'}}>
                 <Stack direction='row' spacing={1} sx={{display: 'flex', alignItems:'center', cursor: 'pointer'}}>
                   <DollarCircleTwoTone style={{fontSize: 25}} twoToneColor='#1976d2'/>
                   <Stack spacing={-1}>
@@ -223,7 +237,10 @@ const ProductsComponent = () => {
               <Box sx={{display: 'flex', alignItems: 'center', justifyContent:'center'}} className='animated-gradient'>
                 <Stack sx={{textAlign: 'center'}} spacing={1}>
                   <Typography sx={{color: 'white'}} variant='caption'>GET STARTED</Typography>
-                  <Typography onClick={() => router.push({ pathname: '/links/contact_us' })} sx={{color: 'white', border: '2px solid white', cursor: 'pointer'}} variant='h6'>LOGIN</Typography>
+                  <Typography onClick={() => {
+                    dispatch(pageHasChanged(true))
+                    router.push({ pathname: '/links/contact_us' })
+                    }} sx={{color: 'white', border: '2px solid white', cursor: 'pointer'}} variant='h6'>LOGIN</Typography>
                   <Typography sx={{color: 'white', letterSpacing: 3}} variant='body1'>CREATOR&apos;S HUB!</Typography>
                 </Stack>
               </Box>
@@ -286,13 +303,23 @@ const ProductsComponent = () => {
           icon={<TabletOutlined style={{fontSize: 25, color: '#ffffff'}}/>}
         />
       </Box>
+      {/* Albums Carousel */}
+      <Box id='albums'>
+        <ProductsCarousel
+          title="Albums"
+          products={albumsProducts}
+          color1="#f48e21"
+          color2="#b723d5"
+          icon={<BarcodeOutlined style={{fontSize: 25, color: '#ffffff'}}/>}
+        />
+      </Box>
       {/* About Dukaflani */}
       <Box>
         <Paper variant='outlined' square sx={{padding: 2, marginTop: 3}}>
           <Stack>
-            <Typography variant='h6' component='h1'>Dukaflani - Buy Celebrity Merchandise</Typography>
+            <Typography variant='h6' component='h1'>Dukaflani Shopping - Buy Celebrity Merchandise</Typography>
             <Typography variant='body1'>
-              We help celebrities sell merchandise online.
+              We help celebrities sell online.
             </Typography>
             {/* <Box>
               <ul>

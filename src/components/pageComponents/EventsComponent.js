@@ -12,10 +12,14 @@ import Slider from "react-slick";
 // TanStack/React-Query
 import { useQuery } from '@tanstack/react-query';
 
+// NPM Imports
+import { useDispatch } from "react-redux";
+
 // Project Imports
 import { getFeaturedEvents, getEventByCategory } from "@/axios/axios";
 import EventsCarousel from '@/components/reusableComponents/EventsCarousel'
 import Copyright from "../reusableComponents/Copyright";
+import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
 
 // Icons
 import { FireOutlined } from '@ant-design/icons';
@@ -28,6 +32,7 @@ import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 const EventsComponent = () => {
   const theme = useTheme()
   const router = useRouter()
+  const dispatch = useDispatch()
 
   const { data: featuredEvents, isLoading: loadingFeaturedEvents } = useQuery(["featured-events"], getFeaturedEvents)
 
@@ -103,7 +108,10 @@ const EventsComponent = () => {
                                 <Typography variant='caption' sx={{color: '#1976d2'}}>{featuredEvent?.event_category}</Typography>
                                 <Typography className='line-clamp-2 line-clamp' variant='body1'>{featuredEvent?.description}</Typography>
                                 <Stack spacing={2} sx={{marginTop: 2}}>
-                                  <Button onClick={() => router.push({ pathname: `/events/${featuredEvent?.id}`, query: {a: featuredEvent?.user} }) } variant='outlined'>Event Details</Button>
+                                  <Button onClick={() => {
+                                    dispatch(pageHasChanged(true))
+                                    router.push({ pathname: `/events/${featuredEvent?.id}`, query: {a: featuredEvent?.user} })
+                                    } } variant='outlined'>Event Details</Button>
                                 </Stack>
                               </Stack>
                             </Grid>
@@ -174,6 +182,38 @@ const EventsComponent = () => {
               color2="#2900be"
               icon={<FireOutlined style={{fontSize: 25, color: '#ffffff'}} />} 
             />
+          </Box>
+          {/* About Dukaflani */}
+          <Box>
+            <Paper variant='outlined' square sx={{padding: 2, marginTop: 3}}>
+              <Stack>
+                <Typography variant='h6' component='h1'>Dukaflani Events - When & Where</Typography>
+                <Typography variant='body1'>
+                  A collection of music events from African Artists.
+                </Typography>
+                {/* <Box>
+                  <ul>
+                    <li>
+                      <Typography variant='body2'>Musicians</Typography>
+                    </li>
+                    <li>
+                      <Typography variant='body2'>Event organizers</Typography>
+                    </li>
+                    <li>
+                      <Typography variant='body2'>Promoters</Typography>
+                    </li>
+                    <li>
+                      <Typography variant='body2'>Select name brands</Typography>
+                    </li>
+                    <li>
+                      <Typography variant='body2'>Vendors & brands who have influencer partnership agreements with musicians</Typography>
+                    </li>
+                  </ul>
+                </Box> */}
+                {/* <Typography gutterBottom variant='body1'>The above list will continue to grow with time as we continue to add more features to the platform.</Typography> */}
+                {/* <Typography variant='body1'>At dukaflani.com, we help musicians sell merchandise online.</Typography> */}
+              </Stack>
+            </Paper>
           </Box>
           {/* Copyright */}
           <Box>

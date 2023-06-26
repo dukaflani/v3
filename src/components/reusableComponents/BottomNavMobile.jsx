@@ -17,7 +17,7 @@ const BottomNavMobile = ({ value, setValue}) => {
             value={value}
             onChange={(event, newValue) => setValue(newValue)}
           >
-            <BottomNavigationAction label="Videos" icon={<HomeFilled  style={{fontSize: 20}}  />} />
+            <BottomNavigationAction label="Links" icon={<HomeFilled  style={{fontSize: 20}}  />} />
             <BottomNavigationAction label="Shop" icon={<ShopFilled style={{fontSize: 20}}  />} />
             <BottomNavigationAction label="Events" icon={<BarcodeOutlined style={{fontSize: 20}}  />} />
           </BottomNavigation>

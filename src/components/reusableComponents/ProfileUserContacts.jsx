@@ -32,15 +32,15 @@ const ProfileUserContacts = ({ profile }) => {
             </Stack>
             <Stack>
                 <Typography variant="subtitle2">&bull; Management</Typography>
-                <Typography variant="caption">{profile?.management}</Typography>
+                <Typography variant="caption">{profile?.management != "null" ? profile?.management : "---"}</Typography>
             </Stack>
             <Stack>
                 <Typography variant="subtitle2">&bull; Booking Email</Typography>
-                <Typography variant="caption">{profile?.booking_email}</Typography>
+                <Typography variant="caption">{profile?.booking_email != "null" ? profile?.booking_email : "---"}</Typography>
             </Stack>
             <Stack>
                 <Typography variant="subtitle2">&bull; Booking Contact</Typography>
-                <Typography variant="caption">{profile?.booking_contact}</Typography>
+                <Typography variant="caption">{profile?.booking_contact != "null" ? profile?.booking_contact : "---"}</Typography>
             </Stack>
         </Stack>
     </Box>

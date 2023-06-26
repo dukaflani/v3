@@ -112,7 +112,7 @@ const ProductsCarouselDukaflani = ({ title, color1, color2, icon, events }) => {
           <Grid>
               <Slider {...settings} >
                   {events?.map((event, i) => (
-                    <Grid onMouseEnter={() => handleMouseEnter(i)} onMouseLeave={handleMouseLeave} key={i} xs={12} sx={{ width: '100%', cursor:'pointer', padding: 0.5}} item>
+                    <Grid onMouseEnter={() => handleMouseEnter(i)} onMouseLeave={handleMouseLeave} key={i} xs={12} sx={event?.id == 1 ? {display: "none"} : { width: '100%', cursor:'pointer', padding: 0.5}} item>
                       <Box>
                           <Paper square elevation={productHovered == i ? 5 : productHovered == null ? 0 : 0}>
                             <Stack>

@@ -6,11 +6,16 @@ import Head from "next/head"
 import { Box, Card, CardContent, Container, Link, Paper, Stack, Typography } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
 
+// NPM Imports
+import { useDispatch } from 'react-redux';
+
 // Project imports
 import Copyright from '@/components/reusableComponents/Copyright';
+import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 const ServerError = () => {
   const router = useRouter()
+  const dispatch = useDispatch()
   const theme = useTheme()
 
 
@@ -44,7 +49,10 @@ const ServerError = () => {
                                     500
                                 </Typography>
                                 <Typography variant='body1'>
-                                    Please refresh your page. If the problem persists, please contact us <span  onClick={() => router.push({ pathname: '/links/contact_us' })} style={{color: 'blue', cursor: 'pointer'}}>here</span>
+                                    Please refresh your page. If the problem persists, please contact us <span  onClick={() => {
+                                        dispatch(pageHasChanged(true))
+                                        router.push({ pathname: '/links/contact_us' })
+                                        }} style={{color: 'blue', cursor: 'pointer'}}>here</span>
                                 </Typography>
                             </Stack>
                         </CardContent>

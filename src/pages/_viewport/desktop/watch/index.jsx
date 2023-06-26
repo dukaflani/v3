@@ -34,6 +34,7 @@ import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlin
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import CastConnectedOutlinedIcon from '@mui/icons-material/CastConnectedOutlined';
 import { RadioOutlined } from '@mui/icons-material';
 
 
@@ -175,14 +176,14 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
             <Head>
                 <title>{`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`}</title>
                 <meta name="title" content={`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
-                <meta name="description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+                <meta name="description" content="A dynamic link-in-bio solution built for the modern African Artist with support for streaming links, merchandise, lyrics, skiza tunes, albums, events and media tours"/>
                 <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
 
                 
                 <meta property="og:type" content="website"/>
                 <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}`} />
                 <meta property="og:title" content={`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
-                <meta property="og:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+                <meta property="og:description" content="A dynamic link-in-bio solution built for the modern African Artist with support for streaming links, merchandise, lyrics, skiza tunes, albums, events and media tours"/>
                 <meta 
                     property="og:image" 
                     // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${data?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${data?.song_title}&video_title=${data?.title}&avatar=${data?.profile_avatar}`} />
@@ -193,7 +194,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                 <meta property="twitter:card" content="summary_large_image"/>
                 <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}`} />
                 <meta property="twitter:title" content={`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
-                <meta property="twitter:description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+                <meta property="twitter:description" content="A dynamic link-in-bio solution built for the modern African Artist with support for streaming links, merchandise, lyrics, skiza tunes, albums, events and media tours"/>
                 <meta 
                     property="twitter:image" 
                     // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${data?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${data?.song_title}&video_title=${data?.title}&avatar=${data?.profile_avatar}`} />
@@ -221,7 +222,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                             <Grid container spacing={1}>
                                                 <Grid item xs={12} md={6}>
                                                     <Stack direction='row' spacing={1}>
-                                                        {data?.views_count ? (<Typography variant='body2'>{numeral(data?.views_count).format('0,0')} {data?.views_count == 1 ? 'view' : 'views'}</Typography>) : (<Skeleton width="10%" />)}
+                                                        {data?.views_count ? (<Typography variant='body2'>{numeral(data?.views_count).format('0,0')} {data?.views_count == 1 ? 'click' : 'clicks'}</Typography>) : (<Skeleton width="10%" />)}
                                                         <Box sx={{display: {xs: 'none', md: 'block'}}}>&bull;</Box>
                                                         {data?.date ? (<Typography sx={{display: {xs: 'none', md: 'block'}}} variant='body2'>{new Date(data?.date).toDateString()}</Typography>) : (<Skeleton width="15%" />)}
                                                     </Stack>
@@ -285,7 +286,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                             <Button onClick={() => setShowMoreText(!showMoreText)} size="small">{showMoreText ? "Show Less" : "Show More"}</Button>
                                         </Stack>
                                     </Box> */}
-                                    <Typography variant='subtitle2'>MORE VIDEOS:</Typography>
+                                    <Typography variant='subtitle2'>MORE LINKS:</Typography>
                                     <Divider/>
                                     <Box sx={{paddingX: 1, paddingY: 1}}>
                                         <MoreVideos/>
@@ -357,7 +358,10 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                                                 <Typography sx={{fontSize: 12, color: 'GrayText'}} className="line-clamp-1 line-clamp" variant='caption'>Dukaflani Marketplace</Typography>
                                                                             </Stack>
                                                                         </Box>
-                                                                        <Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Button onClick={() => router.push({ pathname: '/links/contact_us' })} startIcon={<InfoOutlinedIcon/>} fullWidth size="small" variant='contained'>Learn More</Button></Box>
+                                                                        <Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Button onClick={() => {
+                                                                            dispatch(pageHasChanged(true))
+                                                                            router.push({ pathname: '/links/contact_us' })
+                                                                            }} startIcon={<InfoOutlinedIcon/>} fullWidth size="small" variant='contained'>Learn More</Button></Box>
                                                                     </Stack>
                                                                 </Box>
                                                             </Grid>
@@ -373,7 +377,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                                     value={tabPosition}
                                                                     onChange={handleChange}
                                                                 >
-                                                                    <Tab icon={<LinkIcon />} iconPosition='start' label="Links" />
+                                                                    <Tab icon={<CastConnectedOutlinedIcon />} iconPosition='start' label="Stream" />
                                                                     <Tab icon={<ShoppingBasketOutlinedIcon />} iconPosition='start' label="Shop" />
                                                                     <Tab icon={<MicNoneOutlinedIcon />} iconPosition='start' label="Lyrics" />
                                                                     <Tab icon={<PhonelinkRingOutlinedIcon />} iconPosition='start' label="Skiza Tunes" />

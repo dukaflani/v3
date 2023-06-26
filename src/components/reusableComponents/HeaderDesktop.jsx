@@ -332,9 +332,9 @@ useEffect(() => {
                       textColor="primary"
                       indicatorColor="primary" 
                       aria-label="icon label tabs example">
-                        <Tooltip title="Videos">
+                        <Tooltip title="Links">
                             {/* <Tab icon={<HomeFilled style={{fontSize: 20}} />} /> */}
-                            <Tab label="Videos" />
+                            <Tab label="Links" />
                         </Tooltip>
                         <Tooltip title="Products">
                             {/* <Tab icon={<ShopFilled style={{fontSize: 20}} />} /> */}
@@ -506,7 +506,10 @@ useEffect(() => {
                       </div>
                   </div>
                   <div>
-                    <Button startIcon={<InfoOutlinedIcon/>} onClick={() => router.push({ pathname: '/links/contact_us' })} size="small">Learn How</Button>
+                    <Button startIcon={<InfoOutlinedIcon/>} onClick={() => {
+                      dispatch(pageHasChanged(true))
+                      router.push({ pathname: '/links/contact_us' })
+                      }} size="small">Learn How</Button>
                   </div>
                 </div>
               </Container>

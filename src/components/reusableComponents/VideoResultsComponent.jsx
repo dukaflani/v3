@@ -47,8 +47,8 @@ const VideoResultsComponent = ({ isLoading, videos, profile }) => {
 
   return (
     <Box>
-        {isLoading && <Typography variant='body2'>Loading videos...</Typography>}
-        {videos?.length == 0 && <Typography variant='body2'>{`Oops! Looks like there are no videos available for "${searchTerm}"`}</Typography>}
+        {isLoading && <Typography variant='body2'>Loading links...</Typography>}
+        {videos?.length == 0 && <Typography variant='body2'>{`Oops! Looks like there are no links available for "${searchTerm}"`}</Typography>}
         <Grid container>
           {profile && <Grid item xs={12} sx={{display: {xs: 'block', sm: 'none'}, paddingY: 2}}>
             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -249,7 +249,7 @@ const VideoResultsComponent = ({ isLoading, videos, profile }) => {
                         <Grid item xs={6}>
                           <Paper sx={{padding: 1}} variant='outlined'>
                             <Stack>
-                              <Typography variant='subtitle2'>Videos:</Typography>
+                              <Typography variant='subtitle2'>Links:</Typography>
                               <Typography variant='subtitle2'>{numeral(profile?.video_count ).format('0,0')}</Typography>
                             </Stack>
                           </Paper>

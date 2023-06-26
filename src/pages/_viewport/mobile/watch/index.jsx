@@ -34,6 +34,7 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import OndemandVideoOutlinedIcon from '@mui/icons-material/OndemandVideoOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import CastConnectedOutlinedIcon from '@mui/icons-material/CastConnectedOutlined';
 import { RadioOutlined } from '@mui/icons-material';
 
 // Project Imports
@@ -190,7 +191,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
         <Head>
             <title>{`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`}</title>
             <meta name="title" content={`Get ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
-            <meta name="description" content="Buy products from the biggest celebrities and name brands in Africa"/>
+            <meta name="description" content="A dynamic link-in-bio solution built for the modern African Artist with support for streaming links, merchandise, lyrics, skiza tunes, albums, events and media tours"/>
             <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
         </Head>
         <Paper sx={{ minHeight: '100vh', paddingTop: 5, paddingBottom: 10}}>
@@ -211,7 +212,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                         onChange={handleChange}
                         sx={{}}
                     >
-                        <Tab icon={<LinkIcon />} iconPosition='start' label="Links" />
+                        <Tab icon={<CastConnectedOutlinedIcon />} iconPosition='start' label="Stream" />
                         <Tab icon={<ShoppingBasketOutlinedIcon />} iconPosition='start' label="Shop" />
                         <Tab icon={<MicNoneOutlinedIcon />} iconPosition='start' label="Lyrics" />
                         <Tab icon={<PhonelinkRingOutlinedIcon />} iconPosition='start' label="Skiza Tunes" />
@@ -228,7 +229,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                     {data?.title ? (<Typography gutterBottom sx={{lineHeight: 1, fontWeight: "bold", color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant='subtitle1' component='h1'>{data?.title}</Typography>) : (<Skeleton width="80%" />)}
                     <Stack sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}} direction='row' spacing={1}>
                             {data?.genre_title ? (<Typography sx={{color: '#1976d2'}} variant='button'>{data?.genre_title}</Typography>) : (<Skeleton width="10%" />)}
-                            {data?.views_count ? (<Typography variant='caption'>{formatedViewCount} {data?.views_count == 1 ? 'view' : 'views'}</Typography>) : (<Skeleton width="10%" />)}
+                            {data?.views_count ? (<Typography variant='caption'>{formatedViewCount} {data?.views_count == 1 ? 'click' : 'clicks'}</Typography>) : (<Skeleton width="10%" />)}
                             {data?.date ? (<Typography variant='caption'>{videoUploadTime}</Typography>) : (<Skeleton width="15%" />)}
                             <Typography variant='subtitle2'>more...</Typography>
                         </Stack>
@@ -278,12 +279,18 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                                                 <Typography sx={{fontSize: 12, backgroundColor: 'yellow', color: colors.grey[800]}} className="line-clamp-1 line-clamp" variant='caption'>Ad</Typography>
                                                 <Typography sx={{fontSize: 12, color: 'GrayText'}} className="line-clamp-1 line-clamp" variant='caption'>Dukaflani Marketplace</Typography>
                                             </Stack>
-                                            <Button startIcon={<InfoOutlinedIcon/>} onClick={() => router.push({ pathname: '/links/contact_us' })} variant='text' size='small'>Learn More</Button>
+                                            <Button startIcon={<InfoOutlinedIcon/>} onClick={() => {
+                                                dispatch(pageHasChanged(true))
+                                                router.push({ pathname: '/links/contact_us' })
+                                                }} variant='text' size='small'>Learn More</Button>
                                         </Stack>
                                     </Stack>
                                 </Grid>
                                 <Grid xs={1.5} item>
-                                    <Box onClick={() => router.push({ pathname: '/links/contact_us' })}>
+                                    <Box onClick={() => {
+                                        dispatch(pageHasChanged(true))
+                                        router.push({ pathname: '/links/contact_us' })
+                                        }}>
                                         <OpenInNewOutlinedIcon />
                                     </Box>
                                 </Grid>
@@ -321,7 +328,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
         </Paper>
         <Container sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 99}} maxWidth='sm'>
             <Paper elevation={0} square sx={{width: '100%', paddingBottom: 2}}>
-                <Button onClick={() => setShowMoreVideos(true)} startIcon={<OndemandVideoOutlinedIcon />} fullWidth  variant="contained" size='medium'>Show more videos</Button>
+                <Button onClick={() => setShowMoreVideos(true)} startIcon={<OndemandVideoOutlinedIcon />} fullWidth  variant="contained" size='medium'>Show more Links</Button>
             </Paper>
         </Container>
     </MobileNavigationLayout>
@@ -349,7 +356,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly'}}>
                                 <Box sx={{textAlign: 'center'}}>
                                     {data?.views_count ? (<Typography variant='subtitle2'>{numeral(data?.views_count).format('0,0')}</Typography>) : (<Skeleton width="10%" />)}
-                                    <Typography variant='caption'>{data?.views_count == 1 ? 'view' : 'views'}</Typography>
+                                    <Typography variant='caption'>{data?.views_count == 1 ? 'click' : 'clicks'}</Typography>
                                 </Box>
                                 <Box sx={{textAlign: 'center'}}>
                                     <Typography variant='subtitle2'>{formatedLikesCount}</Typography>
@@ -387,7 +394,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                     <Stack>
                         <Box sx={{paddingTop: 3, position: 'sticky', top: 0, zIndex: 99}}>
                             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
-                                {/* <Typography variant='subtitle1'>MORE VIDEOS:</Typography> */}
+                                {/* <Typography variant='subtitle1'>MORE LINKS:</Typography> */}
                                 <Box onClick={() => setShowMoreVideos(false)}>
                                     <CloseOutlinedIcon />
                                 </Box>

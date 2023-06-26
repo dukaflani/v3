@@ -46,7 +46,7 @@ const ProfilePageEventCard = ({ event }) => {
 
 
   return (
-    <Box sx={{paddingTop: 2}}>
+    <Box sx={event?.id == 1 ? {display: "none"} : {paddingTop: 2}}>
       <Stack>
         <Card variant='outlined' onClick={handleEventClick} square>
             <CardActionArea>
