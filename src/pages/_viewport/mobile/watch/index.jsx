@@ -273,7 +273,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                                 </Grid>
                                 <Grid xs={6.5} item>
                                     <Stack>
-                                        <Typography sx={{lineHeight: 1}} gutterBottom variant='subtitle2'>Get the "Everything Link" for your music with Dukaflani</Typography>
+                                        <Typography sx={{lineHeight: 1}} gutterBottom variant='subtitle2'>Get the &apos;Everything Link&apos; for your music with Dukaflani</Typography>
                                         <Stack spacing={1.5}>
                                             <Stack direction="row" spacing={0.5}>
                                                 <Typography sx={{fontSize: 12, backgroundColor: 'yellow', color: colors.grey[800]}} className="line-clamp-1 line-clamp" variant='caption'>Ad</Typography>
