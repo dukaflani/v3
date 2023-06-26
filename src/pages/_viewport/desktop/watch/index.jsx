@@ -342,7 +342,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                                 <Image 
                                                                     src={adposter} 
                                                                     layout='responsive'
-                                                                    alt={`Ad poster by Dukaflani Marketplace`}
+                                                                    alt={`Ad poster by Dukaflani Ads`}
                                                                     height="100%"
                                                                     width="100%"
                                                                     />
@@ -351,11 +351,11 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                             <Grid item xs={7}>
                                                                 <Box sx={{height: '100%', width: '100%', display: 'flex', alignItems: 'end', justifyContent: 'start'}}>
                                                                     <Stack sx={{width: '100%'}}>
-                                                                        <Typography className="line-clamp-2 line-clamp" variant='subtitle2'>Start selling on Dukaflani now!</Typography>
+                                                                        <Typography className="line-clamp-2 line-clamp" variant='subtitle2'>Get the "Everything Link" for your music with Dukaflani</Typography>
                                                                         <Box sx={{width: '100%', paddingY: 1}}>
                                                                             <Stack spacing={0.5} direction='row' sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                                                                                 <Typography sx={{fontSize: 12, backgroundColor: 'yellow', color: colors.grey[800]}} className="line-clamp-1 line-clamp" variant='caption'>Ad</Typography>
-                                                                                <Typography sx={{fontSize: 12, color: 'GrayText'}} className="line-clamp-1 line-clamp" variant='caption'>Dukaflani Marketplace</Typography>
+                                                                                <Typography sx={{fontSize: 12, color: 'GrayText'}} className="line-clamp-1 line-clamp" variant='caption'>Dukaflani Ads</Typography>
                                                                             </Stack>
                                                                         </Box>
                                                                         <Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Button onClick={() => {

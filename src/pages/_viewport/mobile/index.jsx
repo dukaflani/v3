@@ -30,7 +30,7 @@ export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
   const router = useRouter()
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false);
-  const adString = 'Start selling on Dukaflani now!'
+  const adString = 'Get the "Everything Link" for your music with Dukaflani'
   
   return (
     <>
@@ -52,7 +52,7 @@ export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
                     <span style={{marginRight: 10, fontSize: 13, fontWeight: 'bold', lineHeight: 1.1}} className="line-clamp-1 line-clamp">{adString}</span>
                     <div style={{display:'flex', flexDirection:'row', marginTop: -2,}}>
                       <span style={{marginRight: 3, fontSize: 12, backgroundColor: 'yellow', paddingLeft: 3, paddingRight: 3, color: colors.grey[800]}}>Ad</span>
-                      <span style={{ fontSize: 12, color: 'GrayText', width: 250, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>Dukaflani Marketplace</span>
+                      <span style={{ fontSize: 12, color: 'GrayText', width: 250, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>Dukaflani Ads</span>
                     </div>
                 </div>
               </div>

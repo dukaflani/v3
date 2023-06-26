@@ -266,18 +266,18 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                                         <Image 
                                             src={adPoster} 
                                             layout='responsive'
-                                            alt={`Ad poster by Dukaflani Marketplace`}
+                                            alt={`Ad poster by Dukaflani Ads`}
                                             style={{borderRadius: 6}}
                                             />
                                     </Box>
                                 </Grid>
                                 <Grid xs={6.5} item>
                                     <Stack>
-                                        <Typography sx={{lineHeight: 1}} gutterBottom variant='subtitle2'>Start selling on Dukaflani now!</Typography>
+                                        <Typography sx={{lineHeight: 1}} gutterBottom variant='subtitle2'>Get the "Everything Link" for your music with Dukaflani</Typography>
                                         <Stack spacing={1.5}>
                                             <Stack direction="row" spacing={0.5}>
                                                 <Typography sx={{fontSize: 12, backgroundColor: 'yellow', color: colors.grey[800]}} className="line-clamp-1 line-clamp" variant='caption'>Ad</Typography>
-                                                <Typography sx={{fontSize: 12, color: 'GrayText'}} className="line-clamp-1 line-clamp" variant='caption'>Dukaflani Marketplace</Typography>
+                                                <Typography sx={{fontSize: 12, color: 'GrayText'}} className="line-clamp-1 line-clamp" variant='caption'>Dukaflani Ads</Typography>
                                             </Stack>
                                             <Button startIcon={<InfoOutlinedIcon/>} onClick={() => {
                                                 dispatch(pageHasChanged(true))

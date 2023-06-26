@@ -25,7 +25,7 @@ export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
   const router = useRouter()
   const theme = useTheme()
   const [open, setOpen] = useState(false);
-  const adString = 'Start selling on Dukaflani now!'
+  const adString = 'Get the "Everything Link" for your music with Dukaflani'
   
   return (
     <Paper>
