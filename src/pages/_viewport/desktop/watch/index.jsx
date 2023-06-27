@@ -12,7 +12,7 @@ import { Avatar, Box, Card, colors, Container, Divider, Grid, Button, Stack, Typ
 import { useTheme } from '@mui/material/styles'
 
 // TanStack/React-Query
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // NPM Imports
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +25,6 @@ import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import LinkIcon from '@mui/icons-material/Link';
 import ShoppingBasketOutlinedIcon from '@mui/icons-material/ShoppingBasketOutlined';
 import MicNoneOutlinedIcon from '@mui/icons-material/MicNoneOutlined';
 import PhonelinkRingOutlinedIcon from '@mui/icons-material/PhonelinkRingOutlined';
@@ -54,14 +53,15 @@ import adposter from '../../../../../public/assets/media/dukaflani-advert-poster
 import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLinks, 
     getCurrentVideoProduct, getCurrentVideoLyrics, getCurrentVideoLyricsVerses,
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
-    getCurrentVideoEvents, getCurrentVideoMediaTours } from '@/axios/axios';
+    getCurrentVideoEvents, getCurrentVideoMediaTours, addView } from '@/axios/axios';
 import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 
 
 const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
+    const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
-   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
     const router = useRouter()
     const dispatch = useDispatch()
@@ -94,8 +94,17 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
         setTabPosition(newValue);
       };
 
-    
+
     const queryClient = useQueryClient()
+    // const { mutate: addVideoView } = useMutation(addView, { 
+    //   onSuccess: () => {
+    //     queryClient.invalidateQueries(["videos-list"])
+    //     queryClient.invalidateQueries(["current-video", v])
+    //   },
+    //  })
+
+
+    
     const { data } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
         initialData: () => {
             const video = queryClient.getQueryData(["videos-list"])?.pages[0]?.find(video => video.youtube_id === v)
@@ -104,7 +113,14 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
             } else {
                 return undefined
             }
-        }
+        },
+        // onSuccess: (data, _variables, _context) => {
+        //     addVideoView({
+        //         video: data?.id,
+        //         user: currentLoggedInUser ? currentLoggedInUser?.id : 1,
+        //         time: new Date()
+        //         })
+        // }
     })
 
     
@@ -351,7 +367,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                                             <Grid item xs={7}>
                                                                 <Box sx={{height: '100%', width: '100%', display: 'flex', alignItems: 'end', justifyContent: 'start'}}>
                                                                     <Stack sx={{width: '100%'}}>
-                                                                        <Typography className="line-clamp-2 line-clamp" variant='subtitle2'>Get the &apos;Everything Link&apos; for your music with Dukaflani</Typography>
+                                                                        <Typography className="line-clamp-2 line-clamp" variant='subtitle2'>Get the &quot;Everything Link&quot; for your music with Dukaflani</Typography>
                                                                         <Box sx={{width: '100%', paddingY: 1}}>
                                                                             <Stack spacing={0.5} direction='row' sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                                                                                 <Typography sx={{fontSize: 12, backgroundColor: 'yellow', color: colors.grey[800]}} className="line-clamp-1 line-clamp" variant='caption'>Ad</Typography>

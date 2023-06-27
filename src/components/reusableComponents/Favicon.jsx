@@ -1,8 +1,8 @@
 const Favicon = () => {
     return (
         <>
-            <title>Dukaflani — Hub Of All Things Music</title>
-            <meta name="title" content="Dukaflani — Hub Of All Things Music"/>
+            <title>A Hub For All Things Music | Dukaflani</title>
+            <meta name="title" content="A Hub For All Things Music | Dukaflani"/>
             <meta name="description" content="A dynamic link-in-bio solution built for the modern African Artist with support for streaming links, merchandise, lyrics, skiza tunes, albums, events and media tours"/>
             <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
             <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
