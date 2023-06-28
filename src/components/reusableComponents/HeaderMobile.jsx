@@ -271,8 +271,10 @@ useEffect(() => {
                 <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}>
                   <img style={{height: 25}} src='/branding/dukaflani-logo-blue-medium.png' alt='logo'/>
                 </Box>
-              </Link>
-              <Stack direction='row' spacing={0.5} sx={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
+            </Link>
+            {/* insert flex-1 item */}
+            <Box sx={{padding: 1, flexGrow: 1}}></Box>
+            <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
                 <IconButton onClick={() => setShowSearch(true)} edge="start" color="inherit" aria-label="search">
                   <SearchOutlined  style={{ fontSize: 16, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]  }} />
                 </IconButton>
@@ -372,7 +374,7 @@ useEffect(() => {
                       ))}
                 </Menu>
 
-              </Stack>
+            </Stack>
           </Box>}
         </Toolbar>
       </AppBar>
