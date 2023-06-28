@@ -33,6 +33,7 @@ import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }, ref) => {
     const theme = useTheme()
     const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
+    const currentLoggedInUserProfile = useSelector((state) => state.auth.profileInfo)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const router = useRouter()
@@ -62,7 +63,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
     const newView = {
         video: video?.id,
         user: currentLoggedInUser ? currentLoggedInUser?.id : 1,
-        time: new Date()
+        customuserprofile: currentLoggedInUserProfile ? currentLoggedInUserProfile?.id : 1
       }
   
       const queryClient = useQueryClient()

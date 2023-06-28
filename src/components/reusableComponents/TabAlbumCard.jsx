@@ -30,6 +30,7 @@ import { addView } from '@/axios/axios';
 
 export const TabAlbumTrackCard = ({ albumTrackHovered, i, albumTrack }) => {
   const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
+  const currentLoggedInUserProfile = useSelector((state) => state.auth.profileInfo)
   const is_darkMode = useSelector((state) => state.theme.isDarkMode)
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const theme = useTheme()
@@ -39,7 +40,7 @@ export const TabAlbumTrackCard = ({ albumTrackHovered, i, albumTrack }) => {
   const newView = {
     video: albumTrack?.video,
     user: currentLoggedInUser ? currentLoggedInUser?.id : 1,
-    time: new Date()
+    customuserprofile: currentLoggedInUserProfile ? currentLoggedInUserProfile?.id : 1
   }
 
   const queryClient = useQueryClient()
