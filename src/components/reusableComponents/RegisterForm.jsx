@@ -56,14 +56,14 @@ const RegisterForm = () => {
           value: 'ARTIST',
           label: 'Artist',
         },
-        {
-          value: 'VENDOR',
-          label: 'Vendor',
-        },
-        {
-          value: 'PROMOTER',
-          label: 'Promoter',
-        },
+        // {
+        //   value: 'VENDOR',
+        //   label: 'Vendor',
+        // },
+        // {
+        //   value: 'PROMOTER',
+        //   label: 'Promoter',
+        // },
       ];
 
 
