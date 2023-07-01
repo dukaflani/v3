@@ -131,11 +131,6 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     ip_address: UserIP,
   })), [UserCountry, UserIP])
 
-  console.log("geolocation info when viewing live:", {
-    country: userCountry,
-    ip_address: userIpAddress,
-  })
-
 
   const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
   
