@@ -32,7 +32,7 @@ import { addSearchTerm, deleteSearchTerm } from '@/redux/features/search/searchS
 import { setDarkMode, setLightMode } from '@/redux/features/theme/themeSlice';
 import AppBarLinearProgress from './AppBarLinearProgress'
 import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
-import { logOut } from '@/redux/features/auth/authSlice';
+import { logOut, updateGeoLocation } from '@/redux/features/auth/authSlice';
 
 
 
@@ -107,22 +107,38 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const searchTerm = useSelector((state) => state.search.searchTerm)
   const userProfile = useSelector((state) => state.auth.profileInfo)
+  const userCountry = useSelector((state) => state.auth.country)
+  const userIpAddress = useSelector((state) => state.auth.ip_address) 
   const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
   const pageNavigated = useSelector((state) => state.navigation.pageChanged)
   const theme = useTheme()
   const router = useRouter()
   const pathName = router.pathname
-  const { v, search_query } = router.query
+  const { v, search_query, UserCountry, UserIP  } = router.query
 
+  
   const pathnameLength = pathName.split("/")
   const [mySearchTerm, setMySearchTerm] = useState(searchTerm)
   const [showTabs, setShowTabs] = useState(true)
   const adString = 'Get the "Everything Link" for your music with Dukaflani'
   const [drawerOpen, setDrawerOpen] = useState(false)
-
+  
   const dispatch = useDispatch()
-  const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
 
+
+  useMemo(() => dispatch(updateGeoLocation({
+    country: UserCountry,
+    ip_address: UserIP,
+  })), [UserCountry, UserIP])
+
+  console.log("geolocation info when viewing live:", {
+    country: userCountry,
+    ip_address: userIpAddress,
+  })
+
+
+  const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
+  
   const updateSearchTerm = (e) => {
     if (e.key === 'Enter') {
       dispatch(pageHasChanged(true))

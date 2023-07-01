@@ -1,5 +1,5 @@
 // React Imports
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 // Nextjs Imports
 import Head from 'next/head'
@@ -59,7 +59,9 @@ import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 
 const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
-    const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
+    // const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
+    // const userCountry = useSelector((state) => state.auth.country)
+    // const userIpAddress = useSelector((state) => state.auth.ip_address) 
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
@@ -96,15 +98,6 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
 
 
     const queryClient = useQueryClient()
-    // const { mutate: addVideoView } = useMutation(addView, { 
-    //   onSuccess: () => {
-    //     queryClient.invalidateQueries(["videos-list"])
-    //     queryClient.invalidateQueries(["current-video", v])
-    //   },
-    //  })
-
-
-    
     const { data } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
         initialData: () => {
             const video = queryClient.getQueryData(["videos-list"])?.pages[0]?.find(video => video.youtube_id === v)
@@ -114,15 +107,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                 return undefined
             }
         },
-        // onSuccess: (data, _variables, _context) => {
-        //     addVideoView({
-        //         video: data?.id,
-        //         user: currentLoggedInUser ? currentLoggedInUser?.id : 1,
-        //         time: new Date()
-        //         })
-        // }
     })
-
     
 
     const videoProfileUserID = data?.user 

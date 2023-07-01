@@ -102,8 +102,8 @@ export const getCurrentEvent = async ( event_id ) => {
 }
 
 
-export const addView = async (newView) => {
-    const response = await api.post(`/store/views/`, newView)
+export const addView = async ({ip_address, country, ...newView}) => {
+    const response = await api.post(`/store/views/?country=${country}&IP=${ip_address}`, newView)
     return response.data
 }
 

@@ -32,7 +32,8 @@ import { profileVideos } from "@/axios/axios"
 
 const ProfilePageVideoCard = ({ video }) => {
     const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
-    const currentLoggedInUserProfile = useSelector((state) => state.auth.profileInfo)
+    const userCountry = useSelector((state) => state.auth.country)
+    const userIpAddress = useSelector((state) => state.auth.ip_address)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const router = useRouter()
@@ -61,8 +62,10 @@ const ProfilePageVideoCard = ({ video }) => {
 
     const newView = {
         video: video?.id,
-        user: currentLoggedInUser ? currentLoggedInUser?.id : 1,
-        customuserprofile: currentLoggedInUserProfile ? currentLoggedInUserProfile?.id : 1
+        user: currentLoggedInUser?.id ?? null,
+        video_profile: video?.customuserprofile,
+        ip_address: userIpAddress,
+        country: userCountry,
       }
   
       const queryClient = useQueryClient()
@@ -85,7 +88,7 @@ const ProfilePageVideoCard = ({ video }) => {
 
   return (
     <>
-            <Grid container columnSpacing={2} sx={video?.id == 1 && {display: "none"}}>
+            <Grid container columnSpacing={2} sx={video?.id == 1 ? {display: "none"} : {display: "flex"}}>
                 <Grid item xs={4}>
                     <Box onClick={handleVideoClick} sx={{backgroundColor: colors.grey[200], width: '100%', position: 'relative', borderRadius: 2, cursor:'pointer'}}>
                         <Image 

@@ -5,7 +5,9 @@ const initialState = {
     token: '',
     userInfo: null,
     profileInfo: null,
-    deleteRefreshToken: false
+    deleteRefreshToken: false,
+    country: '',
+    ip_address: '',
 }
 
 
@@ -15,6 +17,10 @@ const authSlice = createSlice({
     reducers: {
         updateToken: (state, action) => {
             state.token = `JWT ${action.payload}`
+        },
+        updateGeoLocation: (state, action) => {
+            state.country = action.payload.country
+            state.ip_address = action.payload.ip_address
         },
         updateUserInfo: (state, action) => {
             state.userInfo = action.payload
@@ -32,4 +38,4 @@ const authSlice = createSlice({
 })
 
 export default authSlice.reducer
-export const { updateToken, updateUserInfo, logOut, updateProfileInfo } = authSlice.actions
+export const { updateToken, updateUserInfo, logOut, updateProfileInfo, updateGeoLocation } = authSlice.actions
