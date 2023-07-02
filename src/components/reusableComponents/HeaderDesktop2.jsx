@@ -113,6 +113,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const userProfile = useSelector((state) => state.auth.profileInfo)
   const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
   const pageNavigated = useSelector((state) => state.navigation.pageChanged)
+  const referralURL = useSelector((state) => state.navigation.referralURL)
   const theme = useTheme()
   const router = useRouter()
   const pathName = router.pathname
@@ -198,6 +199,11 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   // const handleChange = (event, newValue) => {
   //   setValue(newValue);
   // };
+
+  // Referral
+  console.log("Referral URL:", {
+    link: referralURL,
+  })
 
 
  // Dark Mode

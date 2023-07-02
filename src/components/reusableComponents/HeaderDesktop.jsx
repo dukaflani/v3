@@ -125,13 +125,13 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   
   const dispatch = useDispatch()
 
-  console.log("Referral URL:", referralURL)
   
   useMemo(() => dispatch(updateGeoLocation({
     country: UserCountry,
     ip_address: UserIP,
   })), [UserCountry, UserIP])
-
+  
+  
 
   const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
   
