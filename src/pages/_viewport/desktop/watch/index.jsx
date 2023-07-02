@@ -110,28 +110,28 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     })
     
     // Referral Views
-    // const newView = {
-    //     video: data?.id,
-    //     user: currentLoggedInUser ? currentLoggedInUser?.id : null,
-    //     video_profile: data?.customuserprofile,
-    //     ip_address: userIpAddress,
-    //     country: userCountry,
-    //     referral_url: referralURL
-    //   }
+    const newView = {
+        video: data?.id,
+        user: currentLoggedInUser ? currentLoggedInUser?.id : null,
+        video_profile: data?.customuserprofile,
+        ip_address: userIpAddress,
+        country: userCountry,
+        referral_url: referralURL
+      }
 
-//   const { mutate: addViewFromReferral } = useMutation(addView, { 
-//     onSuccess: () => {
-//       queryClient.invalidateQueries(["videos-list"])
-//       queryClient.invalidateQueries(["current-video", data.youtube_id])
-//     }
-//    })
+  const { mutate: addViewFromReferral } = useMutation(addView, { 
+    onSuccess: () => {
+      queryClient.invalidateQueries(["videos-list"])
+      queryClient.invalidateQueries(["current-video", data.youtube_id])
+    }
+   })
 
    
-//    useMemo(() => {
-//      if (pageIsReffered) {
-//         addViewFromReferral(newView)
-//      }
-//    }, [pageIsReffered])
+   useMemo(() => {
+     if (pageIsReffered) {
+        addViewFromReferral(newView)
+     }
+   }, [pageIsReffered])
    
 
     

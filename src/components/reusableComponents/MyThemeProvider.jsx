@@ -20,18 +20,18 @@ const MyThemeProvider = ({ children }) => {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
 
-    // let referrer;
+    let referrer;
 
-    // useEffect(() => {
-    //   referrer = document.referrer;
-    // }, [])
+    useEffect(() => {
+      referrer = document.referrer;
+    }, [])
 
-    // useEffect(() => {
-    //   if (referrer) {
-    //     dispatch(pageIsReferred(true))
-    //     dispatch(updateRefferalURL(referrer))
-    //   }
-    // }, [referrer])
+    useEffect(() => {
+      if (referrer != process.env.NEXT_PUBLIC_NEXT_URL) {
+        dispatch(pageIsReferred(true))
+        dispatch(updateRefferalURL(referrer))
+      }
+    }, [referrer])
     
    
    
