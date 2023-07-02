@@ -112,7 +112,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     // Referral Views
     const newView = {
         video: data?.id,
-        user: currentLoggedInUser ? currentLoggedInUser?.id : null,
+        user: currentLoggedInUser?.id,
         video_profile: data?.customuserprofile,
         ip_address: userIpAddress,
         country: userCountry,

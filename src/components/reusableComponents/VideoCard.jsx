@@ -65,11 +65,12 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
 
     const newView = {
           video: video?.id,
-          user: currentLoggedInUser ? currentLoggedInUser?.id : null,
+          user: currentLoggedInUser?.id,
           video_profile: video?.customuserprofile,
           ip_address: userIpAddress,
           country: userCountry,
         }
+
 
     const queryClient = useQueryClient()
     const { mutate } = useMutation(addView, { 

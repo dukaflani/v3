@@ -62,7 +62,7 @@ const ProfilePageVideoCard = ({ video }) => {
 
     const newView = {
         video: video?.id,
-        user: currentLoggedInUser ? currentLoggedInUser?.id : null,
+        user: currentLoggedInUser?.id,
         video_profile: video?.customuserprofile,
         ip_address: userIpAddress,
         country: userCountry,
