@@ -65,7 +65,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
 
     const newView = {
           video: video?.id,
-          user: currentLoggedInUser?.id ?? null,
+          user: currentLoggedInUser ? currentLoggedInUser?.id : null,
           video_profile: video?.customuserprofile,
           ip_address: userIpAddress,
           country: userCountry,

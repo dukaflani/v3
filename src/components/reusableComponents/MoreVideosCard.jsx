@@ -63,7 +63,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
 
     const newView = {
         video: video?.id,
-        user: currentLoggedInUser?.id ?? null,
+        user: currentLoggedInUser ? currentLoggedInUser?.id : null,
         video_profile: video?.customuserprofile,
         ip_address: userIpAddress,
         country: userCountry,
