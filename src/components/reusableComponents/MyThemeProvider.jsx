@@ -20,16 +20,18 @@ const MyThemeProvider = ({ children }) => {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
 
-    let referrer;
+    // let referrer;
 
-    useEffect(() => {
-      referrer = document.referrer;
-    }, [])
+    // useEffect(() => {
+    //   referrer = document.referrer;
+    // }, [])
 
-    useEffect(() => {
-      dispatch(pageIsReferred(true))
-      dispatch(updateRefferalURL(referrer))
-    }, [referrer])
+    // useEffect(() => {
+    //   if (referrer) {
+    //     dispatch(pageIsReferred(true))
+    //     dispatch(updateRefferalURL(referrer))
+    //   }
+    // }, [referrer])
     
    
    

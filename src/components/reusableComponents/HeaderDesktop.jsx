@@ -111,7 +111,6 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const userIpAddress = useSelector((state) => state.auth.ip_address) 
   const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
   const pageNavigated = useSelector((state) => state.navigation.pageChanged)
-  const referralURL = useSelector((state) => state.navigation.referralURL)
   const router = useRouter()
   const pathName = router.pathname
   const { v, search_query, UserCountry, UserIP  } = router.query
@@ -131,7 +130,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     ip_address: UserIP,
   })), [UserCountry, UserIP])
   
-  
+
 
   const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
   

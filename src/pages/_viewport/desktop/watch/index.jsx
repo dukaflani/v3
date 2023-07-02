@@ -59,9 +59,11 @@ import { pageHasChanged, pageIsReferred } from '@/redux/features/navigation/navi
 
 
 const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
-    // const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
-    // const userCountry = useSelector((state) => state.auth.country)
-    // const userIpAddress = useSelector((state) => state.auth.ip_address) 
+    const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
+    const userCountry = useSelector((state) => state.auth.country)
+    const userIpAddress = useSelector((state) => state.auth.ip_address) 
+    const referralURL = useSelector((state) => state.navigation.referralURL)
+    const pageIsReffered = useSelector((state) => state.navigation.referredView)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
@@ -76,9 +78,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const [numberOfUnlikes, setNumberOfUnlikes] = useState('')  
     const [is_liked, setIs_liked] = useState(false)
     const [is_unliked, setIs_unliked] = useState(false)
-
-
-
+    
     useEffect(() => {
         if (linkCopied) {
             setShareButtonText('Copied!')
@@ -89,14 +89,14 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
         }
     }, [linkCopied])
     
-
-  
+    
+    
     
     const handleChange = (event, newValue) => {
         setTabPosition(newValue);
-      };
-
-
+    };
+    
+    
     const queryClient = useQueryClient()
     const { data } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
         initialData: () => {
@@ -109,7 +109,32 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
         },
     })
     
+    // Referral Views
+    // const newView = {
+    //     video: data?.id,
+    //     user: currentLoggedInUser ? currentLoggedInUser?.id : null,
+    //     video_profile: data?.customuserprofile,
+    //     ip_address: userIpAddress,
+    //     country: userCountry,
+    //     referral_url: referralURL
+    //   }
 
+//   const { mutate: addViewFromReferral } = useMutation(addView, { 
+//     onSuccess: () => {
+//       queryClient.invalidateQueries(["videos-list"])
+//       queryClient.invalidateQueries(["current-video", data.youtube_id])
+//     }
+//    })
+
+   
+//    useMemo(() => {
+//      if (pageIsReffered) {
+//         addViewFromReferral(newView)
+//      }
+//    }, [pageIsReffered])
+   
+
+    
     const videoProfileUserID = data?.user 
     const { data: profile, isLoading, isFetching } = useQuery(["current-video-profile", videoProfileUserID], (videoProfileUserID) => getCurrentVideoUserProfile(videoProfileUserID), {
         enabled: !!videoProfileUserID
