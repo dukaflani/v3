@@ -40,7 +40,6 @@ export const TabAlbumTrackCard = ({ albumTrackHovered, i, albumTrack }) => {
 
   const newView = {
     video: albumTrack?.video,
-    user: currentLoggedInUser?.id,
     video_profile: Number(albumTrack?.video_profile),
     ip_address: userIpAddress,
     country: userCountry,

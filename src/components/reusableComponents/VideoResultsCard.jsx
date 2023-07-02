@@ -60,7 +60,6 @@ const VideoResultsCard = ({ video }) => {
 
     const newView = {
         video: video?.id,
-        user: currentLoggedInUser?.id,
         video_profile: video?.customuserprofile,
         ip_address: userIpAddress,
         country: userCountry,

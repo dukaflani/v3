@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Next Imports
 import { useRouter } from 'next/router';
@@ -37,9 +37,19 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
     const userIpAddress = useSelector((state) => state.auth.ip_address)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+    const [current_user, setCurrent_user] = useState(null)
+    const [user_country, setUser_country] = useState(null)
+    const [user_ip, setUser_ip] = useState(null)
     const router = useRouter() 
     const theme = useTheme()
     const dispatch = useDispatch()
+
+    useEffect(() => {
+      setCurrent_user(currentLoggedInUser?.id)
+      setUser_country(userCountry)
+      setUser_ip(userIpAddress)
+    }, [])
+    
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -65,12 +75,10 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
 
     const newView = {
           video: video?.id,
-          user: currentLoggedInUser?.id,
           video_profile: video?.customuserprofile,
-          ip_address: userIpAddress,
-          country: userCountry,
+          ip_address: user_ip,
+          country: user_country,
         }
-
 
     const queryClient = useQueryClient()
     const { mutate } = useMutation(addView, { 
