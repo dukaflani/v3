@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { Box, Tabs, Tab, AppBar, Toolbar, IconButton, Stack, Avatar, 
   InputBase, Tooltip, Link, Drawer, List, ListItem, ListItemButton, Button,
   ListItemIcon, ListItemText, Typography, colors, useMediaQuery, Menu, MenuItem, ListItemAvatar, Container, Divider } from '@mui/material'
-import { styled, alpha, useTheme, createTheme } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
 
 // NPM Import
 import { useCookies } from "react-cookie"
@@ -111,7 +111,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const userIpAddress = useSelector((state) => state.auth.ip_address) 
   const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
   const pageNavigated = useSelector((state) => state.navigation.pageChanged)
-  const theme = useTheme()
+  const referralURL = useSelector((state) => state.navigation.referralURL)
   const router = useRouter()
   const pathName = router.pathname
   const { v, search_query, UserCountry, UserIP  } = router.query
@@ -125,7 +125,8 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   
   const dispatch = useDispatch()
 
-
+  console.log("Referral URL:", referralURL)
+  
   useMemo(() => dispatch(updateGeoLocation({
     country: UserCountry,
     ip_address: UserIP,

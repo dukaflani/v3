@@ -229,7 +229,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                     {data?.title ? (<Typography gutterBottom sx={{lineHeight: 1, fontWeight: "bold", color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant='subtitle1' component='h1'>{data?.title}</Typography>) : (<Skeleton width="80%" />)}
                     <Stack sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}} direction='row' spacing={1}>
                             {data?.genre_title ? (<Typography sx={{color: '#1976d2'}} variant='button'>{data?.genre_title}</Typography>) : (<Skeleton width="10%" />)}
-                            {data?.views_count ? (<Typography variant='caption'>{formatedViewCount} {data?.views_count == 1 ? 'click' : 'clicks'}</Typography>) : (<Skeleton width="10%" />)}
+                            {data?.views_count ? (<Typography variant='caption'>{formatedViewCount} {data?.views_count == 1 ? 'view' : 'views'}</Typography>) : (<Skeleton width="10%" />)}
                             {data?.date ? (<Typography variant='caption'>{videoUploadTime}</Typography>) : (<Skeleton width="15%" />)}
                             <Typography variant='subtitle2'>more...</Typography>
                         </Stack>
@@ -356,7 +356,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly'}}>
                                 <Box sx={{textAlign: 'center'}}>
                                     {data?.views_count ? (<Typography variant='subtitle2'>{numeral(data?.views_count).format('0,0')}</Typography>) : (<Skeleton width="10%" />)}
-                                    <Typography variant='caption'>{data?.views_count == 1 ? 'click' : 'clicks'}</Typography>
+                                    <Typography variant='caption'>{data?.views_count == 1 ? 'view' : 'views'}</Typography>
                                 </Box>
                                 <Box sx={{textAlign: 'center'}}>
                                     <Typography variant='subtitle2'>{formatedLikesCount}</Typography>

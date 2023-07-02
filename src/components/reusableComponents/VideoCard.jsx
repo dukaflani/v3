@@ -140,7 +140,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                         <CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} />
                       </Tooltip>}
                     </Stack>
-                    <Typography sx={{lineHeight: 1, letterSpacing: 0}} variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'click' : 'clicks'} &bull; {videoUploadTime}</Typography>
+                    <Typography sx={{lineHeight: 1, letterSpacing: 0}} variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>
                   </Stack>
                 </Stack>
               </Grid>
@@ -213,7 +213,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                             <LocalOfferOutlinedIcon /> 
                           </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary="Go to product details" secondary={`${video?.product_title?.substring(0, 20)}...`} />
+                        <ListItemText primary="View details" secondary={`${video?.product_title?.substring(0, 20)}...`} />
                       </ListItem>
                     </List>
                   </MenuItem>

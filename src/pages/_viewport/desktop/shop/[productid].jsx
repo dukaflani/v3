@@ -186,7 +186,7 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
                             <Paper variant="outlined" square>
                                 <Stack>
                                     <Box sx={{padding: 1.5}}>
-                                        <Typography variant="h6">Product Details</Typography>
+                                        <Typography variant="h6">View details</Typography>
                                     </Box>
                                     <Divider/>
                                     <Box sx={{padding: 1.5}}>

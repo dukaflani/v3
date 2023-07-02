@@ -63,7 +63,7 @@ const ProfilePageProductCard = ({ product }) => {
                                     <Typography className="line-clamp-2 line-clamp" variant="body2">{product?.description}</Typography>
                                 </Stack>
                                 <Box sx={{paddingTop: 2, width: '100%'}}>
-                                    <Button startIcon={<LocalOfferOutlinedIcon/>} fullWidth size="small" variant="contained">Product Details</Button>
+                                    <Button startIcon={<LocalOfferOutlinedIcon/>} fullWidth size="small" variant="contained">View details</Button>
                                 </Box>
                             </Stack>
                         </Box>

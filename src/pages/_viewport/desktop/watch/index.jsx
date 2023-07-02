@@ -54,7 +54,7 @@ import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLi
     getCurrentVideoProduct, getCurrentVideoLyrics, getCurrentVideoLyricsVerses,
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
     getCurrentVideoEvents, getCurrentVideoMediaTours, addView } from '@/axios/axios';
-import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
+import { pageHasChanged, pageIsReferred } from '@/redux/features/navigation/navigationSlice';
 
 
 
@@ -223,7 +223,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                             <Grid container spacing={1}>
                                                 <Grid item xs={12} md={6}>
                                                     <Stack direction='row' spacing={1}>
-                                                        {data?.views_count ? (<Typography variant='body2'>{numeral(data?.views_count).format('0,0')} {data?.views_count == 1 ? 'click' : 'clicks'}</Typography>) : (<Skeleton width="10%" />)}
+                                                        {data?.views_count ? (<Typography variant='body2'>{numeral(data?.views_count).format('0,0')} {data?.views_count == 1 ? 'view' : 'views'}</Typography>) : (<Skeleton width="10%" />)}
                                                         <Box sx={{display: {xs: 'none', md: 'block'}}}>&bull;</Box>
                                                         {data?.date ? (<Typography sx={{display: {xs: 'none', md: 'block'}}} variant='body2'>{new Date(data?.date).toDateString()}</Typography>) : (<Skeleton width="15%" />)}
                                                     </Stack>

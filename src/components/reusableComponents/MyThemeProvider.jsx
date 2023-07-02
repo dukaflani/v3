@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 // Project Imports
 import { setDarkMode, setLightMode } from "@/redux/features/theme/themeSlice"
+import { pageIsReferred, updateRefferalURL } from "@/redux/features/navigation/navigationSlice"
 
 
 const MyThemeProvider = ({ children }) => {
@@ -17,6 +18,19 @@ const MyThemeProvider = ({ children }) => {
     const [cookie, setCookie] = useCookies(["Mode"])
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+
+
+    let referrer;
+
+    useEffect(() => {
+      referrer = document.referrer;
+    }, [])
+
+    useEffect(() => {
+      dispatch(pageIsReferred(true))
+      dispatch(updateRefferalURL(referrer))
+    }, [referrer])
+    
    
    
    useEffect(() => {
