@@ -27,7 +27,7 @@ import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 
 // Project Imports
 import { addView } from '@/axios/axios';
-import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
+import { pageHasChanged, removeRefferalURL } from '@/redux/features/navigation/navigationSlice';
 
 
 
@@ -89,6 +89,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
      
     const handleVideoClick = () => {
       dispatch(pageHasChanged(true))
+      dispatch(removeRefferalURL())
       router.push({pathname: '/watch', query: {v: video.youtube_id}})
       mutate(newView)
     }
@@ -125,6 +126,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                   onClick={(e) => {
                     e.preventDefault()
                     dispatch(pageHasChanged(true))
+                    dispatch(removeRefferalURL())
                     router.push({pathname: '/watch', query: {v: video.youtube_id}})
                     mutate(newView)
                   }}

@@ -80,6 +80,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const [is_unliked, setIs_unliked] = useState(false)
     const [user_country, setUser_country] = useState(null)
     const [user_ip, setUser_ip] = useState(null)
+    const [referrer_url, setReferrer_url] = useState(null)
     
     useEffect(() => {
         if (linkCopied) {
@@ -94,7 +95,8 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     useEffect(() => {
         setUser_country(UserCountry)
         setUser_ip(UserIP)
-      }, [UserCountry, UserIP])
+        setReferrer_url(referralURL)
+      }, [referralURL, UserCountry, UserIP])
     
     
     const handleChange = (event, newValue) => {
@@ -119,7 +121,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
         video: data?.id,
         ip_address: user_ip,
         country: user_country,
-        referral_url: referralURL,
+        referral_url: referrer_url,
         video_profile: data?.customuserprofile,
       }
 
@@ -129,7 +131,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     onSuccess: (data, _variables, _context) => {
       queryClient.invalidateQueries(["videos-list"])
       queryClient.invalidateQueries(["current-video", data.youtube_id])
-      dispatch(removeRefferalURL())
+      setReferrer_url(null)
       console.log("referrer success:", data)
     },
     onError: (error, _variables, _context) => {
@@ -145,13 +147,13 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
 
    useEffect(() => {
     const addMyReferralView = () => {
-        if (referralURL?.length > 1 && data?.id >= 1 && data?.customuserprofile >= 1 && user_ip?.length > 1 && user_country?.length > 1) {
+        if (referrer_url?.length > 1 && data?.id >= 1 && data?.customuserprofile >= 1 && user_ip?.length > 1 && user_country?.length > 1) {
             handleReferredView()
             console.log("useeffect fn called")
         }
     };
     addMyReferralView();
-   }, [referralURL, data?.id, data?.customuserprofile, user_ip, user_country])
+   }, [referrer_url, data?.id, data?.customuserprofile, user_ip, user_country])
    
    
 
