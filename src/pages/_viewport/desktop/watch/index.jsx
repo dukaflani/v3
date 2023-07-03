@@ -1,5 +1,5 @@
 // React Imports
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 
 // Nextjs Imports
 import Head from 'next/head'
@@ -124,16 +124,19 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     }
    })
 
-   const handleReferredView = useMemo(() => {
-     if (referralURL?.length > 1) {
+   const handleReferredView = useCallback(() => {
         addViewFromReferral(newView)
-    }
    }, [referralURL])
    
 
    useEffect(() => {
-    handleReferredView()
-   }, [])
+    const addMyReferralView = () => {
+        if (referralURL?.length > 1) {
+            handleReferredView()
+        }
+    };
+    addMyReferralView();
+   }, [referralURL])
    
    
 
