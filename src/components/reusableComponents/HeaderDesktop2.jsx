@@ -213,12 +213,6 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
         dispatch(pageIsReferred(true))
       }
     }, [referrer])
-    
-   console.log("refferer length Header2:", {
-    referrer,
-    referredView,
-    referralURL,
-   })
 
 
 

@@ -117,10 +117,13 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
         referral_url: referralURL
       }
 
+    console.log("referrer new view object:", newView)
+
   const { mutate: addViewFromReferral } = useMutation(addView, { 
-    onSuccess: () => {
+    onSuccess: (data, _variables, _context) => {
       queryClient.invalidateQueries(["videos-list"])
       queryClient.invalidateQueries(["current-video", data.youtube_id])
+      console.log("referrer success:", data)
     }
    })
 
