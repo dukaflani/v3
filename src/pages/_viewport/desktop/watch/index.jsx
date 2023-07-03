@@ -136,23 +136,21 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     }
    })
 
-   useCallback(() => {
-    if (referralURL?.length > 1 && data?.id >= 1 && data?.customuserprofile >= 1 && user_ip?.length > 1 && user_country?.length > 1) {
+   const handleReferredView = () => {
         addViewFromReferral(newView)
         console.log("callback fn called")
-    }
-   }, [referralURL, data?.id, data?.customuserprofile, user_ip, user_country])
+   }
    
 
-//    useEffect(() => {
-//     const addMyReferralView = () => {
-//         if (referralURL?.length > 1) {
-//             handleReferredView()
-//             console.log("useeffect fn called")
-//         }
-//     };
-//     addMyReferralView();
-//    }, [referralURL])
+   useEffect(() => {
+    const addMyReferralView = () => {
+        if (data?.id >= 1 && data?.customuserprofile >= 1 && user_ip?.length > 1 && user_country?.length > 1) {
+            handleReferredView()
+            console.log("useeffect fn called")
+        }
+    };
+    addMyReferralView();
+   }, [data?.id, data?.customuserprofile, user_ip, user_country])
    
    
 
