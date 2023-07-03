@@ -54,16 +54,16 @@ import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLi
     getCurrentVideoProduct, getCurrentVideoLyrics, getCurrentVideoLyricsVerses,
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
     getCurrentVideoEvents, getCurrentVideoMediaTours, addView } from '@/axios/axios';
-import { pageHasChanged, pageIsReferred } from '@/redux/features/navigation/navigationSlice';
+import { pageHasChanged, removeRefferalURL } from '@/redux/features/navigation/navigationSlice';
 
 
 
 const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
-    const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
-    const userCountry = useSelector((state) => state.auth.country)
-    const userIpAddress = useSelector((state) => state.auth.ip_address) 
+    // const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
+    // const userCountry = useSelector((state) => state.auth.country)
+    // const userIpAddress = useSelector((state) => state.auth.ip_address) 
     const referralURL = useSelector((state) => state.navigation.referralURL)
-    const pageIsReffered = useSelector((state) => state.navigation.referredView)
+    // const pageIsReffered = useSelector((state) => state.navigation.referredView)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
@@ -129,6 +129,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     onSuccess: (data, _variables, _context) => {
       queryClient.invalidateQueries(["videos-list"])
       queryClient.invalidateQueries(["current-video", data.youtube_id])
+      dispatch(removeRefferalURL())
       console.log("referrer success:", data)
     },
     onError: (error, _variables, _context) => {
@@ -144,13 +145,13 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
 
    useEffect(() => {
     const addMyReferralView = () => {
-        if (data?.id >= 1 && data?.customuserprofile >= 1 && user_ip?.length > 1 && user_country?.length > 1) {
+        if (referralURL?.length > 1 && data?.id >= 1 && data?.customuserprofile >= 1 && user_ip?.length > 1 && user_country?.length > 1) {
             handleReferredView()
             console.log("useeffect fn called")
         }
     };
     addMyReferralView();
-   }, [data?.id, data?.customuserprofile, user_ip, user_country])
+   }, [referralURL, data?.id, data?.customuserprofile, user_ip, user_country])
    
    
 

@@ -20,9 +20,12 @@ const navigationSlice = createSlice({
         },
         updateRefferalURL: (state, action) => {
             state.referralURL = action.payload
+        },
+        removeRefferalURL: (state) => {
+            state.referralURL = null
         }
     }
 })
 
 export default navigationSlice.reducer
-export const { pageHasChanged, pageIsReferred, updateRefferalURL } = navigationSlice.actions
+export const { pageHasChanged, pageIsReferred, updateRefferalURL, removeRefferalURL } = navigationSlice.actions
