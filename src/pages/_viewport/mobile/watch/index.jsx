@@ -42,7 +42,7 @@ import adPoster from '../../../../../public/assets/media/dukaflani-advert-poster
 import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLinks, 
     getCurrentVideoProduct, getCurrentVideoLyrics, getCurrentVideoLyricsVerses,
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
-    getCurrentVideoEvents, getCurrentVideoMediaTours } from '@/axios/axios';
+    getCurrentVideoEvents, getCurrentVideoMediaTours, addView } from '@/axios/axios';
 import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 // Components
