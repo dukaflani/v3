@@ -4,7 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     pageChanged: null,
     referredView: false,
-    referralURL: null
+    referralURL: null,
+    isRegularView: false,
 }
 
 
@@ -23,9 +24,12 @@ const navigationSlice = createSlice({
         },
         removeRefferalURL: (state) => {
             state.referralURL = null
+        },
+        setRegularPageView: (state) => {
+            state.isRegularView = true
         }
     }
 })
 
 export default navigationSlice.reducer
-export const { pageHasChanged, pageIsReferred, updateRefferalURL, removeRefferalURL } = navigationSlice.actions
+export const { pageHasChanged, pageIsReferred, updateRefferalURL, removeRefferalURL, setRegularPageView } = navigationSlice.actions

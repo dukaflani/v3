@@ -63,6 +63,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     // const userCountry = useSelector((state) => state.auth.country)
     // const userIpAddress = useSelector((state) => state.auth.ip_address) 
     const referralURL = useSelector((state) => state.navigation.referralURL)
+    const isRegularPageView = useSelector((state) => state.navigation.isRegularView)
     // const pageIsReffered = useSelector((state) => state.navigation.referredView)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -93,7 +94,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     }, [linkCopied])
     
     useEffect(() => {
-        if (referralURL?.split(".")?.includes("dukaflani")) {
+        if (referralURL?.split(".")?.includes("dukaflani") || isRegularPageView === true ) {
             setUser_country(UserCountry)
             setUser_ip(UserIP)
             setReferrer_url(null)  
@@ -102,7 +103,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
             setUser_ip(UserIP)
             setReferrer_url(referralURL)
         }
-      }, [referralURL, UserCountry, UserIP])
+      }, [referralURL, UserCountry, UserIP, isRegularPageView])
     
     
     const handleChange = (event, newValue) => {
