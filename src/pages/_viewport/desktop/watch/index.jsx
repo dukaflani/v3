@@ -93,9 +93,15 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     }, [linkCopied])
     
     useEffect(() => {
-        setUser_country(UserCountry)
-        setUser_ip(UserIP)
-        setReferrer_url(referralURL)
+        if (referralURL.split(".").includes("dukaflani")) {
+            setUser_country(UserCountry)
+            setUser_ip(UserIP)
+            setReferrer_url(null)  
+        } else {
+            setUser_country(UserCountry)
+            setUser_ip(UserIP)
+            setReferrer_url(referralURL)
+        }
       }, [referralURL, UserCountry, UserIP])
     
     
