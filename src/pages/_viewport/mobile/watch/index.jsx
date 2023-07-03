@@ -7,7 +7,7 @@ import Image from "next/legacy/image";
 import { useRouter } from 'next/router';
 
 // TanStack/React-Query
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // NPM Imports
 import { useDispatch, useSelector } from 'react-redux';
