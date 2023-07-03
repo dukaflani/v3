@@ -69,7 +69,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const theme = useTheme()
     const router = useRouter()
     const dispatch = useDispatch()
-    const { v } = router.query
+    const { v, search_query, UserCountry, UserIP  } = router.query
     const [tabPosition, setTabPosition] = useState(0)
     const [showMoreText, setShowMoreText] = useState(false)
     const [linkCopied, setLinkCopied] = useState(false)
@@ -92,9 +92,9 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     }, [linkCopied])
     
     useEffect(() => {
-        setUser_country(userCountry)
-        setUser_ip(userIpAddress)
-      }, [])
+        setUser_country(UserCountry)
+        setUser_ip(UserIP)
+      }, [UserCountry, UserIP])
     
     
     const handleChange = (event, newValue) => {
