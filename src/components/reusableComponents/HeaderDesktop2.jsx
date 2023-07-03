@@ -30,7 +30,7 @@ import { Brightness4Sharp, Brightness5Sharp, PersonOffOutlined } from '@mui/icon
 import { addSearchTerm, deleteSearchTerm } from '@/redux/features/search/searchSlice';
 import { setDarkMode, setLightMode } from '@/redux/features/theme/themeSlice';
 import { pageHasChanged, pageIsReferred, updateRefferalURL } from '@/redux/features/navigation/navigationSlice';
-import { logOut } from '@/redux/features/auth/authSlice';
+import { logOut, updateGeoLocation } from '@/redux/features/auth/authSlice';
 import AppBarLinearProgress from './AppBarLinearProgress'
 
 
@@ -113,11 +113,11 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const userProfile = useSelector((state) => state.auth.profileInfo)
   const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
   const pageNavigated = useSelector((state) => state.navigation.pageChanged)
-  const referredView = useSelector((state) => state.navigation.referredView)
-  const referralURL = useSelector((state) => state.navigation.referralURL)
+  // const referredView = useSelector((state) => state.navigation.referredView)
+  // const referralURL = useSelector((state) => state.navigation.referralURL)
   const router = useRouter()
   const pathName = router.pathname
-  const { v, search_query } = router.query
+  const { v, search_query, UserCountry, UserIP  } = router.query
   const pathnameLength = pathName.split("/")
   const [mySearchTerm, setMySearchTerm] = useState(searchTerm)
   const [showTabs, setShowTabs] = useState(true)
@@ -125,6 +125,14 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   const dispatch = useDispatch()
+
+  // Geolocation
+  useMemo(() => dispatch(updateGeoLocation({
+    country: UserCountry,
+    ip_address: UserIP,
+  })), [UserCountry, UserIP])
+
+
   const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
 
   const updateSearchTerm = (e) => {
