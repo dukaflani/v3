@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { Box, AppBar, Toolbar, IconButton, Stack, Avatar, 
   InputBase, Tooltip, Link, Drawer, List, ListItem, ListItemButton, 
   ListItemIcon, ListItemText, Typography, colors, Menu, MenuItem, ListItemAvatar, useMediaQuery } from '@mui/material'
-import { styled, alpha, useTheme } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
 
 // NPM Import
 import { useCookies } from "react-cookie"
@@ -29,9 +29,9 @@ import { Brightness4Sharp, Brightness5Sharp, PersonOffOutlined } from '@mui/icon
 // Project Imports
 import { addSearchTerm, deleteSearchTerm } from '@/redux/features/search/searchSlice';
 import { setDarkMode, setLightMode } from '@/redux/features/theme/themeSlice';
-import AppBarLinearProgress from './AppBarLinearProgress'
-import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
+import { pageHasChanged, pageIsReferred, updateRefferalURL } from '@/redux/features/navigation/navigationSlice';
 import { logOut } from '@/redux/features/auth/authSlice';
+import AppBarLinearProgress from './AppBarLinearProgress'
 
 
 
@@ -113,7 +113,8 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const userProfile = useSelector((state) => state.auth.profileInfo)
   const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
   const pageNavigated = useSelector((state) => state.navigation.pageChanged)
-  const theme = useTheme()
+  const referredView = useSelector((state) => state.navigation.referredView)
+  const referralURL = useSelector((state) => state.navigation.referralURL)
   const router = useRouter()
   const pathName = router.pathname
   const { v, search_query } = router.query
@@ -198,6 +199,26 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   // const handleChange = (event, newValue) => {
   //   setValue(newValue);
   // };
+
+  // Referred Views
+  let referrer;
+
+    useEffect(() => {
+      referrer = document.referrer;
+    }, [])
+    
+    useEffect(() => {
+      if (referrer?.length > 1) {
+        dispatch(updateRefferalURL(referrer))
+        dispatch(pageIsReferred(true))
+      }
+    }, [referrer])
+    
+   console.log("refferer length Header2:", {
+    referrer,
+    referredView,
+    referralURL,
+   })
 
 
 
