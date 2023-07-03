@@ -93,7 +93,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     }, [linkCopied])
     
     useEffect(() => {
-        if (referralURL.split(".").includes("dukaflani")) {
+        if (referralURL?.split(".")?.includes("dukaflani")) {
             setUser_country(UserCountry)
             setUser_ip(UserIP)
             setReferrer_url(null)  
