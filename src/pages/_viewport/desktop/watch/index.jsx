@@ -124,12 +124,17 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     }
    })
 
-   
-   useMemo(() => {
-     if (pageIsReffered) {
+   const handleReferredView = useMemo(() => {
+     if (referralURL?.length > 1) {
         addViewFromReferral(newView)
-     }
-   }, [pageIsReffered])
+    }
+   }, [referralURL])
+   
+
+   useEffect(() => {
+    handleReferredView()
+   }, [])
+   
    
 
     
