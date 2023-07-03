@@ -69,7 +69,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const theme = useTheme()
     const router = useRouter()
     const dispatch = useDispatch()
-    const { v, search_query, UserCountry, UserIP  } = router.query
+    const { v, UserCountry, UserIP  } = router.query
     const [tabPosition, setTabPosition] = useState(0)
     const [showMoreText, setShowMoreText] = useState(false)
     const [linkCopied, setLinkCopied] = useState(false)
@@ -115,7 +115,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     })
     
     // Referral Views
-    const newView = {
+    const newView = { 
         video: data?.id,
         ip_address: user_ip,
         country: user_country,
@@ -136,21 +136,23 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     }
    })
 
-   const handleReferredView = useCallback(() => {
+   useCallback(() => {
+    if (referralURL?.length > 1 && data?.id >= 1 && data?.customuserprofile >= 1 && user_ip?.length > 1 && user_country?.length > 1) {
         addViewFromReferral(newView)
         console.log("callback fn called")
-   }, [referralURL])
+    }
+   }, [referralURL, data?.id, data?.customuserprofile, user_ip, user_country])
    
 
-   useEffect(() => {
-    const addMyReferralView = () => {
-        if (referralURL?.length > 1) {
-            handleReferredView()
-            console.log("useeffect fn called")
-        }
-    };
-    addMyReferralView();
-   }, [referralURL])
+//    useEffect(() => {
+//     const addMyReferralView = () => {
+//         if (referralURL?.length > 1) {
+//             handleReferredView()
+//             console.log("useeffect fn called")
+//         }
+//     };
+//     addMyReferralView();
+//    }, [referralURL])
    
    
 
