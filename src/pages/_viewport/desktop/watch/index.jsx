@@ -78,6 +78,8 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const [numberOfUnlikes, setNumberOfUnlikes] = useState('')  
     const [is_liked, setIs_liked] = useState(false)
     const [is_unliked, setIs_unliked] = useState(false)
+    const [user_country, setUser_country] = useState(null)
+    const [user_ip, setUser_ip] = useState(null)
     
     useEffect(() => {
         if (linkCopied) {
@@ -89,7 +91,10 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
         }
     }, [linkCopied])
     
-    
+    useEffect(() => {
+        setUser_country(userCountry)
+        setUser_ip(userIpAddress)
+      }, [])
     
     
     const handleChange = (event, newValue) => {
@@ -112,9 +117,10 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     // Referral Views
     const newView = {
         video: data?.id,
-        ip_address: userIpAddress,
-        country: userCountry,
-        referral_url: referralURL
+        ip_address: user_ip,
+        country: user_country,
+        referral_url: referralURL,
+        video_profile: data?.customuserprofile,
       }
 
     console.log("referrer new view object:", newView)
@@ -124,11 +130,15 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
       queryClient.invalidateQueries(["videos-list"])
       queryClient.invalidateQueries(["current-video", data.youtube_id])
       console.log("referrer success:", data)
+    },
+    onError: (error, _variables, _context) => {
+        console.log("referrer error:", error)
     }
    })
 
    const handleReferredView = useCallback(() => {
         addViewFromReferral(newView)
+        console.log("callback fn called")
    }, [referralURL])
    
 
@@ -136,6 +146,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const addMyReferralView = () => {
         if (referralURL?.length > 1) {
             handleReferredView()
+            console.log("useeffect fn called")
         }
     };
     addMyReferralView();

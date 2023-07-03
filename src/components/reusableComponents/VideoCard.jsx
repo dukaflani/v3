@@ -37,7 +37,6 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
     const userIpAddress = useSelector((state) => state.auth.ip_address)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-    const [current_user, setCurrent_user] = useState(null)
     const [user_country, setUser_country] = useState(null)
     const [user_ip, setUser_ip] = useState(null)
     const router = useRouter() 
@@ -45,7 +44,6 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-      setCurrent_user(currentLoggedInUser?.id)
       setUser_country(userCountry)
       setUser_ip(userIpAddress)
     }, [])
@@ -78,6 +76,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
           video_profile: video?.customuserprofile,
           ip_address: user_ip,
           country: user_country,
+          referral_url: "https://dukaflani.com",
         }
 
     const queryClient = useQueryClient()
