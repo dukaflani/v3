@@ -1,5 +1,5 @@
 // React Imports
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 // Nextjs Imports
 import Head from 'next/head'
@@ -67,7 +67,6 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     // const pageIsReffered = useSelector((state) => state.navigation.referredView)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-    const theme = useTheme()
     const router = useRouter()
     const dispatch = useDispatch()
     const { v, UserCountry, UserIP  } = router.query
@@ -132,23 +131,20 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
         video_profile: data?.customuserprofile,
       }
 
-    console.log("referrer new view object:", newView)
 
   const { mutate: addViewFromReferral } = useMutation(addView, { 
     onSuccess: (data, _variables, _context) => {
       queryClient.invalidateQueries(["videos-list"])
       queryClient.invalidateQueries(["current-video", data.youtube_id])
       setReferrer_url(null)
-      console.log("referrer success:", data)
     },
     onError: (error, _variables, _context) => {
-        console.log("referrer error:", error)
+        // console.log("referrer error:", error)
     }
    })
 
    const handleReferredView = () => {
         addViewFromReferral(newView)
-        console.log("callback fn called")
    }
    
 
@@ -156,7 +152,6 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const addMyReferralView = () => {
         if (referrer_url?.length > 1 && data?.id >= 1 && data?.customuserprofile >= 1 && user_ip?.length > 1 && user_country?.length > 1) {
             handleReferredView()
-            console.log("useeffect fn called")
         }
     };
     addMyReferralView();

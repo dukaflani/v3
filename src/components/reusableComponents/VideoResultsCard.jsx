@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Next Imports
 import Image from "next/legacy/image";
@@ -25,7 +25,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // Project Imports
 import { addView } from '@/axios/axios';
-import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
+import { pageHasChanged, setRegularPageView } from '@/redux/features/navigation/navigationSlice';
 
 const VideoResultsCard = ({ video }) => {
     const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
@@ -33,9 +33,17 @@ const VideoResultsCard = ({ video }) => {
     const userIpAddress = useSelector((state) => state.auth.ip_address)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+    const [user_country, setUser_country] = useState(null)
+    const [user_ip, setUser_ip] = useState(null)
     const theme = useTheme()
     const router = useRouter()
     const dispatch = useDispatch()
+
+    useEffect(() => {
+      setUser_country(userCountry)
+      setUser_ip(userIpAddress)
+    }, [])
+
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -61,8 +69,9 @@ const VideoResultsCard = ({ video }) => {
     const newView = {
         video: video?.id,
         video_profile: video?.customuserprofile,
-        ip_address: userIpAddress,
-        country: userCountry,
+        ip_address: user_ip,
+        country: user_country,
+        referral_url: "https://dukaflani.com",
       }
   
       const queryClient = useQueryClient()
@@ -75,6 +84,7 @@ const VideoResultsCard = ({ video }) => {
        
       const handleVideoClick = () => {
         dispatch(pageHasChanged(true))
+        dispatch(setRegularPageView())
         router.push({pathname: '/watch', query: {v: video.youtube_id}})
         mutate(newView)
       }
@@ -104,6 +114,7 @@ const VideoResultsCard = ({ video }) => {
                                      onClick={(e) => {
                                         e.preventDefault()
                                         dispatch(pageHasChanged(true))
+                                        dispatch(setRegularPageView())
                                         router.push({pathname: '/watch', query: {v: video.youtube_id}})
                                         mutate(newView)
                                       }}

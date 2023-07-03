@@ -31,8 +31,8 @@ import { Brightness4Sharp, Brightness5Sharp, PersonOffOutlined } from "@mui/icon
 import { addSearchTerm } from "@/redux/features/search/searchSlice";
 import { setDarkMode, setLightMode } from "@/redux/features/theme/themeSlice";
 import AppBarLinearProgress from './AppBarLinearProgress'
-import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
-import { logOut } from "@/redux/features/auth/authSlice";
+import { pageHasChanged, pageIsReferred, updateRefferalURL } from '@/redux/features/navigation/navigationSlice';
+import { logOut, updateGeoLocation } from "@/redux/features/auth/authSlice";
 
 
 const HeaderMobile = () => {
@@ -40,17 +40,36 @@ const HeaderMobile = () => {
   const userProfile = useSelector((state) => state.auth.profileInfo)
   const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
   const pageNavigated = useSelector((state) => state.navigation.pageChanged)
-  const theme = useTheme()
   const router = useRouter()
   const dispatch = useDispatch()
   const pathName = router.pathname
-  const { v, search_query } = router.query
+  const { v, search_query, UserCountry, UserIP  } = router.query
   const pathnameLength = pathName.split("/")
   const [showSearch, setShowSearch] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [mySearchTerm, setMySearchTerm] = useState(searchTerm)
 
   const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
+
+   // Geolocation
+   useMemo(() => dispatch(updateGeoLocation({
+    country: UserCountry,
+    ip_address: UserIP,
+  })), [UserCountry, UserIP])
+
+   // Referred Views
+   let referrer;
+
+   useEffect(() => {
+     referrer = document.referrer;
+   }, [])
+   
+   useEffect(() => {
+     if (referrer?.length > 1) {
+       dispatch(updateRefferalURL(referrer))
+       dispatch(pageIsReferred(true))
+     }
+   }, [referrer])
 
   const updateSearchTerm = (e) => {
     if (e.key === 'Enter') {

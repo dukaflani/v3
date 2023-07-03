@@ -1,5 +1,5 @@
 // React Imports
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // NextJS Imports
 import { useRouter } from 'next/router';
@@ -9,7 +9,7 @@ import Image from "next/legacy/image";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 // NPM Imports
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // MUI Imports
 import { Box, Card, CardActionArea, CardContent, CardMedia, Divider, 
@@ -24,6 +24,7 @@ import KeyboardDoubleArrowDownOutlinedIcon from '@mui/icons-material/KeyboardDou
 
 // Project Imports
 import { addView } from '@/axios/axios';
+import { pageHasChanged, setRegularPageView } from '@/redux/features/navigation/navigationSlice';
 
 
 
@@ -34,15 +35,23 @@ export const TabAlbumTrackCard = ({ albumTrackHovered, i, albumTrack }) => {
   const userIpAddress = useSelector((state) => state.auth.ip_address)
   const is_darkMode = useSelector((state) => state.theme.isDarkMode)
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-  const theme = useTheme()
+  const [user_country, setUser_country] = useState(null)
+  const [user_ip, setUser_ip] = useState(null)
   const router = useRouter()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    setUser_country(userCountry)
+    setUser_ip(userIpAddress)
+  }, [])
 
 
   const newView = {
     video: albumTrack?.video,
     video_profile: Number(albumTrack?.video_profile),
-    ip_address: userIpAddress,
-    country: userCountry,
+    ip_address: user_ip,
+    country: user_country,
+    referral_url: "https://dukaflani.com",
   }
 
   const queryClient = useQueryClient()
@@ -54,6 +63,8 @@ export const TabAlbumTrackCard = ({ albumTrackHovered, i, albumTrack }) => {
    })
 
   const handleVideoClick = () => {
+    dispatch(pageHasChanged(true))
+    dispatch(setRegularPageView())
     router.push({pathname: '/watch', query: {v: albumTrack.youtube_id}})
     mutate(newView)
   }

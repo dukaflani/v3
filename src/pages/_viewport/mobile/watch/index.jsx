@@ -64,10 +64,11 @@ import Copyright from '@/components/reusableComponents/Copyright';
 const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-    const theme = useTheme()
+    const referralURL = useSelector((state) => state.navigation.referralURL)
+    const isRegularPageView = useSelector((state) => state.navigation.isRegularView)
     const router = useRouter()
     const dispatch = useDispatch()
-    const { v } = router.query
+    const { v, UserCountry, UserIP  } = router.query
     const [tabPosition, setTabPosition] = useState(0)
     const [showSongDetails, setShowSongDetails] = useState(false)
     const [showMoreVideos, setShowMoreVideos] = useState(false)
@@ -77,6 +78,9 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
     const [numberOfUnlikes, setNumberOfUnlikes] = useState('')  
     const [is_liked, setIs_liked] = useState(false)
     const [is_unliked, setIs_unliked] = useState(false)
+    const [user_country, setUser_country] = useState(null)
+    const [user_ip, setUser_ip] = useState(null)
+    const [referrer_url, setReferrer_url] = useState(null)
 
     useEffect(() => {
         if (linkCopied) {
@@ -88,6 +92,18 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
         }
     }, [linkCopied])
 
+
+    useEffect(() => {
+        if (referralURL?.split(".")?.includes("dukaflani") || isRegularPageView === true ) {
+            setUser_country(UserCountry)
+            setUser_ip(UserIP)
+            setReferrer_url(null)  
+        } else {
+            setUser_country(UserCountry)
+            setUser_ip(UserIP)
+            setReferrer_url(referralURL)
+        }
+      }, [referralURL, UserCountry, UserIP, isRegularPageView])
 
 
     const handleChange = (event, newValue) => {
@@ -106,6 +122,45 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
             }
         }
     })
+
+
+    // Referral Views
+    const newView = { 
+        video: data?.id,
+        ip_address: user_ip,
+        country: user_country,
+        referral_url: referrer_url,
+        video_profile: data?.customuserprofile,
+      }
+
+
+  const { mutate: addViewFromReferral } = useMutation(addView, { 
+    onSuccess: (data, _variables, _context) => {
+      queryClient.invalidateQueries(["videos-list"])
+      queryClient.invalidateQueries(["current-video", data.youtube_id])
+      setReferrer_url(null)
+    },
+    onError: (error, _variables, _context) => {
+        // console.log("referrer error:", error)
+    }
+   })
+
+   const handleReferredView = () => {
+        addViewFromReferral(newView)
+   }
+   
+
+   useEffect(() => {
+    const addMyReferralView = () => {
+        if (referrer_url?.length > 1 && data?.id >= 1 && data?.customuserprofile >= 1 && user_ip?.length > 1 && user_country?.length > 1) {
+            handleReferredView()
+        }
+    };
+    addMyReferralView();
+   }, [referrer_url, data?.id, data?.customuserprofile, user_ip, user_country])
+
+
+
 
     const videoProfileUserID = data?.user
     const { data: profile, isLoading, isFetching } = useQuery(["current-video-profile", videoProfileUserID], (videoProfileUserID) => getCurrentVideoUserProfile(videoProfileUserID), {
