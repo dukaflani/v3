@@ -1,35 +1,58 @@
 // React Imports
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 // NextJS Imports
 import Image from "next/legacy/image";
 
+// NPM Imports
+import { useSelector } from "react-redux";
+
+// Tanstack Query
+import { useMutation } from "@tanstack/react-query";
+
 // MUI Imports
-import { Box, Typography, Stack, Paper, CardContent, CardMedia, Card, CardActionArea, Grid, Link, colors } from "@mui/material"
+import { Box, Typography, Stack, CardContent, Card, CardActionArea, Link, colors } from "@mui/material"
 
 // Project Imports
-// import logo from '../../public/assets/pictures/Apple-Music.png'
+import { addDefaultStreamingLinkView, addStreamingLinkView } from "@/axios/axios";
 
 // Icons
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 
 
 
-export const StreamingLinksCard = ({ cardHovered, i, streamingLink }) => {
+export const StreamingLinksCard = ({ cardHovered, i, streamingLink, data }) => {
+  const userCountry = useSelector((state) => state.auth.country)
+  const userIpAddress = useSelector((state) => state.auth.ip_address)
+  const [user_country, setUser_country] = useState(null)
+  const [user_ip, setUser_ip] = useState(null)
+
+  useEffect(() => {
+    setUser_country(userCountry)
+    setUser_ip(userIpAddress)
+  }, [userCountry, userIpAddress])
+
+
+  const newStreamingLinkView = {
+    streaming_object: streamingLink?.id,
+    streaming_object_profile: data?.customuserprofile,
+    ip_address: user_ip,
+    country: user_country,
+    referral_url: "https://dukaflani.com",
+  }
+
+  const { mutate: addNewStreamingLinkView } = useMutation(addStreamingLinkView)
+
+  const handleStreamingLinkClick = () => {
+    addNewStreamingLinkView(newStreamingLinkView)
+  }
 
 
   return (
     <Link href={streamingLink?.link} underline="none" target="_blank" rel="noopener">
-      <Card variant="outlined" sx={{width: '100%', marginTop: 1, cursor: 'pointer'}} elevation={cardHovered == i ? 5 : cardHovered == null ? 0 : 0}>
+      <Card onClick={handleStreamingLinkClick} variant="outlined" sx={{width: '100%', marginTop: 1, cursor: 'pointer'}} elevation={cardHovered == i ? 5 : cardHovered == null ? 0 : 0}>
         <CardActionArea>
         <Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-          {/* <CardMedia
-            component="img"
-            sx={{ width: 135, height: 85 }}
-            image={streamingLink?.logo}
-            title={streamingLink?.streaming_service.replace('_', ' ')}
-            alt={streamingLink?.streaming_service.replace('_', ' ')}
-          /> */}
           <Box 
               sx={{ backgroundColor: colors.grey[200], width: 260,  position: "relative", cursor:'pointer'}}
               >
@@ -61,21 +84,37 @@ export const StreamingLinksCard = ({ cardHovered, i, streamingLink }) => {
   )
 }
 
-export const StreamingLinksDefaultCard = ({ defaultCardHovered, youtubeID }) => {
+export const StreamingLinksDefaultCard = ({ defaultCardHovered, youtubeID, data }) => {
+  const userCountry = useSelector((state) => state.auth.country)
+  const userIpAddress = useSelector((state) => state.auth.ip_address)
+  const [user_country, setUser_country] = useState(null)
+  const [user_ip, setUser_ip] = useState(null)
+
+  useEffect(() => {
+    setUser_country(userCountry)
+    setUser_ip(userIpAddress)
+  }, [userCountry, userIpAddress])
+
+
+  const newStreamingLinkView = {
+    streaming_object_profile: data?.customuserprofile,
+    ip_address: user_ip,
+    country: user_country,
+    referral_url: "https://dukaflani.com",
+  }
+
+  const { mutate: addNewDefaultStreamingLinkView } = useMutation(addDefaultStreamingLinkView)
+
+  const handleDefaultStreamingLinkClick = () => {
+    addNewDefaultStreamingLinkView(newStreamingLinkView)
+  }
 
 
   return (
     <Link href={`https://www.youtube.com/watch?v=${youtubeID}`} underline="none" target="_blank" rel="noopener">
-      <Card variant="outlined" sx={{width: '100%', marginTop: 1, cursor: 'pointer'}} elevation={defaultCardHovered == "a" ? 5 : defaultCardHovered == null ? 0 : 0}>
+      <Card onClick={handleDefaultStreamingLinkClick} variant="outlined" sx={{width: '100%', marginTop: 1, cursor: 'pointer'}} elevation={defaultCardHovered == "a" ? 5 : defaultCardHovered == null ? 0 : 0}>
         <CardActionArea>
         <Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-          {/* <CardMedia
-            component="img"
-            sx={{ width: 135, height: 85 }}
-            image= "https://dukaflani-user-uploads.s3.amazonaws.com/default/YouTube.png"
-            title="YouTube"
-            alt="YouTube"
-          /> */}
           <Box 
               sx={{ backgroundColor: colors.grey[200], width: 260,  position: "relative", cursor:'pointer'}}
               >
@@ -144,7 +183,7 @@ const TabStreamingLinks = ({ streamingLinks, data, youtubeID, loadingLinks }) =>
                 onMouseEnter={handleMouseInDefaultCard}
                 onMouseLeave={handleMouseOutDefaultCard}
               >
-                <StreamingLinksDefaultCard defaultCardHovered={defaultCardHovered} youtubeID={youtubeID} i={"a"} />
+                <StreamingLinksDefaultCard defaultCardHovered={defaultCardHovered} youtubeID={youtubeID} i={"a"} data={data} />
               </Box>}
                 {streamingLinks?.map((streamingLink, i) => (
                     <Box 
@@ -152,7 +191,7 @@ const TabStreamingLinks = ({ streamingLinks, data, youtubeID, loadingLinks }) =>
                         onMouseEnter={() => handleMouseIn(i)}
                         onMouseLeave={handleMouseOut}
                         >
-                        <StreamingLinksCard streamingLink={streamingLink} cardHovered={cardHovered} i={i} />
+                        <StreamingLinksCard streamingLink={streamingLink} cardHovered={cardHovered} i={i} data={data} />
                     </Box>
                 ))}
             </Box>)}

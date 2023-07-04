@@ -107,6 +107,26 @@ export const addView = async ({ip_address, country, ...newView}) => {
     return response.data
 }
 
+export const addStreamingLinkView = async ({ip_address, country, ...newStreamingLinkView}) => {
+    const response = await api.post(`/store/streaming-views/?country=${country}&IP=${ip_address}`, newStreamingLinkView)
+    return response.data
+}
+
+export const addDefaultStreamingLinkView = async ({ip_address, country, ...newStreamingLinkView}) => {
+    const response = await api.post(`/store/default-streaming-views/?country=${country}&IP=${ip_address}`, newStreamingLinkView)
+    return response.data
+}
+
+export const addProductView = async ({ip_address, country, ...newProductView}) => {
+    const response = await api.post(`/store/product-views/?country=${country}&IP=${ip_address}`, newProductView)
+    return response.data
+}
+
+export const addEventView = async ({ip_address, country, ...newEventView}) => {
+    const response = await api.post(`/store/event-views/?country=${country}&IP=${ip_address}`, newEventView)
+    return response.data
+}
+
 
 export const getUpsellProducts = async (user_id) => {
     const userID = user_id?.queryKey[1]

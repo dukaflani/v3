@@ -46,7 +46,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
     useEffect(() => {
       setUser_country(userCountry)
       setUser_ip(userIpAddress)
-    }, [])
+    }, [userCountry, userIpAddress])
     
 
     const [anchorEl, setAnchorEl] = useState(null);
