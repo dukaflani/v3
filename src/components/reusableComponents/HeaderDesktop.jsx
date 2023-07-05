@@ -136,7 +136,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
 
   useEffect(() => {
     setCountry_name(countriesChoices?.filter((country) => country.code === UserCountry))
-  }, [UserCountry])
+  }, [])
 
   
 

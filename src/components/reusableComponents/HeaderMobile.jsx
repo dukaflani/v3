@@ -62,7 +62,7 @@ const HeaderMobile = () => {
   
   useEffect(() => {
     setCountry_name(countriesChoices?.filter((country) => country?.code === UserCountry))
-  }, [UserCountry])
+  }, [])
   
 
    // Referred Views
