@@ -50,7 +50,7 @@ const HeaderMobile = () => {
   const [showSearch, setShowSearch] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [mySearchTerm, setMySearchTerm] = useState(searchTerm)
-  const [country_name, setCountry_name] = useState("")
+  const [country_name, setCountry_name] = useState(null)
 
   const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
 
@@ -234,8 +234,8 @@ icon: <SettingsApplicationsOutlinedIcon/>,
 onClick: currentLoggedInUser ? handleNavigateToProfileSettings : handleLoginRegister
 },
 {
-  primaryText: "Country",
-  secondaryText: country_name[0]?.label,
+  primaryText: country_name && "Country",
+  secondaryText: country_name && country_name[0]?.label,
   icon: <FlagOutlinedIcon/>,
   onClick: () => router.push("/")
 },

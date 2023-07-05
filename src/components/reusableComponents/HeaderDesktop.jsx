@@ -123,7 +123,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const [showTabs, setShowTabs] = useState(true)
   const adString = 'Get the "Everything Link" for your music with Dukaflani'
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [country_name, setCountry_name] = useState("")
+  const [country_name, setCountry_name] = useState(null)
   
   const dispatch = useDispatch()
 
@@ -306,8 +306,8 @@ const navMenuItems2 = useMemo(() => [
   onClick: currentLoggedInUser ? handleNavigateToProfileSettings : handleLoginRegister
 },
 {
-  primaryText: "Country",
-  secondaryText: country_name[0]?.label,
+  primaryText: country_name && "Country",
+  secondaryText: country_name && country_name[0]?.label,
   icon: <FlagOutlinedIcon/>,
   onClick: () => router.push("/")
 },
