@@ -38,10 +38,20 @@ export const StreamingLinksCard = ({ cardHovered, i, streamingLink, data }) => {
     streaming_object_profile: data?.customuserprofile,
     ip_address: user_ip,
     country: user_country,
+    object_title: streamingLink?.streaming_service,
     referral_url: "https://dukaflani.com",
   }
 
-  const { mutate: addNewStreamingLinkView } = useMutation(addStreamingLinkView)
+  const { mutate: addNewStreamingLinkView } = useMutation(addStreamingLinkView, {
+    onSuccess: (data, _variables, _context) => {
+      console.log("streaming view success:", data)
+    },
+    onError: (error, _variables, _context) => {
+      console.log("streaming view error:", error)
+    },
+  })
+
+  console.log("streaming link object view:", newStreamingLinkView)
 
   const handleStreamingLinkClick = () => {
     addNewStreamingLinkView(newStreamingLinkView)
@@ -100,10 +110,19 @@ export const StreamingLinksDefaultCard = ({ defaultCardHovered, youtubeID, data 
     streaming_object_profile: data?.customuserprofile,
     ip_address: user_ip,
     country: user_country,
+    object_title: 'YouTube',
     referral_url: "https://dukaflani.com",
   }
 
-  const { mutate: addNewDefaultStreamingLinkView } = useMutation(addDefaultStreamingLinkView)
+  const { mutate: addNewDefaultStreamingLinkView } = useMutation(addDefaultStreamingLinkView, {
+    onSuccess: (data, _variables, _context) => {
+      // console.log("default streaming view success:", data)
+    },
+    onError: (error, _variables, _context) => {
+      // console.log("default streaming view error:", error)
+    },
+  })
+
 
   const handleDefaultStreamingLinkClick = () => {
     addNewDefaultStreamingLinkView(newStreamingLinkView)
