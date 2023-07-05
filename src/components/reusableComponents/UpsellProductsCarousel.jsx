@@ -14,12 +14,14 @@ import Slider from "react-slick";
 
 // NPM Imports
 import numeral from 'numeral';
+import { useMutation } from '@tanstack/react-query';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 // Icons
 import { UserOutlined } from "@ant-design/icons";
-import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
-import { useDispatch } from 'react-redux';
+import { pageHasChanged, setRegularPageView } from '@/redux/features/navigation/navigationSlice';
+import { addProductView } from '@/axios/axios';
 
 
 
@@ -60,6 +62,27 @@ const ProductsCarouselDukaflani = ({ promoter, color1, color2, icon, upsellProdu
     const router = useRouter()
     const dispatch = useDispatch()
     const [productHovered, setProductHovered] = useState(null)
+    const userCountry = useSelector((state) => state.auth.country)
+    const userIpAddress = useSelector((state) => state.auth.ip_address)
+    const [user_country, setUser_country] = useState(null)
+    const [user_ip, setUser_ip] = useState(null)
+
+    useEffect(() => {
+        setUser_country(userCountry)
+        setUser_ip(userIpAddress)
+    }, [userCountry, userIpAddress])
+
+
+    const { mutate: addNewProductView } = useMutation(addProductView, {
+      onSuccess: (data, _variables, _context) => {
+      //   console.log("product view success:", data)
+      },
+      onError: (error, _variables, _context) => {
+      //   console.log("product view error:", error)
+      },
+    })
+
+    
   
     const handleMouseEnter = (index) => {
       setProductHovered(index)
@@ -141,7 +164,15 @@ const ProductsCarouselDukaflani = ({ promoter, color1, color2, icon, upsellProdu
                             <Box sx={{padding: 0.5}}>
                               <Button onClick={() => {
                                 dispatch(pageHasChanged(true))
+                                dispatch(setRegularPageView())
                                 router.push({ pathname: `/shop/${upsellProduct?.id}` })
+                                addProductView({
+                                  product: upsellProduct?.id,
+                                  product_profile: upsellProduct?.customuserprofile,
+                                  ip_address: user_ip,
+                                  country: user_country,
+                                  referral_url: "https://dukaflani.com",
+                              })
                                 }} variant='text' size='small' fullWidth >View Details</Button>
                             </Box>
                           </Paper>

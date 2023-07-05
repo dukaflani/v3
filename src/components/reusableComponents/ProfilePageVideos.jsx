@@ -6,7 +6,7 @@ import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 
 // Tanstack/React Query
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 // MUI Imports
 import { Box, colors, Grid, IconButton, Link, Stack, Tooltip, Typography,
@@ -23,7 +23,7 @@ import { formatDistanceStrict } from 'date-fns'
 import { useDispatch, useSelector } from 'react-redux';
 
 // Project Imports
-import { addView } from '@/axios/axios';
+import { addProductView, addView } from '@/axios/axios';
 import { pageHasChanged, setRegularPageView } from '@/redux/features/navigation/navigationSlice';
 import { profileVideos } from "@/axios/axios"
 
@@ -44,7 +44,7 @@ const ProfilePageVideoCard = ({ video }) => {
     useEffect(() => {
       setUser_country(userCountry)
       setUser_ip(userIpAddress)
-    }, [])
+    }, [userCountry, userIpAddress])
 
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -92,7 +92,24 @@ const ProfilePageVideoCard = ({ video }) => {
       }
 
 
+      const newProductView = {
+        product: video?.product,
+        product_profile: video?.customuserprofile,
+        ip_address: user_ip,
+        country: user_country,
+        referral_url: "https://dukaflani.com",
+    }
 
+    const { mutate: addNewProductView } = useMutation(addProductView, {
+        onSuccess: (data, _variables, _context) => {
+        //   console.log("product view success:", data)
+        },
+        onError: (error, _variables, _context) => {
+        //   console.log("product view error:", error)
+        },
+      })
+
+      
 
 
   return (
@@ -193,7 +210,9 @@ const ProfilePageVideoCard = ({ video }) => {
                     <List>
                       <ListItem onClick={() => {
                         dispatch(pageHasChanged(true))
+                        dispatch(setRegularPageView())
                         router.push({ pathname: `/shop/${video?.product}` })
+                        addProductView(newProductView)
                     }} disableGutters>
                         <ListItemAvatar>
                           <Avatar>

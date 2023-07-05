@@ -43,7 +43,7 @@ export const TabAlbumTrackCard = ({ albumTrackHovered, i, albumTrack }) => {
   useEffect(() => {
     setUser_country(userCountry)
     setUser_ip(userIpAddress)
-  }, [])
+  }, [userCountry, userIpAddress])
 
 
   const newView = {

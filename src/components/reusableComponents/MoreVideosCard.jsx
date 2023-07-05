@@ -24,7 +24,7 @@ import { formatDistanceStrict } from 'date-fns'
 import { useDispatch, useSelector } from 'react-redux';
 
 // Project Imports
-import { addView } from '@/axios/axios';
+import { addProductView, addView } from '@/axios/axios';
 import { pageHasChanged, setRegularPageView } from '@/redux/features/navigation/navigationSlice';
 
 
@@ -45,7 +45,8 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
     useEffect(() => {
       setUser_country(userCountry)
       setUser_ip(userIpAddress)
-    }, [])
+    }, [userCountry, userIpAddress])
+    
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -83,6 +84,26 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
           queryClient.invalidateQueries(["current-video", video.youtube_id])
         }
        })
+
+
+       const newProductView = {
+        product: video?.product,
+        product_profile: video?.customuserprofile,
+        ip_address: user_ip,
+        country: user_country,
+        referral_url: "https://dukaflani.com",
+    }
+
+    const { mutate: addNewProductView } = useMutation(addProductView, {
+        onSuccess: (data, _variables, _context) => {
+        //   console.log("product view success:", data)
+        },
+        onError: (error, _variables, _context) => {
+        //   console.log("product view error:", error)
+        },
+      })
+      
+
        
       const handleVideoClick = () => {
         dispatch(pageHasChanged(true))
@@ -190,7 +211,9 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
                     <List>
                       <ListItem onClick={() => {
                         dispatch(pageHasChanged(true))
+                        dispatch(setRegularPageView())
                         router.push({ pathname: `/shop/${video?.product}` })
+                        addNewProductView(newProductView)
                     }} disableGutters>
                         <ListItemAvatar>
                           <Avatar>

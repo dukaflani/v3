@@ -1,3 +1,6 @@
+// React Imports
+import { useEffect, useState } from "react";
+
 // Nextjs Imports
 import { useRouter } from "next/router"
 import Image from "next/legacy/image";
@@ -8,22 +11,58 @@ import { Box, Stack, Typography, Card, CardMedia, CardContent, colors, Button, C
 // NPM Imports
 import numeral from 'numeral';
 
+// Tanstack query
+import { useMutation } from "@tanstack/react-query";
+
 // Icons
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import { useDispatch } from "react-redux";
-import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
+import { pageHasChanged, setRegularPageView } from "@/redux/features/navigation/navigationSlice";
+import { addProductView } from "@/axios/axios";
 
 const ProductResultsCard = ({ product }) => {
     const router = useRouter()
     const dispatch = useDispatch()
+    const userCountry = useSelector((state) => state.auth.country)
+    const userIpAddress = useSelector((state) => state.auth.ip_address)
+    const [user_country, setUser_country] = useState(null)
+    const [user_ip, setUser_ip] = useState(null)
+
+    useEffect(() => {
+        setUser_country(userCountry)
+        setUser_ip(userIpAddress)
+    }, [userCountry, userIpAddress])
+
+    const newProductView = {
+        product: product?.id,
+        product_profile: product?.customuserprofile,
+        ip_address: user_ip,
+        country: user_country,
+        referral_url: "https://dukaflani.com",
+    }
+
+    const { mutate: addNewProductView } = useMutation(addProductView, {
+        onSuccess: (data, _variables, _context) => {
+        //   console.log("product view success:", data)
+        },
+        onError: (error, _variables, _context) => {
+        //   console.log("product view error:", error)
+        },
+      })
+
+    
+
+    const handleProductClick = () => {
+        dispatch(pageHasChanged(true))
+        dispatch(setRegularPageView())
+        addNewProductView(newProductView)
+        router.push({ pathname: `/shop/${product?.id}`})
+    }
 
 
   return (
     <Box>
-        <Card variant="outlined" onClick={() => {
-            dispatch(pageHasChanged(true))
-            router.push({ pathname: `/shop/${product?.id}` })
-            }} square>
+        <Card variant="outlined" onClick={handleProductClick} square>
             <CardActionArea>
                     <Box 
                         sx={{ backgroundColor: colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
