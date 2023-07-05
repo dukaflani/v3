@@ -123,7 +123,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const pathnameLength = pathName.split("/")
   const [mySearchTerm, setMySearchTerm] = useState(searchTerm)
   const [showTabs, setShowTabs] = useState(true)
-  const [country_name, setCountry_name] = useState(null)
+  const [country_name, setCountry_name] = useState({})
 
   const [drawerOpen, setDrawerOpen] = useState(false)
 
@@ -325,7 +325,7 @@ const navMenuItems2 = useMemo(() => [
 },
 {
   primaryText: "Country",
-  secondaryText: country_name ?  "---" : country_name[0]?.label,
+  secondaryText: country_name[0]?.label,
   icon: <FlagOutlinedIcon/>,
   onClick: () => router.push("/")
 },

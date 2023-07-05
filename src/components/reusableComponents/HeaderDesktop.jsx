@@ -123,7 +123,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const [showTabs, setShowTabs] = useState(true)
   const adString = 'Get the "Everything Link" for your music with Dukaflani'
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [country_name, setCountry_name] = useState(null)
+  const [country_name, setCountry_name] = useState({})
   
   const dispatch = useDispatch()
 
@@ -307,7 +307,7 @@ const navMenuItems2 = useMemo(() => [
 },
 {
   primaryText: "Country",
-  secondaryText: country_name ?  "---" : country_name[0]?.label,
+  secondaryText: country_name[0]?.label,
   icon: <FlagOutlinedIcon/>,
   onClick: () => router.push("/")
 },
