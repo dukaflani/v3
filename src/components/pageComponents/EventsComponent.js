@@ -16,7 +16,7 @@ import Slider from "react-slick";
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 // NPM Imports
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // Project Imports
 import { getFeaturedEvents, getEventByCategory, addEventView } from "@/axios/axios";
