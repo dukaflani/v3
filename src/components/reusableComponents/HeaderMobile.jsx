@@ -245,7 +245,7 @@ secondaryText: currentLoggedInUser ? "Logout" : "Login/Register",
 icon: currentLoggedInUser ? <LogoutOutlinedIcon/> : <LoginOutlinedIcon/>,
 onClick: currentLoggedInUser ? handleLogout : handleLoginRegister
 },
-],[currentLoggedInUser])
+],[currentLoggedInUser, country_name])
 
 
 

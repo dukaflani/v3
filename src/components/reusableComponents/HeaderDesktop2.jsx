@@ -335,7 +335,7 @@ const navMenuItems2 = useMemo(() => [
   icon: currentLoggedInUser ? <LogoutOutlinedIcon/> : <LoginOutlinedIcon/>,
   onClick: currentLoggedInUser ? handleLogout : handleLoginRegister
 },
-],[currentLoggedInUser])
+],[currentLoggedInUser, country_name])
 
 
 // Navigation

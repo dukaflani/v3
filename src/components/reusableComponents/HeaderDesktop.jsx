@@ -140,11 +140,6 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     }
   }, [UserCountry])
 
-  console.log("country code param:", UserCountry)
-  console.log("country code object:", country_name)
-
-  
-
 
   const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
   
@@ -320,7 +315,7 @@ const navMenuItems2 = useMemo(() => [
   icon: currentLoggedInUser ? <LogoutOutlinedIcon/> : <LoginOutlinedIcon/>,
   onClick: currentLoggedInUser ? handleLogout : handleLoginRegister
 },
-],[currentLoggedInUser])
+],[currentLoggedInUser, country_name])
 
 
 // Navigation
