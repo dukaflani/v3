@@ -25,11 +25,13 @@ import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlin
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import { Brightness4Sharp, Brightness5Sharp, PersonOffOutlined} from '@mui/icons-material';
 
 // Project Imports
 import { addSearchTerm, deleteSearchTerm } from '@/redux/features/search/searchSlice';
 import { setDarkMode, setLightMode } from '@/redux/features/theme/themeSlice';
+import { countriesChoices } from "@/data/countries"
 import AppBarLinearProgress from './AppBarLinearProgress'
 import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 import { logOut, updateGeoLocation } from '@/redux/features/auth/authSlice';
@@ -121,6 +123,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const [showTabs, setShowTabs] = useState(true)
   const adString = 'Get the "Everything Link" for your music with Dukaflani'
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [country_name, setCountry_name] = useState("")
   
   const dispatch = useDispatch()
 
@@ -129,6 +132,11 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     country: UserCountry,
     ip_address: UserIP,
   })), [UserCountry, UserIP])
+
+
+  useEffect(() => {
+    setCountry_name(countriesChoices?.filter((country) => country.code === UserCountry))
+  }, [UserCountry])
   
 
 
@@ -294,12 +302,12 @@ const navMenuItems2 = useMemo(() => [
   icon: <SettingsApplicationsOutlinedIcon/>,
   onClick: currentLoggedInUser ? handleNavigateToProfileSettings : handleLoginRegister
 },
-// {
-//   primaryText: "User",
-//   secondaryText: "Settings",
-//   icon: <ManageAccountsOutlinedIcon/>,
-//   onClick: () => router.push("/")
-// },
+{
+  primaryText: "Country",
+  secondaryText: country_name,
+  icon: <FlagOutlinedIcon/>,
+  onClick: () => router.push("/")
+},
 {
   primaryText: "Dukaflani Accounts",
   secondaryText: currentLoggedInUser ? "Logout" : "Login/Register",

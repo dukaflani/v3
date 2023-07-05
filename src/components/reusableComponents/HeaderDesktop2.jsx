@@ -24,11 +24,13 @@ import SettingsApplicationsOutlinedIcon from '@mui/icons-material/SettingsApplic
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import { Brightness4Sharp, Brightness5Sharp, PersonOffOutlined } from '@mui/icons-material';
 
 // Project Imports
 import { addSearchTerm, deleteSearchTerm } from '@/redux/features/search/searchSlice';
 import { setDarkMode, setLightMode } from '@/redux/features/theme/themeSlice';
+import { countriesChoices } from "@/data/countries"
 import { pageHasChanged, pageIsReferred, updateRefferalURL } from '@/redux/features/navigation/navigationSlice';
 import { logOut, updateGeoLocation } from '@/redux/features/auth/authSlice';
 import AppBarLinearProgress from './AppBarLinearProgress'
@@ -121,6 +123,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   const pathnameLength = pathName.split("/")
   const [mySearchTerm, setMySearchTerm] = useState(searchTerm)
   const [showTabs, setShowTabs] = useState(true)
+  const [country_name, setCountry_name] = useState("")
 
   const [drawerOpen, setDrawerOpen] = useState(false)
 
@@ -131,6 +134,11 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     country: UserCountry,
     ip_address: UserIP,
   })), [UserCountry, UserIP])
+
+
+  useEffect(() => {
+    setCountry_name(countriesChoices?.filter((country) => country.code === UserCountry))
+  }, [UserCountry])
 
 
   const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
@@ -313,12 +321,12 @@ const navMenuItems2 = useMemo(() => [
   icon: <SettingsApplicationsOutlinedIcon/>,
   onClick: currentLoggedInUser ? handleNavigateToProfileSettings : handleLoginRegister
 },
-// {
-//   primaryText: "User",
-//   secondaryText: "Settings",
-//   icon: <ManageAccountsOutlinedIcon/>,
-//   onClick: () => router.push("/")
-// },
+{
+  primaryText: "Country",
+  secondaryText: country_name,
+  icon: <FlagOutlinedIcon/>,
+  onClick: () => router.push("/")
+},
 {
   primaryText: "Dukaflani Accounts",
   secondaryText: currentLoggedInUser ? "Logout" : "Login/Register",

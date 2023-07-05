@@ -110,7 +110,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     
     
     const queryClient = useQueryClient()
-    const { data } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
+    const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
         initialData: () => {
             const video = queryClient.getQueryData(["videos-list"])?.pages[0]?.find(video => video.youtube_id === v)
             if(video) {
@@ -224,7 +224,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     <Paper>
         <NavigationLayout2 setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} >
             <Head>
-                <title>{`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`}</title>
+                <title>{loading_current_video ? "Loading video..." : `Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`}</title>
                 <meta name="title" content={`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
                 <meta name="description" content="A dynamic link-in-bio solution built for the modern African Artist with support for streaming links, merchandise, lyrics, skiza tunes, albums, events and media tours"/>
                 <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>

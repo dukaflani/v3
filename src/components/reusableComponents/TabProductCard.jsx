@@ -69,7 +69,7 @@ const TabProductCard = ({ product, data, loadingProduct }) => {
             <Box>
                 <Stack>
                     <Typography variant="subtitle2">PRODUCTS & MERCHANDISE</Typography>
-                    <Typography variant="caption">{`Buy products promoted or sold by ${data?.stage_name}`}</Typography>
+                    <Typography variant="caption">{`Buy products/albums promoted or sold by ${data?.stage_name}`}</Typography>
                 </Stack>
             </Box>
             {loadingProduct ? (<Typography variant="caption">Loading product card...</Typography>) : (<Box>

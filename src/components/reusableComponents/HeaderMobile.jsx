@@ -25,12 +25,14 @@ import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlin
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
+import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import { Brightness4Sharp, Brightness5Sharp, PersonOffOutlined } from "@mui/icons-material";
 
 // Project Imports
 import { addSearchTerm } from "@/redux/features/search/searchSlice";
 import { setDarkMode, setLightMode } from "@/redux/features/theme/themeSlice";
 import AppBarLinearProgress from './AppBarLinearProgress'
+import { countriesChoices } from "@/data/countries"
 import { pageHasChanged, pageIsReferred, updateRefferalURL } from '@/redux/features/navigation/navigationSlice';
 import { logOut, updateGeoLocation } from "@/redux/features/auth/authSlice";
 
@@ -48,6 +50,7 @@ const HeaderMobile = () => {
   const [showSearch, setShowSearch] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [mySearchTerm, setMySearchTerm] = useState(searchTerm)
+  const [country_name, setCountry_name] = useState("")
 
   const formattedSearchTerm = mySearchTerm?.replace(/%2/g, "+")
 
@@ -56,6 +59,11 @@ const HeaderMobile = () => {
     country: UserCountry,
     ip_address: UserIP,
   })), [UserCountry, UserIP])
+  
+  useEffect(() => {
+    setCountry_name(countriesChoices?.filter((country) => country.code === UserCountry))
+  }, [UserCountry])
+  
 
    // Referred Views
    let referrer;
@@ -223,12 +231,12 @@ secondaryText: "Settings",
 icon: <SettingsApplicationsOutlinedIcon/>,
 onClick: currentLoggedInUser ? handleNavigateToProfileSettings : handleLoginRegister
 },
-// {
-//   primaryText: "User",
-//   secondaryText: "Settings",
-//   icon: <ManageAccountsOutlinedIcon/>,
-//   onClick: () => router.push("/")
-// },
+{
+  primaryText: "Country",
+  secondaryText: country_name,
+  icon: <FlagOutlinedIcon/>,
+  onClick: () => router.push("/")
+},
 {
 primaryText: "Dukaflani Accounts",
 secondaryText: currentLoggedInUser ? "Logout" : "Login/Register",
