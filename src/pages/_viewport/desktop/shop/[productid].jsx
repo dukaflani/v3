@@ -98,14 +98,14 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
 
     const { mutate: addNewReferredProductView } = useMutation(addProductView, {
         onSuccess: (data, _variables, _context) => {
-          console.log("Reffered product view success:", data)
+        //   console.log("Reffered product view success:", data)
         },
         onError: (error, _variables, _context) => {
-          console.log("Reffered product view error:", error)
+        //   console.log("Reffered product view error:", error)
         },
       })
 
-      console.log("referred view object:", newProductView)
+    //   console.log("referred view object:", newProductView)
 
       const handleReferredView = () => {
         addNewReferredProductView(newProductView)
