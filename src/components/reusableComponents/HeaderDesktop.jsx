@@ -140,6 +140,9 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     }
   }, [UserCountry])
 
+  console.log("country code param:", UserCountry)
+  console.log("country code object:", country_name)
+
   
 
 
