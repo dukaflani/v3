@@ -1,3 +1,6 @@
+// React Imports
+import { useEffect, useState } from 'react';
+
 // NextJs Imports
 import { useRouter } from 'next/router'
 import Image from "next/legacy/image";
@@ -6,7 +9,8 @@ import Image from "next/legacy/image";
 import { Box, Button, Card, CardActionArea, CardContent, Stack, Typography, colors, Grid } from '@mui/material'
 
 // NPM Imports
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useMutation } from '@tanstack/react-query';
 
 // Icons
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
@@ -16,13 +20,24 @@ import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 
 // Project imports
 import { months } from '@/data/months';
-import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
+import { pageHasChanged, setRegularPageView } from '@/redux/features/navigation/navigationSlice';
+import { addEventView } from '@/axios/axios';
 
 
 
 const ProfilePageEventCard = ({ event }) => {
   const router = useRouter()
   const dispatch = useDispatch()
+  const userCountry = useSelector((state) => state.auth.country)
+  const userIpAddress = useSelector((state) => state.auth.ip_address)
+  const [user_country, setUser_country] = useState(null)
+  const [user_ip, setUser_ip] = useState(null)
+
+
+  useEffect(() => {
+    setUser_country(userCountry)
+    setUser_ip(userIpAddress)
+}, [userCountry, userIpAddress])
 
   const date = event?.date
   const time = event?.time
@@ -36,10 +51,31 @@ const ProfilePageEventCard = ({ event }) => {
   const hours = event?.time ? timeArray[0] : null
   const minutes = event?.time ? timeArray[1] : null
 
+  const newEventView = {
+    event: event?.id,
+    event_profile: event?.customuserprofile,
+    ip_address: user_ip,
+    country: user_country,
+    referral_url: "https://dukaflani.com",
+}
 
+const { mutate: addNewEventView } = useMutation(addEventView, {
+    onSuccess: (data, _variables, _context) => {
+    //   console.log("event view success:", data)
+    },
+    onError: (error, _variables, _context) => {
+    //   console.log("event view error:", error)
+    },
+  })
+
+
+  
+  
   const handleEventClick = () => {
     dispatch(pageHasChanged(true))
+    dispatch(setRegularPageView())
     router.push({ pathname: `/events/${event?.id}`, query: {a: event?.user} })
+    addNewEventView(newEventView)
   }
 
 

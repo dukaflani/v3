@@ -1,3 +1,6 @@
+// React Imports
+import { useEffect, useState } from 'react';
+
 // Next Image
 import Image from "next/legacy/image";
 import { useRouter } from 'next/router'
@@ -10,16 +13,16 @@ import { useTheme } from '@mui/material/styles'
 import Slider from "react-slick";
 
 // TanStack/React-Query
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 // NPM Imports
 import { useDispatch } from "react-redux";
 
 // Project Imports
-import { getFeaturedEvents, getEventByCategory } from "@/axios/axios";
+import { getFeaturedEvents, getEventByCategory, addEventView } from "@/axios/axios";
 import EventsCarousel from '@/components/reusableComponents/EventsCarousel'
 import Copyright from "../reusableComponents/Copyright";
-import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
+import { pageHasChanged, setRegularPageView } from "@/redux/features/navigation/navigationSlice";
 
 // Icons
 import { FireOutlined } from '@ant-design/icons';
@@ -30,9 +33,31 @@ import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 
 
 const EventsComponent = () => {
-  const theme = useTheme()
   const router = useRouter()
   const dispatch = useDispatch()
+  const userCountry = useSelector((state) => state.auth.country)
+  const userIpAddress = useSelector((state) => state.auth.ip_address)
+  const [user_country, setUser_country] = useState(null)
+  const [user_ip, setUser_ip] = useState(null)
+
+
+  useEffect(() => {
+    setUser_country(userCountry)
+    setUser_ip(userIpAddress)
+}, [userCountry, userIpAddress])
+
+
+
+const { mutate: addNewEventView } = useMutation(addEventView, {
+  onSuccess: (data, _variables, _context) => {
+  //   console.log("event view success:", data)
+  },
+  onError: (error, _variables, _context) => {
+  //   console.log("event view error:", error)
+  },
+})
+
+
 
   const { data: featuredEvents, isLoading: loadingFeaturedEvents } = useQuery(["featured-events"], getFeaturedEvents)
 
@@ -110,7 +135,15 @@ const EventsComponent = () => {
                                 <Stack spacing={2} sx={{marginTop: 2}}>
                                   <Button onClick={() => {
                                     dispatch(pageHasChanged(true))
+                                    dispatch(setRegularPageView())
                                     router.push({ pathname: `/events/${featuredEvent?.id}`, query: {a: featuredEvent?.user} })
+                                    addNewEventView({
+                                      event: featuredEvent?.id,
+                                      event_profile: featuredEvent?.customuserprofile,
+                                      ip_address: user_ip,
+                                      country: user_country,
+                                      referral_url: "https://dukaflani.com",
+                                    })
                                     } } variant='outlined'>Event Details</Button>
                                 </Stack>
                               </Stack>

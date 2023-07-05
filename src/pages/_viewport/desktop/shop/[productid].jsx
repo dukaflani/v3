@@ -37,7 +37,6 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const referralURL = useSelector((state) => state.navigation.referralURL)
     const isRegularPageView = useSelector((state) => state.navigation.isRegularView)
-    const theme = useTheme()
     const router = useRouter()
     const dispatch = useDispatch()
     const { productid, UserCountry, UserIP  } = router.query
@@ -107,8 +106,8 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
 
     //   console.log("referred view object:", newProductView)
 
-      const handleReferredView = () => {
-        addNewReferredProductView(newProductView)
+    const handleReferredView = () => {
+    addNewReferredProductView(newProductView)
    }
    
 
