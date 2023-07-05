@@ -21,7 +21,7 @@ import whiteLogo from '../../../public/assets/pictures/dukaflani-white-logo-smal
 
 // Icons
 import {  UserOutlined } from "@ant-design/icons";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { pageHasChanged, setRegularPageView } from '@/redux/features/navigation/navigationSlice';
 import { addProductView } from '@/axios/axios';
 
