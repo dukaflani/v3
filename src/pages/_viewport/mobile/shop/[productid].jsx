@@ -1,3 +1,6 @@
+// React Imports
+import { useState, useEffect } from 'react';
+
 // Nextjs Imports
 import Head from "next/head"
 import Image from "next/legacy/image";
@@ -18,23 +21,41 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
 // TanStack/React-Query
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 // Project Imports
 import MobileNavigationLayout from '@/layout/mobile/MobileNavigationLayout'
 import UpsellProductsCarousel from '@/components/reusableComponents/UpsellProductsCarousel'
 import Copyright from '@/components/reusableComponents/Copyright'
-import { getCurrentVideoProduct, getCurrentVideoUserProfile, getUpsellProducts } from "@/axios/axios";
+import { addProductView, getCurrentVideoProduct, getCurrentVideoUserProfile, getUpsellProducts } from "@/axios/axios";
 import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
 
 
 const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+    const referralURL = useSelector((state) => state.navigation.referralURL)
+    const isRegularPageView = useSelector((state) => state.navigation.isRegularView)
     const theme = useTheme()
     const router = useRouter()
     const dispatch = useDispatch()
-    const { productid } = router.query
+    const { productid, UserCountry, UserIP  } = router.query
+    const [user_country, setUser_country] = useState(null)
+    const [user_ip, setUser_ip] = useState(null)
+    const [referrer_url, setReferrer_url] = useState(null)
+
+
+    useEffect(() => {
+        if (referralURL?.split(".")?.includes("dukaflani") || isRegularPageView === true ) {
+            setUser_country(UserCountry)
+            setUser_ip(UserIP)
+            setReferrer_url(null)  
+        } else {
+            setUser_country(UserCountry)
+            setUser_ip(UserIP)
+            setReferrer_url(referralURL)
+        }
+      }, [referralURL, UserCountry, UserIP, isRegularPageView])
 
 
     const queryClient = useQueryClient()
@@ -64,6 +85,41 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
     const msg = `Hello ${product?.promoted_by}, I'm interested in the ${product?.title} from ${product?.sold_by} on dukaflani.com`
     const msg2 = msg.replace(/ /g, "%20")
     const whatsappLink = `https://wa.me/${product?.whatsapp}?text=${msg2}`
+
+
+    const newProductView = {
+        product: product?.id,
+        product_profile: product?.customuserprofile,
+        ip_address: user_ip,
+        country: user_country,
+        referral_url: referrer_url,
+    }
+
+    const { mutate: addNewReferredProductView } = useMutation(addProductView, {
+        onSuccess: (data, _variables, _context) => {
+        //   console.log("Reffered product view success:", data)
+        },
+        onError: (error, _variables, _context) => {
+        //   console.log("Reffered product view error:", error)
+        },
+      })
+
+
+      const handleReferredView = () => {
+        addNewReferredProductView(newProductView)
+   }
+   
+
+   useEffect(() => {
+    const addMyReferralView = () => {
+        if (referrer_url?.length > 1 && product?.id >= 1 && product?.customuserprofile >= 1 && user_ip?.length > 1 && user_country?.length > 1) {
+            handleReferredView()
+        }
+    };
+    addMyReferralView();
+   }, [referrer_url, product?.id, product?.customuserprofile, user_ip, user_country])
+
+
 
 
   return (

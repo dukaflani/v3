@@ -44,14 +44,13 @@ export const StreamingLinksCard = ({ cardHovered, i, streamingLink, data }) => {
 
   const { mutate: addNewStreamingLinkView } = useMutation(addStreamingLinkView, {
     onSuccess: (data, _variables, _context) => {
-      console.log("streaming view success:", data)
+      // console.log("streaming view success:", data)
     },
     onError: (error, _variables, _context) => {
-      console.log("streaming view error:", error)
+      // console.log("streaming view error:", error)
     },
   })
 
-  console.log("streaming link object view:", newStreamingLinkView)
 
   const handleStreamingLinkClick = () => {
     addNewStreamingLinkView(newStreamingLinkView)

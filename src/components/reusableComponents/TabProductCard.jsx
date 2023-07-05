@@ -1,17 +1,24 @@
+// React Imports
+import { useEffect, useState } from "react";
+
 // Nextjs Imports
 import { useRouter } from "next/router"
 import Image from "next/legacy/image";
 
 // MUI Imports
-import { Box, Stack, Typography, Card, CardMedia, CardContent, colors, Button } from "@mui/material"
+import { Box, Stack, Typography, Card, CardContent, colors, Button } from "@mui/material"
+
+// Tanstack Query
+import { useMutation } from "@tanstack/react-query";
 
 // NPM Imports
 import numeral from 'numeral';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // Icons
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
-import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
+import { pageHasChanged, setRegularPageView } from "@/redux/features/navigation/navigationSlice";
+import { addProductView } from "@/axios/axios";
 
 
 
@@ -19,9 +26,39 @@ import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
 const TabProductCard = ({ product, data, loadingProduct }) => {
     const router = useRouter()
     const dispatch = useDispatch()
+    const userCountry = useSelector((state) => state.auth.country)
+    const userIpAddress = useSelector((state) => state.auth.ip_address)
+    const [user_country, setUser_country] = useState(null)
+    const [user_ip, setUser_ip] = useState(null)
+
+    useEffect(() => {
+        setUser_country(userCountry)
+        setUser_ip(userIpAddress)
+    }, [userCountry, userIpAddress])
+
+    const newProductView = {
+        product: product?.id,
+        product_profile: product?.customuserprofile,
+        ip_address: user_ip,
+        country: user_country,
+        referral_url: "https://dukaflani.com",
+    }
+
+    const { mutate: addNewProductView } = useMutation(addProductView, {
+        onSuccess: (data, _variables, _context) => {
+        //   console.log("product view success:", data)
+        },
+        onError: (error, _variables, _context) => {
+        //   console.log("product view error:", error)
+        },
+      })
+
+    
 
     const handleProductClick = () => {
         dispatch(pageHasChanged(true))
+        dispatch(setRegularPageView())
+        addNewProductView(newProductView)
         router.push({ pathname: `/shop/${product?.id}`})
     }
 
