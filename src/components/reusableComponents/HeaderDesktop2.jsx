@@ -324,8 +324,8 @@ const navMenuItems2 = useMemo(() => [
   onClick: currentLoggedInUser ? handleNavigateToProfileSettings : handleLoginRegister
 },
 {
-  primaryText: country_name && "Country",
-  secondaryText: country_name && country_name[0]?.label,
+  primaryText: "Country",
+  secondaryText: country_name ?  "---" : country_name[0]?.label,
   icon: <FlagOutlinedIcon/>,
   onClick: () => router.push("/")
 },
