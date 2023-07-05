@@ -61,7 +61,7 @@ const HeaderMobile = () => {
   })), [UserCountry, UserIP])
   
   useEffect(() => {
-    setCountry_name(countriesChoices?.filter((country) => country.code === UserCountry))
+    setCountry_name(countriesChoices?.filter((country) => country?.code === UserCountry))
   }, [UserCountry])
   
 
@@ -233,7 +233,7 @@ onClick: currentLoggedInUser ? handleNavigateToProfileSettings : handleLoginRegi
 },
 {
   primaryText: "Country",
-  secondaryText: country_name,
+  secondaryText: country_name[0]?.label,
   icon: <FlagOutlinedIcon/>,
   onClick: () => router.push("/")
 },

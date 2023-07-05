@@ -323,7 +323,7 @@ const navMenuItems2 = useMemo(() => [
 },
 {
   primaryText: "Country",
-  secondaryText: country_name,
+  secondaryText: country_name[0]?.label,
   icon: <FlagOutlinedIcon/>,
   onClick: () => router.push("/")
 },
