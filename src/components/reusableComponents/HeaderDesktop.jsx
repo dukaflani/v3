@@ -135,12 +135,11 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
 
 
   useEffect(() => {
-    setCountry_name(countriesChoices?.filter((country) => country.code === UserCountry))
-  }, [])
+    if (UserCountry?.length > 1) {
+      setCountry_name(countriesChoices?.filter((country) => country.code === UserCountry))
+    }
+  }, [UserCountry])
 
-  console.log("user country code:", UserCountry)
-  console.log("user country title 2:", countriesChoices?.filter((country) => country.code === UserCountry))
-  // console.log("user country title 3:", countriesChoices?.filter((country) => country.code === UserCountry[0]?.label))
   
 
 
