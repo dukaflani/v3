@@ -68,7 +68,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const router = useRouter()
     const dispatch = useDispatch()
-    const { v, UserCountry, UserIP  } = router.query
+    const { v, UserCountry, UserIP, hostURL  } = router.query
     const [tabPosition, setTabPosition] = useState(0)
     const [showMoreText, setShowMoreText] = useState(false)
     const [linkCopied, setLinkCopied] = useState(false)
@@ -80,6 +80,11 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     const [user_country, setUser_country] = useState(null)
     const [user_ip, setUser_ip] = useState(null)
     const [referrer_url, setReferrer_url] = useState(null)
+
+    console.log("Host url:", hostURL)
+    console.log("youtube id:", v)
+    console.log("user country:", UserCountry)
+    console.log("user IP:", userIP)
     
     useEffect(() => {
         if (linkCopied) {

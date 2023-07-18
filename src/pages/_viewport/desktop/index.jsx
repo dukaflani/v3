@@ -3,14 +3,10 @@ import { useState } from 'react';
 
 // Nextjs Imports
 import Head from 'next/head'
-import { useRouter } from 'next/router';
 
 //  Mui Imports
-import { AppBar, Box, Button, Container, Paper, Toolbar } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
+import { Box, Paper } from '@mui/material'
 
-// Icons
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 // Components
 import NavigationLayout from '@/layout/desktop/NavigationLayout'
@@ -22,10 +18,7 @@ import BottomNavDesktop from '@/components/reusableComponents/BottomNavDesktop';
 
 
 export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
-  const router = useRouter()
-  const theme = useTheme()
   const [open, setOpen] = useState(false);
-  const adString = 'Get the "Everything Link" for your music with Dukaflani'
   
   return (
     <Paper>

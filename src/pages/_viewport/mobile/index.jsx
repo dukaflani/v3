@@ -6,14 +6,11 @@ import Head from 'next/head'
 import { useRouter } from 'next/router';
 
 //  Mui Imports
-import { Box, Container, Paper, Button, colors } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
+import { Box, Container, Paper, colors } from '@mui/material'
 
 // NPM Imports
 import { useDispatch } from 'react-redux';
 
-// Icons
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 // Components
 import MobileNavigationLayout from '@/layout/mobile/MobileNavigationLayout'
@@ -26,7 +23,6 @@ import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 
 export default function Home({ setIsDarkMode, isDarkMode, value, setValue }) {
-  const theme = useTheme()
   const router = useRouter()
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false);
