@@ -84,7 +84,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     console.log("Host url:", hostURL)
     console.log("youtube id:", v)
     console.log("user country:", UserCountry)
-    console.log("user IP:", userIP)
+    console.log("user IP:", UserIP)
     
     useEffect(() => {
         if (linkCopied) {
