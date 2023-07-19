@@ -17,12 +17,10 @@ import Linkify from 'react-linkify';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 // MUI Imports
-import { Box, Container, Paper, Skeleton, Tab, Tabs, Typography, 
+import { Box, Container, Paper, Skeleton, Tab, Tabs, Typography, Tooltip,
     Stack, Avatar, Button, Grid, Drawer, Divider, IconButton, colors, useMediaQuery } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
 
 // Icons
-import LinkIcon from '@mui/icons-material/Link';
 import ShoppingBasketOutlinedIcon from '@mui/icons-material/ShoppingBasketOutlined';
 import MicNoneOutlinedIcon from '@mui/icons-material/MicNoneOutlined';
 import PhonelinkRingOutlinedIcon from '@mui/icons-material/PhonelinkRingOutlined';
@@ -35,6 +33,9 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import OndemandVideoOutlinedIcon from '@mui/icons-material/OndemandVideoOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import CastConnectedOutlinedIcon from '@mui/icons-material/CastConnectedOutlined';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import { RadioOutlined } from '@mui/icons-material';
 
 // Project Imports
@@ -289,69 +290,102 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                             <Typography variant='subtitle2'>more...</Typography>
                         </Stack>
                     </Box>
-                    <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-                        {data?.profile_avatar ? (<Box onClick={() => {
-                                    router.push({ pathname: `/${data?.username}` })
-                                    dispatch(pageHasChanged(true))
-                                    }} ><Avatar  src={data?.profile_avatar} alt={data?.stage_name} /></Box>) : (<Skeleton animation="wave" variant="circular" width={40} height={40} />)}
-                        <Box 
-                            onClick={() => {
-                                    router.push({ pathname: `/${data?.username}` })
-                                    dispatch(pageHasChanged(true))
-                                    }} 
-                            sx={{paddingX: 1, display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
-                            <Stack spacing={0.5} direction='row'>
-                                {data?.stage_name ? (<Box ><Typography className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography></Box>) : (<Skeleton width="100%" />)}
-                                {data?.verified && <CheckCircleIcon sx={{ fontSize: 13, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800] }} />}
-                            </Stack>
-                        </Box>
-                        <Box sx={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'start', paddingX: 1}}>
-                            <Typography variant='caption'>{isLoading ? '--' :  `${formatedFanBaseCount}`}</Typography>
-                        </Box>
-                        <IconButton disabled>
-                            <FavoriteBorderOutlinedIcon fontSize='small' />
-                        </IconButton>
-                    </Box>
-                    <Paper variant='outlined' sx={{ padding: 1 }}>
-                        <Stack>
-                            <Typography variant='subtitle2'>SPONSORED:</Typography>
-                            <Grid direction='row' container columnSpacing={1}>
-                                <Grid xs={4} item>
-                                    <Box sx={{ width: '100%', borderRadius: 2, position: "relative", cursor:'pointer', backgroundColor: colors.grey[100]}}>
-                                        <Image 
-                                            src={adPoster} 
-                                            layout='responsive'
-                                            alt={`Ad poster by Dukaflani Ads`}
-                                            style={{borderRadius: 6}}
-                                            />
-                                    </Box>
-                                </Grid>
-                                <Grid xs={6.5} item>
-                                    <Stack>
-                                        <Typography sx={{lineHeight: 1}} gutterBottom variant='subtitle2'>Get the &quot;Everything Link&quot; for your music with Dukaflani</Typography>
-                                        <Stack spacing={1.5}>
-                                            <Stack direction="row" spacing={0.5}>
-                                                <Typography sx={{fontSize: 12, backgroundColor: 'yellow', color: colors.grey[800]}} className="line-clamp-1 line-clamp" variant='caption'>Ad</Typography>
-                                                <Typography sx={{fontSize: 12, color: 'GrayText'}} className="line-clamp-1 line-clamp" variant='caption'>Dukaflani Ads</Typography>
-                                            </Stack>
-                                            <Button startIcon={<InfoOutlinedIcon/>} onClick={() => {
-                                                dispatch(pageHasChanged(true))
-                                                router.push({ pathname: '/links/contact_us' })
-                                                }} variant='text' size='small'>Learn More</Button>
-                                        </Stack>
-                                    </Stack>
-                                </Grid>
-                                <Grid xs={1.5} item>
-                                    <Box onClick={() => {
+                    <Stack spacing={2}>
+                        <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
+                            {data?.profile_avatar ? (<Box onClick={() => {
+                                        router.push({ pathname: `/${data?.username}` })
                                         dispatch(pageHasChanged(true))
-                                        router.push({ pathname: '/links/contact_us' })
-                                        }}>
-                                        <OpenInNewOutlinedIcon />
-                                    </Box>
+                                        }} ><Avatar  src={data?.profile_avatar} alt={data?.stage_name} /></Box>) : (<Skeleton animation="wave" variant="circular" width={40} height={40} />)}
+                            <Box 
+                                onClick={() => {
+                                        router.push({ pathname: `/${data?.username}` })
+                                        dispatch(pageHasChanged(true))
+                                        }} 
+                                sx={{paddingX: 1, display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
+                                <Stack spacing={0.5} direction='row'>
+                                    {data?.stage_name ? (<Box ><Typography className="line-clamp-1 line-clamp" variant='subtitle2'>{data?.stage_name}</Typography></Box>) : (<Skeleton width="100%" />)}
+                                    {data?.verified && <CheckCircleIcon sx={{ fontSize: 13, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800] }} />}
+                                </Stack>
+                            </Box>
+                            <Box sx={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'start', paddingX: 1}}>
+                                <Typography variant='caption'>{isLoading ? '--' :  `${formatedFanBaseCount}`}</Typography>
+                            </Box>
+                            <IconButton disabled>
+                                <FavoriteBorderOutlinedIcon fontSize='small' />
+                            </IconButton>
+                        </Box>
+                        <Box>
+                            {formatedLikesCount && <Stack direction='row' spacing={2}>
+                                <Paper variant='outlined'  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end', paddingY: 1, paddingX: 1.5, borderRadius: 10, }}>
+                                    <Stack spacing={2} direction='row'>
+                                        <Tooltip placement="top" title='I like'>
+                                            <Stack direction='row' spacing={1} sx={{cursor: 'pointer'}}>
+                                                <ThumbUpOutlinedIcon sx={{fontSize: 19}} />
+                                                {formatedLikesCount && <Typography sx={{ fontWeight:'bold' }} variant='body2'>{formatedLikesCount}</Typography>}
+                                            </Stack>
+                                        </Tooltip>
+                                        <Divider orientation="vertical" variant="middle" flexItem />
+                                        <Tooltip placement="top" title="I don't like"><ThumbDownOutlinedIcon sx={{fontSize: 19, cursor: 'pointer'}} /></Tooltip>
+                                    </Stack>
+                                </Paper>
+                                <Paper variant='outlined' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end', paddingY: 1, paddingX: 1.5, borderRadius: 10, cursor: 'pointer'}}>
+                                    <Stack spacing={2} direction='row'>
+                                    <CopyToClipboard
+                                            text={`https://${data?.video_username}.duka.to/${data?.slug}`}
+                                            onCopy={() => setLinkCopied(true)}
+                                    >
+                                        <Tooltip placement="top" title='Share'>
+                                                <Stack direction='row' spacing={1}>
+                                                    <ShareOutlinedIcon sx={{fontSize: 19}} />
+                                                    <Typography sx={{ fontWeight:'bold' }} variant='body2'>{shareButtonText}</Typography>
+                                                </Stack>
+                                        </Tooltip>
+                                    </CopyToClipboard>
+                                    </Stack>
+                                </Paper>
+                            </Stack>}
+                        </Box>
+                        <Paper variant='outlined' sx={{ padding: 1 }}>
+                            <Stack>
+                                <Typography variant='subtitle2'>SPONSORED:</Typography>
+                                <Grid direction='row' container columnSpacing={1}>
+                                    <Grid xs={4} item>
+                                        <Box sx={{ width: '100%', borderRadius: 2, position: "relative", cursor:'pointer', backgroundColor: colors.grey[100]}}>
+                                            <Image 
+                                                src={adPoster} 
+                                                layout='responsive'
+                                                alt={`Ad poster by Dukaflani Ads`}
+                                                style={{borderRadius: 6}}
+                                                />
+                                        </Box>
+                                    </Grid>
+                                    <Grid xs={6.5} item>
+                                        <Stack>
+                                            <Typography sx={{lineHeight: 1}} gutterBottom variant='subtitle2'>Get the &quot;Everything Link&quot; for your music with Dukaflani</Typography>
+                                            <Stack spacing={1.5}>
+                                                <Stack direction="row" spacing={0.5}>
+                                                    <Typography sx={{fontSize: 12, backgroundColor: 'yellow', color: colors.grey[800]}} className="line-clamp-1 line-clamp" variant='caption'>Ad</Typography>
+                                                    <Typography sx={{fontSize: 12, color: 'GrayText'}} className="line-clamp-1 line-clamp" variant='caption'>Dukaflani Ads</Typography>
+                                                </Stack>
+                                                <Button startIcon={<InfoOutlinedIcon/>} onClick={() => {
+                                                    dispatch(pageHasChanged(true))
+                                                    router.push({ pathname: '/links/contact_us' })
+                                                    }} variant='text' size='small'>Learn More</Button>
+                                            </Stack>
+                                        </Stack>
+                                    </Grid>
+                                    <Grid xs={1.5} item>
+                                        <Box onClick={() => {
+                                            dispatch(pageHasChanged(true))
+                                            router.push({ pathname: '/links/contact_us' })
+                                            }}>
+                                            <OpenInNewOutlinedIcon />
+                                        </Box>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </Stack>
-                    </Paper>
+                            </Stack>
+                        </Paper>
+                    </Stack>
                     <Box sx={{paddingTop: 2}}>
                         {
                             {

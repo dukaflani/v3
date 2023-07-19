@@ -299,7 +299,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
                                             <Paper variant='outlined' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end', paddingY: 1, paddingX: 1.5, borderRadius: 10, cursor: 'pointer'}}>
                                                 <Stack spacing={2} direction='row'>
                                                 <CopyToClipboard
-                                                        text={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${v}`}
+                                                        text={`https://${data?.video_username}.duka.to/${data?.slug}`}
                                                         onCopy={() => setLinkCopied(true)}
                                                 >
                                                     <Tooltip placement="top" title='Share'>
