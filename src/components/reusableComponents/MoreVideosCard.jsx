@@ -117,7 +117,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
         <>
             <Grid container columnSpacing={2} sx={video?.id == 1 ? {display: "none"} : {display: "flex"}}>
                 <Grid item xs={4}>
-                    <Box onClick={handleVideoClick} sx={{backgroundColor: colors.grey[200], width: '100%', position: 'relative', borderRadius: 2, cursor:'pointer'}}>
+                    <Box onClick={handleVideoClick} sx={{backgroundColor: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[800] : is_darkMode === "light" && prefersDarkMode === true ?  colors.grey[200] : colors.grey[200], width: '100%', position: 'relative', borderRadius: 2, cursor:'pointer'}}>
                         <Image 
                             src={video.thumbnail} 
                             layout='responsive'

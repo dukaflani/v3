@@ -111,7 +111,6 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
       },
     })
 
-    
 
     const cardBody = (
       <>
@@ -120,7 +119,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
           {video.thumbnail ? (
             <Box 
               onClick={handleVideoClick}
-              sx={{ backgroundColor: colors.grey[200], width: '100%', height: '56.25%', borderRadius: 2, position: "relative", cursor:'pointer'}}
+              sx={{ backgroundColor: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[800] : is_darkMode === "light" && prefersDarkMode === true ?  colors.grey[200] : colors.grey[200], width: '100%', height: '56.25%', borderRadius: 2, position: "relative", cursor:'pointer'}}
               >
               <Image 
                   src={video.thumbnail} 

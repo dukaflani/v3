@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import Image from "next/legacy/image";
 
 // MUI Imports
-import { Box, Button, Card, CardActionArea, CardContent, Stack, Typography, colors, Grid } from '@mui/material'
+import { Box, Button, Card, CardActionArea, CardContent, Stack, Typography, colors, Grid, useMediaQuery } from '@mui/material'
 
 // NPM Imports
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,6 +30,8 @@ const ProfilePageEventCard = ({ event }) => {
   const dispatch = useDispatch()
   const userCountry = useSelector((state) => state.auth.country)
   const userIpAddress = useSelector((state) => state.auth.ip_address)
+  const is_darkMode = useSelector((state) => state.theme.isDarkMode)
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const [user_country, setUser_country] = useState(null)
   const [user_ip, setUser_ip] = useState(null)
 
@@ -87,7 +89,7 @@ const { mutate: addNewEventView } = useMutation(addEventView, {
         <Card variant='outlined' onClick={handleEventClick} square>
             <CardActionArea>
                 <Box 
-                    sx={{ backgroundColor: colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
+                    sx={{ backgroundColor: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[800] : is_darkMode === "light" && prefersDarkMode === true ?  colors.grey[200] : colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
                     >
                     <Image 
                         src={event?.poster}

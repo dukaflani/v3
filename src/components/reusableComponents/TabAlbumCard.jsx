@@ -142,7 +142,7 @@ const TabAlbumCard = ({ album, data, albumTracks, loadingAlbum, loadingTracks })
                             title={album?.title}
                           /> */}
                           <Box 
-                            sx={{ backgroundColor: colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
+                            sx={{ backgroundColor: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[800] : is_darkMode === "light" && prefersDarkMode === true ?  colors.grey[200] : colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
                             >
                             <Image 
                                 src={album?.cover}

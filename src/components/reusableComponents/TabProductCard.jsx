@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 import Image from "next/legacy/image";
 
 // MUI Imports
-import { Box, Stack, Typography, Card, CardContent, colors, Button } from "@mui/material"
+import { Box, Stack, Typography, Card, CardContent, colors, Button, useMediaQuery } from "@mui/material"
 
 // Tanstack Query
 import { useMutation } from "@tanstack/react-query";
@@ -28,6 +28,8 @@ const TabProductCard = ({ product, data, loadingProduct }) => {
     const dispatch = useDispatch()
     const userCountry = useSelector((state) => state.auth.country)
     const userIpAddress = useSelector((state) => state.auth.ip_address)
+    const is_darkMode = useSelector((state) => state.theme.isDarkMode)
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const [user_country, setUser_country] = useState(null)
     const [user_ip, setUser_ip] = useState(null)
 
@@ -80,7 +82,7 @@ const TabProductCard = ({ product, data, loadingProduct }) => {
                             title={product?.title}
                         /> */}
                         <Box 
-                            sx={{ backgroundColor: colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
+                            sx={{ backgroundColor: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[800] : is_darkMode === "light" && prefersDarkMode === true ?  colors.grey[200] : colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
                             >
                             <Image 
                                 src={product?.image} 
