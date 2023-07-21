@@ -288,12 +288,12 @@ const navMenuItems = useMemo(() => [
   icon: currentLoggedInUser ? <Person2OutlinedIcon /> :  <PersonOffOutlined/>,
   onClick: currentLoggedInUser ? handleNavigateToProfile : handleLoginRegister 
 },
-{
-  primaryText: "Appearance",
-  secondaryText: is_darkMode === "dark" ? "Light Mode" : "Dark Mode",
-  icon: is_darkMode === "dark" ? <Brightness5Sharp/> : <Brightness4Sharp/>,
-  onClick: is_darkMode === "dark" ? handleSetLightMode : handleSetDarkMode
-},
+// {
+//   primaryText: "Appearance",
+//   secondaryText: is_darkMode === "dark" ? "Light Mode" : "Dark Mode",
+//   icon: is_darkMode === "dark" ? <Brightness5Sharp/> : <Brightness4Sharp/>,
+//   onClick: is_darkMode === "dark" ? handleSetLightMode : handleSetDarkMode
+// },
 ],[currentLoggedInUser, is_darkMode])
 
 const navMenuItems2 = useMemo(() => [
