@@ -93,7 +93,7 @@ const { mutate: addNewEventView } = useMutation(addEventView, {
                     title={event?.title}
                     /> */}
                 <Box 
-                    sx={{ backgroundColor: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[800] : is_darkMode === "light" && prefersDarkMode === true ?  colors.grey[200] : colors.grey[200], width: '100%', position: "relative", cursor:'pointer'}}
+                    sx={{ backgroundColor: colors.grey[800], width: '100%', position: "relative", cursor:'pointer'}}
                     >
                     <Image 
                         src={event?.poster}

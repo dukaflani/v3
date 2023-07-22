@@ -221,7 +221,7 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
                                                             router.push({ pathname: `/${profile?.username}` })
                                                             }} spacing={0.5} direction='row' sx={{cursor: 'pointer'}}>
                                                             {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
-                                                            {profile?.is_verified == "True" && <CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} />}                   
+                                                            {profile?.is_verified == "True" && <CheckCircleIcon sx={{ fontSize: 15, color: colors.grey[100] }} />}                   
                                                         </Stack>
                                                         {!loadingProfile ? (<Typography variant='caption'>{profile?.role}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>

@@ -69,53 +69,53 @@ const ProductsComponent = () => {
 
   const storeCategories = [
     {
-      name: <Typography sx={ categoryHovered == '0' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Dukaflani Brands</Typography>,
-      icon: <CheckCircleOutlined style={ categoryHovered == '0' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} />,
+      name: <Typography sx={ categoryHovered == '0' ? {color: '#1976d2'} : {color: colors.grey[100]}} variant="caption">Dukaflani Brands</Typography>,
+      icon: <CheckCircleOutlined style={ categoryHovered == '0' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: colors.grey[100]}} />,
       link: '#dukaflani'
     },
     {
-      name: <Typography sx={ categoryHovered == '1' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Apparel</Typography>,
-      icon: <SkinOutlined style={ categoryHovered == '1' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} />,
+      name: <Typography sx={ categoryHovered == '1' ? {color: '#1976d2'} : {color: colors.grey[100]}} variant="caption">Apparel</Typography>,
+      icon: <SkinOutlined style={ categoryHovered == '1' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: colors.grey[100]}} />,
       link: '#apparel'
     },
     {
-      name: <Typography sx={ categoryHovered == '2' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Wellness</Typography>,
-      icon: <HeartOutlined style={ categoryHovered == '2' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} />,
+      name: <Typography sx={ categoryHovered == '2' ? {color: '#1976d2'} : {color: colors.grey[100]}} variant="caption">Wellness</Typography>,
+      icon: <HeartOutlined style={ categoryHovered == '2' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: colors.grey[100]}} />,
       link: '#wellness'
     },
     {
-      name: <Typography sx={ categoryHovered == '3' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Electronics</Typography>,
-      icon: <TabletOutlined style={ categoryHovered == '3' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} />,
+      name: <Typography sx={ categoryHovered == '3' ? {color: '#1976d2'} : {color: colors.grey[100]}} variant="caption">Electronics</Typography>,
+      icon: <TabletOutlined style={ categoryHovered == '3' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: colors.grey[100]}} />,
       link: '#electronics'
     },
     {
-      name: <Typography sx={ categoryHovered == '3' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Albums</Typography>,
-      icon: <BarcodeOutlined style={ categoryHovered == '3' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} />,
+      name: <Typography sx={ categoryHovered == '3' ? {color: '#1976d2'} : {color: colors.grey[100]}} variant="caption">Albums</Typography>,
+      icon: <BarcodeOutlined style={ categoryHovered == '3' ? {fontSize: 15, color: '#1976d2'} : {fontSize: 15, color: colors.grey[100]}} />,
       link: '#albums'
     },
   ]
 
   const topVendors = [
     {
-      name: <Typography sx={ vendorHovered == '0' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Dukaflani Brands</Typography>
+      name: <Typography sx={ vendorHovered == '0' ? {color: '#1976d2'} : {color: colors.grey[100]}} variant="caption">Dukaflani Brands</Typography>
     },
     // {
-    //   name: <Typography sx={ vendorHovered == '1' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Mbichwa</Typography>
+    //   name: <Typography sx={ vendorHovered == '1' ? {color: '#1976d2'} : {color: colors.grey[100]}} variant="caption">Mbichwa</Typography>
     // },
     // {
-    //   name: <Typography sx={ vendorHovered == '2' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Home 254 Apparel</Typography>
+    //   name: <Typography sx={ vendorHovered == '2' ? {color: '#1976d2'} : {color: colors.grey[100]}} variant="caption">Home 254 Apparel</Typography>
     // },
     // {
-    //   name: <Typography sx={ vendorHovered == '3' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Vazzi</Typography>
+    //   name: <Typography sx={ vendorHovered == '3' ? {color: '#1976d2'} : {color: colors.grey[100]}} variant="caption">Vazzi</Typography>
     // },
     // {
-    //   name: <Typography sx={ vendorHovered == '4' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Kaka Empire</Typography>
+    //   name: <Typography sx={ vendorHovered == '4' ? {color: '#1976d2'} : {color: colors.grey[100]}} variant="caption">Kaka Empire</Typography>
     // },
     // {
-    //   name: <Typography sx={ vendorHovered == '5' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Zozanation</Typography>
+    //   name: <Typography sx={ vendorHovered == '5' ? {color: '#1976d2'} : {color: colors.grey[100]}} variant="caption">Zozanation</Typography>
     // },
     // {
-    //   name: <Typography sx={ vendorHovered == '6' ? {color: '#1976d2'} : {color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800]}} variant="caption">Calif Wear</Typography>
+    //   name: <Typography sx={ vendorHovered == '6' ? {color: '#1976d2'} : {color: colors.grey[100]}} variant="caption">Calif Wear</Typography>
     // },
   ]
 

@@ -117,7 +117,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
         <>
             <Grid container columnSpacing={2} sx={video?.id == 1 ? {display: "none"} : {display: "flex"}}>
                 <Grid item xs={4}>
-                    <Box onClick={handleVideoClick} sx={{backgroundColor: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[800] : is_darkMode === "light" && prefersDarkMode === true ?  colors.grey[200] : colors.grey[200], width: '100%', position: 'relative', borderRadius: 2, cursor:'pointer'}}>
+                    <Box onClick={handleVideoClick} sx={{backgroundColor: colors.grey[800], width: '100%', position: 'relative', borderRadius: 2, cursor:'pointer'}}>
                         <Image 
                             src={video.thumbnail} 
                             layout='responsive'
@@ -144,7 +144,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
                                       className="line-clamp-2 line-clamp"
                                       variant='subtitle2'
                                       underline="none"
-                                      sx={is_darkMode === "dark" || prefersDarkMode === true ? {color: colors.grey[100], cursor: 'pointer' } : is_darkMode === "light" && prefersDarkMode === true ?  {color: colors.grey[800], cursor: 'pointer' } : {color: colors.grey[800], cursor: 'pointer' }}
+                                      sx={{color: colors.grey[100], cursor: 'pointer' }}
                                      >
                                         {video.title}
                                 </Link>
@@ -153,7 +153,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
                                       dispatch(pageHasChanged(true))
                                       }} direction='row' spacing={0.5}>
                                   <Tooltip title={video.stage_name} placement="top" ><Typography sx={{cursor: 'pointer'}} className="line-clamp-1 line-clamp" variant='body2'>{video.stage_name}</Typography></Tooltip>
-                                  {video.verified && <Tooltip title='Verified' placement="top" ><CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} /></Tooltip>}
+                                  {video.verified && <Tooltip title='Verified' placement="top" ><CheckCircleIcon sx={{ fontSize: 15, color: colors.grey[100] }} /></Tooltip>}
                                 </Stack>
                                 <Typography variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>
                             </Stack>

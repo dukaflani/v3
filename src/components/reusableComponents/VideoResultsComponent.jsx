@@ -60,7 +60,7 @@ const VideoResultsComponent = ({ isLoading, videos, profile }) => {
                 <Stack>
                   <Stack direction="row" spacing={1} sx={{cursor: 'pointer'}}>
                     <Typography variant="subtitle2">{profile?.stage_name}</Typography>
-                    {profile?.is_verified == "True" && <CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} />}
+                    {profile?.is_verified == "True" && <CheckCircleIcon sx={{ fontSize: 15, color: colors.grey[100] }} />}
                   </Stack>
                   <Typography variant="caption">{profile?.role}</Typography>
                 </Stack>
@@ -233,7 +233,7 @@ const VideoResultsComponent = ({ isLoading, videos, profile }) => {
                         <Typography variant="body2">{profile?.stage_name}</Typography>
                       </Tooltip>
                       {profile?.is_verified == "True" && <Tooltip title='Verified' placement="top" >
-                          <CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} />
+                          <CheckCircleIcon sx={{ fontSize: 15, color: colors.grey[100] }} />
                         </Tooltip>}
                     </Stack>
                   }

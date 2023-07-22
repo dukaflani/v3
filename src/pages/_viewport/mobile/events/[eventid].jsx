@@ -156,7 +156,7 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                             router.push({ pathname: `/${profile?.username}` })
                                                             }} spacing={0.5} direction='row'>
                                                             {!loadingProfile ? (<Typography variant='subtitle2'>{profile?.stage_name}</Typography>) : (<Typography variant='subtitle2'>Loading profile...</Typography>)}
-                                                            {profile?.is_verified == 'True' && <CheckCircleIcon sx={{ fontSize: 15, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800] }} />}                   
+                                                            {profile?.is_verified == 'True' && <CheckCircleIcon sx={{ fontSize: 15, color: colors.grey[100]}} />}                   
                                                         </Stack>
                                                         {!loadingProfile ? (<Typography variant='caption'>{profile?.role}</Typography>) : (<Skeleton width="40%" />)}
                                                     </Stack>

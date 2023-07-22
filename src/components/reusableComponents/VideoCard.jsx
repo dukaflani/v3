@@ -119,7 +119,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
           {video.thumbnail ? (
             <Box 
               onClick={handleVideoClick}
-              sx={{ backgroundColor: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[800] : is_darkMode === "light" && prefersDarkMode === true ?  colors.grey[200] : colors.grey[200], width: '100%', height: '56.25%', borderRadius: 2, position: "relative", cursor:'pointer'}}
+              sx={{ backgroundColor: colors.grey[800], width: '100%', height: '56.25%', borderRadius: 2, position: "relative", cursor:'pointer'}}
               >
               <Image 
                   src={video.thumbnail} 
@@ -152,7 +152,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                   className="line-clamp-2 line-clamp"
                   variant='subtitle2'
                   underline="none"
-                  sx={ is_darkMode === "dark" || prefersDarkMode === true ? {color: colors.grey[100], cursor: 'pointer'  } : is_darkMode === "light" && prefersDarkMode === true ?  {color: colors.grey[800], cursor: 'pointer'  } : {color: colors.grey[800], cursor: 'pointer'  }}
+                  sx={ {color: colors.grey[100], cursor: 'pointer'  }}
                   >
                     {video.title}
                   </Link>
@@ -165,7 +165,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                         <Typography sx={{letterSpacing: 0}} className="line-clamp-1 line-clamp" variant='body2'>{video.stage_name}</Typography>
                       </Tooltip>
                       {video.verified && <Tooltip title='Verified' placement="top" >
-                        <CheckCircleIcon sx={is_darkMode === "dark" || prefersDarkMode === true ? { fontSize: 15, color: colors.grey[100] } : is_darkMode === "light" && prefersDarkMode === true ?  { fontSize: 15, color: colors.grey[800] } : { fontSize: 15, color: colors.grey[800] }} />
+                        <CheckCircleIcon sx={{ fontSize: 15, color: colors.grey[100] }} />
                       </Tooltip>}
                     </Stack>
                     <Typography sx={{lineHeight: 1, letterSpacing: 0}} variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>

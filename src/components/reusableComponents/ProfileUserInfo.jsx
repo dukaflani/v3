@@ -23,7 +23,7 @@ const ProfileUserInfo = ({ profile }) => {
 
 
   return (
-    <Paper elevation={0} variant={is_darkMode === "dark" || prefersDarkMode === true ? "outlined" : is_darkMode === "light" && prefersDarkMode === true ? "elevation" : "elevation"} sx={{padding: 2}}>
+    <Paper elevation={0} variant="outlined" sx={{padding: 2}}>
         <Grid container spacing={3} >
             <Grid item xs={12} sm={4}>
                 {/* <Avatar sx={{ width: "100%", height: 220 }}  variant='rounded' src='' alt=""/> */}
@@ -45,7 +45,7 @@ const ProfileUserInfo = ({ profile }) => {
                         <Stack>
                             <Stack direction='row' spacing={1}>
                                 <Typography variant="h5">{profile?.stage_name}</Typography>
-                                {profile?.is_verified == "True" && <Tooltip title='Verified'><CheckCircleIcon sx={{ fontSize: 20, color: is_darkMode === "dark" || prefersDarkMode === true ? colors.grey[100] : is_darkMode === "light" && prefersDarkMode === true ? colors.grey[800] : colors.grey[800], cursor: 'pointer' }} /></Tooltip>}
+                                {profile?.is_verified == "True" && <Tooltip title='Verified'><CheckCircleIcon sx={{ fontSize: 20, color: colors.grey[100], cursor: 'pointer' }} /></Tooltip>}
                             </Stack>
                             <Typography variant="body2">{`@${profile?.username}`}</Typography>
                         </Stack>
