@@ -252,7 +252,7 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
         <Container sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 99}} maxWidth='lg'>
         <Link href={whatsappLink} underline='none' target="_blank" rel="noopener">
             <Paper elevation={0} square sx={{width: '100%', paddingBottom: 2}}>
-                <Button startIcon={<WhatsAppOutlined />} sx={{backgroundColor: '#25D366'}} fullWidth  variant="contained" size='medium'>Order on WhatsApp</Button>
+                <Button startIcon={<WhatsAppOutlined />} sx={{backgroundColor: '#25D366', "&:hover": {backgroundColor: '#07ab44'}}} fullWidth  variant="contained" size='medium'>Order on WhatsApp</Button>
             </Paper>
         </Link>
         </Container>

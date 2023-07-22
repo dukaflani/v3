@@ -200,7 +200,7 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
                                                     </Box>
                                                     <Link href={whatsappLink} underline='none' target="_blank" rel="noopener">
                                                         <Box sx={{width: '100%', paddingBottom: 2}}>
-                                                            <Button startIcon={<WhatsAppOutlined />} sx={{backgroundColor: '#25D366'}} fullWidth  variant="contained" size='small'>Order on WhatsApp</Button>
+                                                            <Button startIcon={<WhatsAppOutlined />} sx={{backgroundColor: '#25D366', "&:hover": {backgroundColor: '#07ab44'}}} fullWidth  variant="contained" size='small'>Order on WhatsApp</Button>
                                                         </Box>
                                                     </Link>
                                                 </Stack>
