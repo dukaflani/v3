@@ -30,6 +30,19 @@ import { addProductView, addView } from '@/axios/axios';
 import { pageHasChanged, setRegularPageView } from '@/redux/features/navigation/navigationSlice';
 
 
+// function TitleLink(props) {
+//   return (
+//     <Typography
+//       component="a"
+//       onClick={(event) => {
+//         event.preventDefault();
+//       }}
+//       {...props}
+//     />
+//   );
+// }
+
+
 
 const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
     const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
@@ -148,11 +161,13 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                     router.push({pathname: '/watch', query: {v: video.youtube_id}})
                     mutate(newView)
                   }}
+                  href={`/watch?v=${video.youtube_id}`}
                   title={video.title}
                   className="line-clamp-2 line-clamp"
                   variant='subtitle2'
                   underline="none"
-                  sx={ {color: colors.grey[100], cursor: 'pointer'  }}
+                  color="inherit"
+                  sx={{ cursor: 'pointer'  }}
                   >
                     {video.title}
                   </Link>
@@ -168,7 +183,10 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                         <CheckCircleIcon sx={{ fontSize: 15, color: colors.grey[100] }} />
                       </Tooltip>}
                     </Stack>
-                    <Typography sx={{lineHeight: 1, letterSpacing: 0}} variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>
+                    <Stack direction="row" spacing={0.5} sx={{display: 'flex', justifyContent: 'start', alignItems: 'center'}}>
+                      {video.product_featured == "True" && <Typography sx={{padding: 0, backgroundColor: "#f50057"}} variant='caption'>SHOP</Typography> }
+                      <Typography sx={{lineHeight: 1, letterSpacing: 0}} variant='caption'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>
+                    </Stack>
                   </Stack>
                 </Stack>
               </Grid>
@@ -182,7 +200,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
               )}
               
               <Grid sx={{ display: 'flex', alignItems: 'start', justifyContent: 'center'}} xs={1} item>
-                <IconButton
+                {video.product_featured == "True" && <IconButton
                    id="basic-button"
                    aria-controls={open ? 'basic-menu' : undefined}
                    aria-haspopup="true"
@@ -191,7 +209,7 @@ const VideoCard = React.forwardRef(({ video, isLoading }, ref) => {
                    size='small'
                    >
                   <MoreVertIcon fontSize="small" />
-                </IconButton>
+                </IconButton>}
                 {/* Video Options Menu */}
                 <Menu
                  id="basic-menu"

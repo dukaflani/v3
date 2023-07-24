@@ -140,6 +140,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
                                         router.push({pathname: '/watch', query: {v: video.youtube_id}})
                                         mutate(newView)
                                       }}
+                                      href={`/watch?v=${video.youtube_id}`}
                                       title={video.title}
                                       className="line-clamp-2 line-clamp"
                                       variant='subtitle2'
@@ -155,11 +156,14 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
                                   <Tooltip title={video.stage_name} placement="top" ><Typography sx={{cursor: 'pointer'}} className="line-clamp-1 line-clamp" variant='body2'>{video.stage_name}</Typography></Tooltip>
                                   {video.verified && <Tooltip title='Verified' placement="top" ><CheckCircleIcon sx={{ fontSize: 15, color: colors.grey[100] }} /></Tooltip>}
                                 </Stack>
-                                <Typography variant='body2'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>
+                                <Stack direction="row" spacing={0.5} sx={{display: 'flex', justifyContent: 'start', alignItems: 'center'}}>
+                                  {video.product_featured == "True" && <Typography sx={{padding: 0, backgroundColor: "#f50057"}} variant='caption'>SHOP</Typography> }
+                                  <Typography variant='caption'>{formatedViewCount} {formatedViewCount == 1 ? 'view' : 'views'} &bull; {videoUploadTime}</Typography>
+                                </Stack>
                             </Stack>
                         </Box>
                         <Box>
-                            <IconButton
+                            {video.product_featured == "True" && <IconButton
                               id="basic-button"
                               aria-controls={open ? 'basic-menu' : undefined}
                               aria-haspopup="true"
@@ -168,7 +172,7 @@ const MoreVideosCard = React.forwardRef(({ video, isLoading, setShowMoreVideos }
                               size='small'
                             >
                                 <MoreVertOutlinedIcon fontSize='small' />
-                            </IconButton>
+                            </IconButton>}
                             {/* Video Options Menu */}
                 <Menu
                  id="basic-menu"

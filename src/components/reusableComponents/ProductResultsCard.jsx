@@ -16,7 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 
 // Icons
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { pageHasChanged, setRegularPageView } from "@/redux/features/navigation/navigationSlice";
 import { addProductView } from "@/axios/axios";
 

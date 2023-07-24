@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 import Image from "next/legacy/image";
 
 // MUI Imports
-import { Box, Stack, Typography, Card, CardContent, colors, Button, useMediaQuery } from "@mui/material"
+import { Box, Stack, Typography, Card, CardContent, colors, Button, useMediaQuery, Link } from "@mui/material"
 
 // Tanstack Query
 import { useMutation } from "@tanstack/react-query";
@@ -105,11 +105,6 @@ const TabProductCard = ({ product, data, loadingProduct }) => {
                                 <Stack>
                                     <Box sx={{display: 'flex', alignItems: 'start', justifyContent: 'space-between'}}>
                                         <Typography className="line-clamp-2 line-clamp" variant="subtitle1">{product?.title}</Typography>
-                                        {/* <Tooltip title='Order on WhatsApp'>
-                                            <IconButton>
-                                                <WhatsAppOutlined style={{cursor: 'pointer', fontSize: 20}} />
-                                            </IconButton>
-                                        </Tooltip> */}
                                     </Box>
                                     <Stack>
                                         <Typography variant="h6">{product?.local_currency}{numeral(product?.local_price).format('0,0')}</Typography>

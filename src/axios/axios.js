@@ -144,7 +144,7 @@ export const getUpsellEvents = async (user_id) => {
 
 export const getProductByCategory = async (category) => {
     const productCategory = category?.queryKey[1]
-    const response = await api.get(`/store/products/?user=&product_category=${productCategory}`)
+    const response = await api.get(`/store/products/?product_category=${productCategory}&is_featured=true`)
     return response.data
 }
 

@@ -10,7 +10,7 @@ import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Stack, Typog
 import { useTheme } from '@mui/material/styles'
 
 // NPM Imports
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Icons
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
