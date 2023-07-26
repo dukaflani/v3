@@ -155,7 +155,7 @@ export const getFeaturedEvents = async () => {
 }
 
 export const getSponsoredEvents = async () => {
-    const response = await api.get(`/store/events/?is_featured=true`)
+    const response = await api.get(`/store/events/?is_sponsored=true`)
     return response.data
 }
 
