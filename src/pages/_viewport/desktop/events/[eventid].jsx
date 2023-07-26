@@ -53,6 +53,10 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
     const [user_ip, setUser_ip] = useState(null)
     const [referrer_url, setReferrer_url] = useState(null)
     const [country_name, setCountry_name] = useState({})
+    console.log("country name object from events page:", country_name)
+    console.log("country name from events page:", country_name?.label)
+    console.log("country code use effect from events page:", user_country)
+    console.log("country code use params from events page:", userCountry)
 
 
     useEffect(() => {
