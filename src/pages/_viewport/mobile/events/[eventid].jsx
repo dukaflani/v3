@@ -42,6 +42,7 @@ import { countriesChoices } from "@/data/countries"
 const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
     const userCountry = useSelector((state) => state.auth.country)
     const isRegularPageView = useSelector((state) => state.navigation.isRegularView)
+    const referralURL = useSelector((state) => state.navigation.referralURL)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
