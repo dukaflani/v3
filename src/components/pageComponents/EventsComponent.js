@@ -67,22 +67,49 @@ const { mutate: addNewEventView } = useMutation(addEventView, {
 
 
 
-  const { data: sponsoredEvents, isLoading: loadingSponsoredEvents } = useQuery(["sponsored-events"], getSponsoredEvents)
+  const { data: sponsoredEvents, isLoading: loadingSponsoredEvents } = useQuery(["sponsored-events", userCountry], (userCountry) => getSponsoredEvents(userCountry), {
+    enabled: !!userCountry
+  })
 
-  const clubCategory = 'Club+Events'
-  const { data: clubEvents } = useQuery(["club-events", clubCategory], (clubCategory) => getEventByCategory(clubCategory))
+  const clubObject ={
+    country: userCountry,
+    category: 'Club+Events'
+  }
+  const { data: clubEvents } = useQuery(["club-events", clubObject], (clubObject) => getEventByCategory(clubObject), {
+    enabled: !!userCountry
+  })
   
-  const concertCategory = 'Concert+Events'
-  const { data: concertEvents } = useQuery(["concert-events", concertCategory], (concertCategory) => getEventByCategory(concertCategory))
+  const concertObject ={
+    country: userCountry,
+    category: 'Concert+Events'
+  }
+  const { data: concertEvents } = useQuery(["concert-events", concertObject], (concertObject) => getEventByCategory(concertObject), {
+    enabled: !!userCountry
+  })
   
-  const corporateCategory = 'Corporate+Events'
-  const { data: corporateEvents } = useQuery(["corporate-events", corporateCategory], (corporateCategory) => getEventByCategory(corporateCategory))
+  const corporateObject ={
+    country: userCountry,
+    category: 'Corporate+Events'
+  }
+  const { data: corporateEvents } = useQuery(["corporate-events", corporateObject], (corporateObject) => getEventByCategory(corporateObject), {
+    enabled: !!userCountry
+  })
   
-  const campusCategory = 'Campus+Events'
-  const { data: campusEvents } = useQuery(["campus-events", campusCategory], (campusCategory) => getEventByCategory(campusCategory))
+  const campusObject ={
+    country: userCountry,
+    category: 'Campus+Events'
+  }
+  const { data: campusEvents } = useQuery(["campus-events", campusObject], (campusObject) => getEventByCategory(campusObject), {
+    enabled: !!userCountry
+  })
   
-  const othersCategory = 'Other+Events'
-  const { data: otherEvents } = useQuery(["other-events", othersCategory], (othersCategory) => getEventByCategory(othersCategory))
+  const othersObject ={
+    country: userCountry,
+    category: 'Other+Events'
+  }
+  const { data: otherEvents } = useQuery(["other-events", othersObject], (othersObject) => getEventByCategory(othersObject), {
+    enabled: !!userCountry
+  })
   
 
   return (

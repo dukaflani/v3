@@ -148,21 +148,17 @@ export const getProductByCategory = async (category) => {
     return response.data
 }
 
-
-export const getFeaturedEvents = async () => {
-    const response = await api.get(`/store/events/?is_featured=true`)
-    return response.data
-}
-
-export const getSponsoredEvents = async () => {
-    const response = await api.get(`/store/events/?is_sponsored=true`)
+export const getSponsoredEvents = async (countryCode) => {
+    const country_code = countryCode?.queryKey[1]
+    const response = await api.get(`/store/events/?is_sponsored=true&country=${country_code}`)
     return response.data
 }
 
 
-export const getEventByCategory = async (category) => {
-    const eventCategory = category?.queryKey[1]
-    const response = await api.get(`/store/events/?event_category=${eventCategory}&is_featured=true`)
+export const getEventByCategory = async (filterObject) => {
+    const eventCategory = filterObject?.queryKey[1]?.category
+    const eventCountry = filterObject?.queryKey[1]?.country
+    const response = await api.get(`/store/events/?event_category=${eventCategory}&is_featured=true&country=${eventCountry}`)
     return response.data
 }
 
