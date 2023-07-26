@@ -119,7 +119,7 @@ const HeaderDesktop = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
   // const referralURL = useSelector((state) => state.navigation.referralURL)
   const router = useRouter()
   const pathName = router.pathname
-  const { v, search_query, UserCountry, UserIP  } = router.query
+  const { v, search_query, UserCountry, UserIP, eventid, productid  } = router.query
   const pathnameLength = pathName.split("/")
   const [mySearchTerm, setMySearchTerm] = useState(searchTerm)
   const [showTabs, setShowTabs] = useState(true)
@@ -341,7 +341,7 @@ const navMenuItems2 = useMemo(() => [
 // Navigation
 useEffect(() => {
   dispatch(pageHasChanged(false))
-}, [pathName, v, search_query])
+}, [pathName, v, search_query, eventid, productid ])
   
 
 

@@ -45,7 +45,7 @@ const HeaderMobile = () => {
   const router = useRouter()
   const dispatch = useDispatch()
   const pathName = router.pathname
-  const { v, search_query, UserCountry, UserIP  } = router.query
+  const { v, search_query, UserCountry, UserIP, eventid, productid  } = router.query
   const pathnameLength = pathName.split("/")
   const [showSearch, setShowSearch] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -252,7 +252,7 @@ onClick: currentLoggedInUser ? handleLogout : handleLoginRegister
 // Navigation
 useEffect(() => {
   dispatch(pageHasChanged(false))
-}, [pathName, v, search_query])
+}, [pathName, v, search_query, eventid, productid])
 
 
   return (
