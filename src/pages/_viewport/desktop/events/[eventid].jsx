@@ -41,7 +41,6 @@ import { countriesChoices } from "@/data/countries"
 
 
 const EventPage = ({ setIsDarkMode, isDarkMode }) => {
-    const userCountry = useSelector((state) => state.auth.country)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const referralURL = useSelector((state) => state.navigation.referralURL)
@@ -55,12 +54,7 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
     const [country_name, setCountry_name] = useState({})
 
 
-    useEffect(() => {
-        if (userCountry?.length > 0) {
-          setCountry_name(countriesChoices?.filter((country) => country.code === userCountry))
-        }
-      }, [userCountry])
-
+    
 
     useEffect(() => {
         if (referralURL?.split(".")?.includes("dukaflani") || isRegularPageView === true ) {
@@ -101,6 +95,18 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
     const timeArray = time?.split(":").map(Number);
     const hours = event?.time ? timeArray[0] : null
     const minutes = event?.time ? timeArray[1] : null
+
+
+
+    useEffect(() => {
+        if (event?.country?.length > 0) {
+          setCountry_name(countriesChoices?.filter((country) => country.code === event?.country))
+        }
+      }, [event?.country])
+
+
+
+
 
     const newEventView = {
         event: event?.id,
