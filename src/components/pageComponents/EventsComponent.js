@@ -6,7 +6,7 @@ import Image from "next/legacy/image";
 import { useRouter } from 'next/router'
 
 // MUI Imports
-import { Box, Typography, Grid, Paper, Stack, Button, Skeleton } from "@mui/material"
+import { Box, Typography, Grid, Paper, Stack, Button, Skeleton, colors } from "@mui/material"
 import { useTheme } from '@mui/material/styles'
 
 // React Slick Carousel
@@ -19,10 +19,11 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useDispatch, useSelector } from "react-redux";
 
 // Project Imports
-import { getFeaturedEvents, getEventByCategory, addEventView } from "@/axios/axios";
+import { getEventByCategory, addEventView, getSponsoredEvents } from "@/axios/axios";
 import EventsCarousel from '@/components/reusableComponents/EventsCarousel'
 import Copyright from "../reusableComponents/Copyright";
 import { pageHasChanged, setRegularPageView } from "@/redux/features/navigation/navigationSlice";
+import { countriesChoices } from "@/data/countries"
 
 // Icons
 import { FireOutlined } from '@ant-design/icons';
@@ -39,12 +40,19 @@ const EventsComponent = () => {
   const userIpAddress = useSelector((state) => state.auth.ip_address)
   const [user_country, setUser_country] = useState(null)
   const [user_ip, setUser_ip] = useState(null)
+  const [country_name, setCountry_name] = useState({})
 
 
   useEffect(() => {
     setUser_country(userCountry)
     setUser_ip(userIpAddress)
 }, [userCountry, userIpAddress])
+
+useEffect(() => {
+  if (userCountry?.length > 1) {
+    setCountry_name(countriesChoices?.filter((country) => country.code === userCountry))
+  }
+}, [userCountry])
 
 
 
@@ -59,7 +67,7 @@ const { mutate: addNewEventView } = useMutation(addEventView, {
 
 
 
-  const { data: featuredEvents, isLoading: loadingFeaturedEvents } = useQuery(["featured-events"], getFeaturedEvents)
+  const { data: sponsoredEvents, isLoading: loadingSponsoredEvents } = useQuery(["sponsored-events"], getSponsoredEvents)
 
   const clubCategory = 'Club+Events'
   const { data: clubEvents } = useQuery(["club-events", clubCategory], (clubCategory) => getEventByCategory(clubCategory))
@@ -84,8 +92,17 @@ const { mutate: addNewEventView } = useMutation(addEventView, {
         <Paper square >
               <Box sx={{padding: 2, display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                 <Stack>
-                  {loadingFeaturedEvents ? (<Typography component='h1' variant='subtitle1'>Loading events. Please wait ...</Typography>) : (<Typography component='h1' variant='subtitle1'>FEATURED EVENTS</Typography>)}
-                  {!loadingFeaturedEvents && <Typography component='h2' variant='body2'>Top Music Events Happening in Kenya</Typography>}
+                  {loadingSponsoredEvents ? (<Typography component='h1' variant='subtitle1'>Loading events. Please wait ...</Typography>) : (
+                    <Stack direction="row" sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}} spacing={0.5}>
+                      <Typography component='h1' variant='subtitle1'>FEATURED EVENTS</Typography>
+                      <Typography sx={{bgcolor: 'yellow', color: colors.grey[800], padding: 0}} variant='caption'>SPONSORED</Typography>
+                    </Stack>
+                  )}
+                  {!loadingSponsoredEvents && (
+                    <Stack direction="row" sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}} spacing={0.5}>
+                      <Typography component='h2' variant='body2'>{`Top Music Events Happening in ${country_name[0]?.label}`}</Typography>
+                    </Stack>
+                  )}
                 </Stack>
               </Box>
               <Box sx={{ width: '100%', borderRadius: 2, position: "relative", cursor:'pointer'}}>
@@ -97,7 +114,7 @@ const { mutate: addNewEventView } = useMutation(addEventView, {
                       speed={1200}
                       dots
                       >
-                    {featuredEvents?.map((featuredEvent, i) => (
+                    {sponsoredEvents?.map((sponsoredEvent, i) => (
                         <Box key={i}>
                           <Grid container>
                             <Grid item xs={12} md={6} sx={{padding: 5, display: 'flex', alignItems: 'center', justifyContent: 'end'}}>
@@ -106,9 +123,9 @@ const { mutate: addNewEventView } = useMutation(addEventView, {
                                   <Box>
                                     <Paper elevation={5} sx={{padding: 1, textAlign: 'center'}}>
                                       <Stack>
-                                        <Typography sx={{textTransform: 'uppercase'}} variant='subtitle2'>{new Date(featuredEvent?.date).toDateString().split(" ")[0]}</Typography>
-                                        <Typography sx={{textTransform: 'uppercase'}} variant='subtitle2'>{new Date(featuredEvent?.date).toDateString().split(" ")[2]}</Typography>
-                                        <Typography sx={{textTransform: 'uppercase'}} variant='subtitle2'>{new Date(featuredEvent?.date).toDateString().split(" ")[1]}</Typography>
+                                        <Typography sx={{textTransform: 'uppercase'}} variant='subtitle2'>{new Date(sponsoredEvent?.date).toDateString().split(" ")[0]}</Typography>
+                                        <Typography sx={{textTransform: 'uppercase'}} variant='subtitle2'>{new Date(sponsoredEvent?.date).toDateString().split(" ")[2]}</Typography>
+                                        <Typography sx={{textTransform: 'uppercase'}} variant='subtitle2'>{new Date(sponsoredEvent?.date).toDateString().split(" ")[1]}</Typography>
                                       </Stack>
                                     </Paper>
                                   </Box>
@@ -116,30 +133,30 @@ const { mutate: addNewEventView } = useMutation(addEventView, {
                                     <Stack spacing={1}>
                                       <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                         <LocationOnOutlinedIcon fontSize='small' />
-                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>{featuredEvent?.venue}</Typography>
+                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>{sponsoredEvent?.venue}</Typography>
                                       </Stack>
                                       <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                         <OutlinedFlagTwoToneIcon fontSize='small' />
-                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>{featuredEvent?.location}</Typography>
+                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>{sponsoredEvent?.location}</Typography>
                                       </Stack>
                                       <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                         <ScheduleOutlinedIcon fontSize='small' />
-                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>{`${featuredEvent?.time?.split(":").map(Number)[0]}:${featuredEvent?.time?.split(":").map(Number)[1]?.toString().padStart(2, '0')}hrs`}</Typography>
+                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>{`${sponsoredEvent?.time?.split(":").map(Number)[0]}:${sponsoredEvent?.time?.split(":").map(Number)[1]?.toString().padStart(2, '0')}hrs`}</Typography>
                                       </Stack>
                                     </Stack>
                                   </Box>
                                 </Stack>
-                                <Typography className='line-clamp-2 line-clamp' variant='h6'>{featuredEvent?.title}</Typography>
-                                <Typography variant='caption' sx={{color: '#1976d2'}}>{featuredEvent?.event_category}</Typography>
-                                <Typography className='line-clamp-2 line-clamp' variant='body1'>{featuredEvent?.description}</Typography>
+                                <Typography className='line-clamp-2 line-clamp' variant='h6'>{sponsoredEvent?.title}</Typography>
+                                <Typography variant='caption' sx={{color: '#1976d2'}}>{sponsoredEvent?.event_category}</Typography>
+                                <Typography className='line-clamp-2 line-clamp' variant='body1'>{sponsoredEvent?.description}</Typography>
                                 <Stack spacing={2} sx={{marginTop: 2}}>
                                   <Button onClick={() => {
                                     dispatch(pageHasChanged(true))
                                     dispatch(setRegularPageView())
-                                    router.push({ pathname: `/events/${featuredEvent?.id}`, query: {a: featuredEvent?.user} })
+                                    router.push({ pathname: `/events/${sponsoredEvent?.id}`, query: {a: sponsoredEvent?.user} })
                                     addNewEventView({
-                                      event: featuredEvent?.id,
-                                      event_profile: featuredEvent?.customuserprofile,
+                                      event: sponsoredEvent?.id,
+                                      event_profile: sponsoredEvent?.customuserprofile,
                                       ip_address: user_ip,
                                       country: user_country,
                                       referral_url: "https://dukaflani.com",
@@ -151,11 +168,11 @@ const { mutate: addNewEventView } = useMutation(addEventView, {
                             <Grid item md={6} sx={{display:{xs:'none', md:'flex'}, alignItems: 'center', justifyContent: 'start', padding: 3}}>
                               <Box sx={{ width: '60%', position: "relative"}}>
                                 <Image 
-                                  src={featuredEvent?.poster} 
+                                  src={sponsoredEvent?.poster} 
                                   layout='responsive'
                                   height='100%'
                                   width='100%'
-                                  alt={featuredEvent?.title}
+                                  alt={sponsoredEvent?.title}
                                   />
                               </Box>
                             </Grid>

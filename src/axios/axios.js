@@ -154,10 +154,15 @@ export const getFeaturedEvents = async () => {
     return response.data
 }
 
+export const getSponsoredEvents = async () => {
+    const response = await api.get(`/store/events/?is_sponsored=true`)
+    return response.data
+}
+
 
 export const getEventByCategory = async (category) => {
     const eventCategory = category?.queryKey[1]
-    const response = await api.get(`/store/events/?event_category=${eventCategory}`)
+    const response = await api.get(`/store/events/?event_category=${eventCategory}&is_featured=true`)
     return response.data
 }
 
