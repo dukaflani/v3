@@ -1,3 +1,6 @@
+// React Imports
+import { useEffect, useState } from "react";
+
 // Nextjs Imports
 import Head from "next/head"
 import Image from "next/legacy/image";
@@ -33,11 +36,12 @@ import UpsellEventsCarousel from '@/components/reusableComponents/UpsellEventsCa
 import Copyright from '@/components/reusableComponents/Copyright'
 import { addEventView, getCurrentEvent, getCurrentVideoUserProfile, getUpsellEvents } from "@/axios/axios";
 import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
-import { useEffect, useState } from "react";
+import { countriesChoices } from "@/data/countries"
 
 
 
 const EventPage = ({ setIsDarkMode, isDarkMode }) => {
+    const userCountry = useSelector((state) => state.auth.country)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const referralURL = useSelector((state) => state.navigation.referralURL)
@@ -48,6 +52,14 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
     const [user_country, setUser_country] = useState(null)
     const [user_ip, setUser_ip] = useState(null)
     const [referrer_url, setReferrer_url] = useState(null)
+    const [country_name, setCountry_name] = useState({})
+
+
+    useEffect(() => {
+        if (userCountry?.length > 0) {
+          setCountry_name(countriesChoices?.filter((country) => country.code === userCountry))
+        }
+      }, [userCountry])
 
 
     useEffect(() => {
@@ -266,7 +278,7 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                 </Stack>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <PublicOutlinedIcon fontSize="small" />
-                                                    {!loadingEvent ? (<Typography variant='body2'>{`${event?.city}, ${event?.country}`}</Typography>) : (<Skeleton width="10%" />)}
+                                                    {!loadingEvent ? (<Typography variant='body2'>{`${event?.city}, ${country_name}`}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <EventOutlinedIcon fontSize="small" />

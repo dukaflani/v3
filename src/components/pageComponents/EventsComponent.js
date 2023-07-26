@@ -49,7 +49,7 @@ const EventsComponent = () => {
 }, [userCountry, userIpAddress])
 
 useEffect(() => {
-  if (userCountry?.length > 1) {
+  if (userCountry?.length > 0) {
     setCountry_name(countriesChoices?.filter((country) => country.code === userCountry))
   }
 }, [userCountry])

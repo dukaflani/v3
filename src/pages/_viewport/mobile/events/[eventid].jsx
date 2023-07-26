@@ -1,3 +1,6 @@
+// React Imports
+import { useEffect, useState } from "react";
+
 // Nextjs Imports
 import Head from "next/head"
 import Image from "next/legacy/image";
@@ -9,7 +12,7 @@ import { Avatar, Box, Button, colors, Container, Divider, Grid, Link, Paper, Ske
 import { useTheme } from '@mui/material/styles'
 
 // TanStack/React-Query
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // NPM Imports
 import numeral from 'numeral';
@@ -31,18 +34,45 @@ import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 import MobileNavigationLayout from '@/layout/mobile/MobileNavigationLayout'
 import UpsellEventsCarousel from '@/components/reusableComponents/UpsellEventsCarousel'
 import Copyright from '@/components/reusableComponents/Copyright'
-import { getCurrentEvent, getCurrentVideoUserProfile, getUpsellEvents } from "@/axios/axios";
+import { addEventView, getCurrentEvent, getCurrentVideoUserProfile, getUpsellEvents } from "@/axios/axios";
 import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
+import { countriesChoices } from "@/data/countries"
 
 
 const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
+    const userCountry = useSelector((state) => state.auth.country)
+    const isRegularPageView = useSelector((state) => state.navigation.isRegularView)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const theme = useTheme()
     const dispatch = useDispatch()
     const router = useRouter()
-    const { eventid } = router.query
-    const { a } = router.query
+    const { eventid, a, UserCountry, UserIP } = router.query
+    const [user_country, setUser_country] = useState(null)
+    const [user_ip, setUser_ip] = useState(null)
+    const [referrer_url, setReferrer_url] = useState(null)
+    const [country_name, setCountry_name] = useState({})
+
+
+    useEffect(() => {
+        if (userCountry?.length > 0) {
+          setCountry_name(countriesChoices?.filter((country) => country.code === userCountry))
+        }
+      }, [userCountry])
+
+
+    useEffect(() => {
+        if (referralURL?.split(".")?.includes("dukaflani") || isRegularPageView === true ) {
+            setUser_country(UserCountry)
+            setUser_ip(UserIP)
+            setReferrer_url(null)  
+        } else {
+            setUser_country(UserCountry)
+            setUser_ip(UserIP)
+            setReferrer_url(referralURL)
+        }
+      }, [referralURL, UserCountry, UserIP, isRegularPageView])
+
 
     const queryClient = useQueryClient()
     const { data: event, isLoading: loadingEvent } = useQuery(["current-event", eventid], (eventid) => getCurrentEvent(eventid), {
@@ -70,6 +100,38 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
     const timeArray = time?.split(":").map(Number);
     const hours = event?.time ? timeArray[0] : null
     const minutes = event?.time ? timeArray[1] : null
+
+
+    const newEventView = {
+        event: event?.id,
+        event_profile: event?.customuserprofile,
+        ip_address: user_ip,
+        country: user_country,
+        referral_url: referrer_url,
+    }
+    
+    const { mutate: addNewReferredEventView } = useMutation(addEventView, {
+        onSuccess: (data, _variables, _context) => {
+        //   console.log("event view success:", data)
+        },
+        onError: (error, _variables, _context) => {
+        //   console.log("event view error:", error)
+        },
+      })
+
+    const handleReferredView = () => {
+        addNewReferredEventView(newEventView)
+    }
+
+
+    useEffect(() => {
+        const addMyReferralView = () => {
+            if (referrer_url?.length > 1 && event?.id >= 1 && event?.customuserprofile >= 1 && user_ip?.length > 1 && user_country?.length > 1) {
+                handleReferredView()
+            }
+        };
+        addMyReferralView();
+        }, [referrer_url, event?.id, event?.customuserprofile, user_ip, user_country])
 
 
   return (
@@ -191,7 +253,7 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                 </Stack>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <PublicOutlinedIcon fontSize="small" />
-                                                    {!loadingEvent ? (<Typography variant='body2'>{`${event?.city}, ${event?.country}`}</Typography>) : (<Skeleton width="10%" />)}
+                                                    {!loadingEvent ? (<Typography variant='body2'>{`${event?.city}, ${country_name}`}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <EventOutlinedIcon fontSize="small" />
