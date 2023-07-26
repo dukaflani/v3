@@ -254,7 +254,7 @@ const MobileEventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                 </Stack>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <PublicOutlinedIcon fontSize="small" />
-                                                    {!loadingEvent ? (<Typography variant='body2'>{`${event?.city}, ${country_name}`}</Typography>) : (<Skeleton width="10%" />)}
+                                                    {!loadingEvent ? (<Typography variant='body2'>{`${event?.city}, ${country_name?.label}`}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <EventOutlinedIcon fontSize="small" />
