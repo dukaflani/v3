@@ -19,6 +19,9 @@ import PublicIcon from '@mui/icons-material/Public';
 import InsertInvitationOutlinedIcon from '@mui/icons-material/InsertInvitationOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
+
+// Project Imports
+import { countriesChoices } from "@/data/countries"
 import { pageHasChanged, setRegularPageView } from '@/redux/features/navigation/navigationSlice';
 import { addEventView } from '@/axios/axios';
 
@@ -163,7 +166,7 @@ const ProductsCarouselDukaflani = ({ color1, color2, icon, upsellEvents, promote
                                     </Stack>
                                       <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                                         <PublicIcon sx={{fontSize: 15}} />
-                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>{`${upsellEvent?.city}, ${upsellEvent?.country}`}</Typography>
+                                        <Typography className='line-clamp-1 line-clamp' variant='caption'>{`${upsellEvent?.city}, ${countriesChoices?.filter((country) => country.code === upsellEvent?.country)[0]?.label}`}</Typography>
                                       </Stack>
                                       <Stack direction='row' spacing={0.5} sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}}>
                                         <InsertInvitationOutlinedIcon sx={{fontSize: 15}} />
