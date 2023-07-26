@@ -53,10 +53,6 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
     const [user_ip, setUser_ip] = useState(null)
     const [referrer_url, setReferrer_url] = useState(null)
     const [country_name, setCountry_name] = useState({})
-    console.log("country name object from events page:", country_name)
-    console.log("country name from events page:", country_name?.label)
-    console.log("country code use effect from events page:", user_country)
-    console.log("country code use params from events page:", userCountry)
 
 
     useEffect(() => {
@@ -282,7 +278,7 @@ const EventPage = ({ setIsDarkMode, isDarkMode }) => {
                                                 </Stack>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <PublicOutlinedIcon fontSize="small" />
-                                                    {!loadingEvent ? (<Typography variant='body2'>{`${event?.city}, ${country_name?.label}`}</Typography>) : (<Skeleton width="10%" />)}
+                                                    {!loadingEvent ? (<Typography variant='body2'>{`${event?.city}, ${country_name[0]?.label}`}</Typography>) : (<Skeleton width="10%" />)}
                                                 </Stack>
                                                 <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                                                     <EventOutlinedIcon fontSize="small" />
