@@ -465,7 +465,7 @@ useEffect(() => {
                   }} variant='subtitle2'>Terms</Typography>
               </Stack>
               <Box sx={{paddingX: 2}}>
-                <Typography variant='caption'>&copy; {new Date().getFullYear()} Jidraff Gathura</Typography>
+                <Typography variant='caption'>&copy; {new Date().getFullYear()} Dukaflani</Typography>
               </Box>
           </div>
         </Drawer>
