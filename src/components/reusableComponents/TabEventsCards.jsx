@@ -30,9 +30,9 @@ export const TabEventCard = ({ event, videoUserID }) => {
   const dispatch = useDispatch()
   const userCountry = useSelector((state) => state.auth.country)
   const userIpAddress = useSelector((state) => state.auth.ip_address)
+  const [country_name, setCountry_name] = useState({})
   const [user_country, setUser_country] = useState(null)
   const [user_ip, setUser_ip] = useState(null)
-  const [country_name, setCountry_name] = useState({})
 
 
   useEffect(() => {

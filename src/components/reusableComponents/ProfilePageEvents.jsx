@@ -20,6 +20,7 @@ import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 
 // Project imports
 import { months } from '@/data/months';
+import { countriesChoices } from "@/data/countries"
 import { pageHasChanged, setRegularPageView } from '@/redux/features/navigation/navigationSlice';
 import { addEventView } from '@/axios/axios';
 
@@ -32,6 +33,7 @@ const ProfilePageEventCard = ({ event }) => {
   const userIpAddress = useSelector((state) => state.auth.ip_address)
   const is_darkMode = useSelector((state) => state.theme.isDarkMode)
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+  const [country_name, setCountry_name] = useState({})
   const [user_country, setUser_country] = useState(null)
   const [user_ip, setUser_ip] = useState(null)
 
@@ -52,6 +54,17 @@ const ProfilePageEventCard = ({ event }) => {
   const day = event?.date ? dateArray[2] : null
   const hours = event?.time ? timeArray[0] : null
   const minutes = event?.time ? timeArray[1] : null
+
+
+  useEffect(() => {
+    if (event?.country?.length > 0) {
+      setCountry_name(countriesChoices?.filter((country) => country.code === event?.country))
+    }
+  }, [event?.country])
+
+
+
+
 
   const newEventView = {
     event: event?.id,
@@ -115,7 +128,7 @@ const { mutate: addNewEventView } = useMutation(addEventView, {
                         </Stack>
                         <Stack sx={{display: 'flex', alignItems: 'center'}} direction='row' spacing={1}>
                             <PublicOutlinedIcon fontSize='small' />
-                            <Typography className="line-clamp-1 line-clamp" variant='caption'>{`${event?.city}, ${event?.country}`}</Typography>
+                            <Typography className="line-clamp-1 line-clamp" variant='caption'>{`${event?.city}, ${country_name[0]?.label}`}</Typography>
                         </Stack>
                         </Stack>
                         <Typography className="line-clamp-2 line-clamp" variant='subtitle2'>{event?.title}</Typography>
