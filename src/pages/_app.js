@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 import {  CssBaseline } from '@mui/material'
 
 // TanStack/React-Query
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, Hydrate } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 // NPM Imports
@@ -35,10 +35,11 @@ import MyThemeProvider from '@/components/reusableComponents/MyThemeProvider';
 
 
 
-const queryClient = new QueryClient();
+// const queryClient = new QueryClient();
 
 
 export default function App({ Component, pageProps }) {
+  const [queryClient] = useState(() => new QueryClient())
 
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID || " ";
   const tagManagerArgs = {
@@ -59,11 +60,13 @@ export default function App({ Component, pageProps }) {
       <>
           <CssBaseline />
           <QueryClientProvider client={queryClient}>
-            <Provider store={store}>
-              <MyThemeProvider>
-                <Component {...pageProps} setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} value={value} setValue={setValue} />
-              </MyThemeProvider>
-            </Provider>
+            <Hydrate state={pageProps.dehydratedState}>
+              <Provider store={store}>
+                <MyThemeProvider>
+                  <Component {...pageProps} setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} value={value} setValue={setValue} />
+                </MyThemeProvider>
+              </Provider>
+            </Hydrate>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
       </>

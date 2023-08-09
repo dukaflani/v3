@@ -11,7 +11,7 @@ import { Avatar, Box, Card, colors, Container, Divider, Grid, Button, Stack, Typ
     CardContent, CardActionArea, Tooltip, Tabs, Tab, Paper, Link, Skeleton, useMediaQuery } from '@mui/material'
 
 // TanStack/React-Query
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient, dehydrate, QueryClient } from '@tanstack/react-query';
 
 // NPM Imports
 import { useDispatch, useSelector } from 'react-redux';
@@ -54,6 +54,28 @@ import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLi
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
     getCurrentVideoEvents, getCurrentVideoMediaTours, addView } from '@/axios/axios';
 import { pageHasChanged, removeRefferalURL } from '@/redux/features/navigation/navigationSlice';
+
+
+
+
+export const getServerSideProps = async (cxt) => {
+    const { query } = cxt
+    const video_youtube_id = query?.v
+
+    const queryClient = new QueryClient()
+
+    await queryClient.prefetchQuery(["current-video", video_youtube_id], (video_youtube_id) => getCurrentVideo(video_youtube_id))
+
+
+    return {
+        props: {
+            dehydratedState: dehydrate(queryClient),
+        }
+    }
+
+}
+
+
 
 
 
@@ -111,16 +133,18 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     
     
     const queryClient = useQueryClient()
-    const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
-        initialData: () => {
-            const video = queryClient.getQueryData(["videos-list"])?.pages[0]?.find(video => video.youtube_id === v)
-            if(video) {
-                return video
-            } else {
-                return undefined
-            }
-        },
-    })
+    const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v))
+
+    // const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
+    //     initialData: () => {
+    //         const video = queryClient.getQueryData(["videos-list"])?.pages[0]?.find(video => video.youtube_id === v)
+    //         if(video) {
+    //             return video
+    //         } else {
+    //             return undefined
+    //         }
+    //     },
+    // })
     
     // Referral Views
     const newView = { 

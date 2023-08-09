@@ -7,7 +7,7 @@ import Image from "next/legacy/image";
 import { useRouter } from 'next/router';
 
 // TanStack/React-Query
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // NPM Imports
 import { useDispatch, useSelector } from 'react-redux';
@@ -58,6 +58,23 @@ import TabMediaTourCard from '@/components/reusableComponents/TabMediaTourCard';
 import MoreVideos from '@/components/reusableComponents/MoreVideos';
 import Copyright from '@/components/reusableComponents/Copyright';
 
+
+export const getServerSideProps = async (cxt) => {
+    const { query } = cxt
+    const video_youtube_id = query?.v
+
+    const queryClient = new QueryClient()
+
+    await queryClient.prefetchQuery(["current-video", video_youtube_id], (video_youtube_id) => getCurrentVideo(video_youtube_id))
+
+
+    return {
+        props: {
+            dehydratedState: dehydrate(queryClient),
+        }
+    }
+
+}
 
 
 
@@ -113,17 +130,18 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
 
 
     const queryClient = useQueryClient()
-    const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
-        initialData: () => {
-            const video = queryClient.getQueryData(["videos-list"])?.pages[0]?.find(video => video.youtube_id === v)
-            if(video) {
-                return video
-            } else {
-                return undefined
-            }
-        }
-    })
-
+    const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v))
+    
+    // const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
+    //     initialData: () => {
+    //         const video = queryClient.getQueryData(["videos-list"])?.pages[0]?.find(video => video.youtube_id === v)
+    //         if(video) {
+    //             return video
+    //         } else {
+    //             return undefined
+    //         }
+    //     }
+    // })
 
     // Referral Views
     const newView = { 
