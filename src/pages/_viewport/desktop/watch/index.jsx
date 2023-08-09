@@ -60,16 +60,20 @@ import { pageHasChanged, removeRefferalURL } from '@/redux/features/navigation/n
 
 export const getServerSideProps = async (cxt) => {
     const { query } = cxt
-    const video_youtube_id = query?.v
 
-    const queryClient = new QueryClient()
-
-    await queryClient.prefetchQuery(["current-video", video_youtube_id], (video_youtube_id) => getCurrentVideo(video_youtube_id))
+    const videosApiCallResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/store/videos/?youtube_id=${query?.v}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+        }
+        });
+    
+        const videoData = await videosApiCallResponse.json();
 
 
     return {
         props: {
-            dehydratedState: dehydrate(queryClient),
+            serverVideoData: videoData,
         }
     }
 
@@ -79,7 +83,7 @@ export const getServerSideProps = async (cxt) => {
 
 
 
-const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
+const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, serverVideoData }) => {
     // const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
     // const userCountry = useSelector((state) => state.auth.country)
     // const userIpAddress = useSelector((state) => state.auth.ip_address) 
@@ -133,18 +137,16 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     
     
     const queryClient = useQueryClient()
-    const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v))
-
-    // const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
-    //     initialData: () => {
-    //         const video = queryClient.getQueryData(["videos-list"])?.pages[0]?.find(video => video.youtube_id === v)
-    //         if(video) {
-    //             return video
-    //         } else {
-    //             return undefined
-    //         }
-    //     },
-    // })
+    const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
+        initialData: () => {
+            const video = queryClient.getQueryData(["videos-list"])?.pages[0]?.find(video => video.youtube_id === v)
+            if(video) {
+                return video
+            } else {
+                return undefined
+            }
+        },
+    })
     
     // Referral Views
     const newView = { 
@@ -249,40 +251,40 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue }) => {
     <Paper>
         <NavigationLayout2 setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} >
             <Head>
-                <title>{loading_current_video ? "Loading video..." : `Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`}</title>
-                <meta name="title" content={`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
+                <title>{loading_current_video ? "Loading video..." : `Get The ${serverVideoData?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${serverVideoData?.stage_name} - Dukaflani`}</title>
+                <meta name="title" content={`Get The ${serverVideoData?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${serverVideoData?.stage_name} - Dukaflani`} />
                 <meta name="description" content="A dynamic link-in-bio solution built for the modern African Artist with support for streaming links, merchandise, lyrics, skiza tunes, albums, events and media tours"/>
                 <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
 
                 
                 <meta property="og:type" content="website"/>
-                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}`} />
-                <meta property="og:title" content={`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
+                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${serverVideoData?.youtube_id}`} />
+                <meta property="og:title" content={`Get The ${serverVideoData?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${serverVideoData?.stage_name} - Dukaflani`} />
                 <meta property="og:description" content="A dynamic link-in-bio solution built for the modern African Artist with support for streaming links, merchandise, lyrics, skiza tunes, albums, events and media tours"/>
                 <meta 
                     property="og:image" 
-                    // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${data?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${data?.song_title}&video_title=${data?.title}&avatar=${data?.profile_avatar}`} />
-                    content={data?.thumbnail} 
+                    // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${serverVideoData?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${serverVideoData?.song_title}&video_title=${serverVideoData?.title}&avatar=${serverVideoData?.profile_avatar}`} />
+                    content={serverVideoData?.thumbnail} 
                     />
 
                 
                 <meta property="twitter:card" content="summary_large_image"/>
-                <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}`} />
-                <meta property="twitter:title" content={`Get The ${data?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${data?.stage_name} - Dukaflani`} />
+                <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${serverVideoData?.youtube_id}`} />
+                <meta property="twitter:title" content={`Get The ${serverVideoData?.song_title} Song's Merchandise, Streaming/Download Links, Lyrics, Skiza Tunes, Album and Events by ${serverVideoData?.stage_name} - Dukaflani`} />
                 <meta property="twitter:description" content="A dynamic link-in-bio solution built for the modern African Artist with support for streaming links, merchandise, lyrics, skiza tunes, albums, events and media tours"/>
                 <meta 
                     property="twitter:image" 
-                    // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${data?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${data?.song_title}&video_title=${data?.title}&avatar=${data?.profile_avatar}`} />
-                    content={data?.thumbnail} 
+                    // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${serverVideoData?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${serverVideoData?.song_title}&video_title=${serverVideoData?.title}&avatar=${serverVideoData?.profile_avatar}`} />
+                    content={serverVideoData?.thumbnail} 
                     />
-        </Head>
+            </Head>
             <Box sx={{ minHeight: '100vh', paddingTop: 5}}>
                 <Container maxWidth='lg'>
                     <Box>
                         <Grid container sx={{padding: 5}} spacing={3}>
                             <Grid xs={12} md={8} item>
                                 <Stack>
-                                    {data?.youtube_embed_link ? (<Box sx={{position: 'relative', paddingBottom: '56.25%'}}>
+                                    {serverVideoData?.youtube_embed_link ? (<Box sx={{position: 'relative', paddingBottom: '56.25%'}}>
                                         {/* <CircularProgress sx={{ position: 'absolute' }} color="inherit" /> */}
                                         <iframe width='100%' height='100%' src={data?.youtube_embed_link} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                                     </Box>) : (<Skeleton animation="wave"  variant="rectangular" sx={{ paddingTop: '56.25%', width: '100%'}} />)}

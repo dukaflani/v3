@@ -35,11 +35,11 @@ import MyThemeProvider from '@/components/reusableComponents/MyThemeProvider';
 
 
 
-// const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
 
 export default function App({ Component, pageProps }) {
-  const [queryClient] = useState(() => new QueryClient())
+  // const [queryClient] = useState(() => new QueryClient())
 
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID || " ";
   const tagManagerArgs = {
@@ -60,13 +60,13 @@ export default function App({ Component, pageProps }) {
       <>
           <CssBaseline />
           <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
+            {/* <Hydrate state={pageProps.dehydratedState}> */}
               <Provider store={store}>
                 <MyThemeProvider>
                   <Component {...pageProps} setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} value={value} setValue={setValue} />
                 </MyThemeProvider>
               </Provider>
-            </Hydrate>
+            {/* </Hydrate> */}
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
       </>
