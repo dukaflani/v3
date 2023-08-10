@@ -39,7 +39,6 @@ const queryClient = new QueryClient();
 
 
 export default function App({ Component, pageProps }) {
-  // const [queryClient] = useState(() => new QueryClient())
 
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID || " ";
   const tagManagerArgs = {

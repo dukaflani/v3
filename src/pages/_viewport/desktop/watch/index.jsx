@@ -56,6 +56,17 @@ import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLi
 import { pageHasChanged, removeRefferalURL } from '@/redux/features/navigation/navigationSlice';
 
 
+export const getServerSideProps = (cxt) => {
+    const { query } = cxt
+
+    return {
+        props: {
+            ssrYouTubeID: query?.v
+        }
+    }
+}
+
+
 
 const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, ssrYouTubeID }) => {
     // const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
@@ -486,15 +497,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, ssrYouTubeID
 
 export default CurrentVideo
 
-export const getServerSideProps = async (cxt) => {
-    const { query } = cxt
 
-    return {
-        props: {
-            ssrYouTubeID: query?.v
-        }
-    }
-}
 
 // export const getServerSideProps = async (cxt) => {
 //     const { query } = cxt
