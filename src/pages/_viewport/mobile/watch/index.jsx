@@ -59,7 +59,7 @@ import MoreVideos from '@/components/reusableComponents/MoreVideos';
 import Copyright from '@/components/reusableComponents/Copyright';
 
 
-const CurrentVideo = ({ setIsDarkMode, isDarkMode, ssrVideoDetails }) => {
+const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const referralURL = useSelector((state) => state.navigation.referralURL)
@@ -242,39 +242,39 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, ssrVideoDetails }) => {
     <>
     <MobileNavigationLayout setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} >
             <Head>
-                <title>{`${ssrVideoDetails?.song_title} by ${ssrVideoDetails?.stage_name} - Dukaflani | Hub For All Things Music`}</title>
-                <meta name="title" content={`${ssrVideoDetails?.song_title} by ${ssrVideoDetails?.stage_name} - Dukaflani | Hub For All Things Music`} />
+                <title>{loading_current_video ? "Loading..." : `${data?.song_title} by ${data?.stage_name} - Dukaflani | Hub For All Things Music`}</title>
+                <meta name="title" content={`${data?.song_title} by ${data?.stage_name} - Dukaflani | Hub For All Things Music`} />
                 <meta name="description" content="Buy the merchandise, download & stream it, get the lyrics, skiza tunes, album, events and media tours"/>
                 <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
 
                 
                 <meta property="og:type" content="website"/>
-                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${ssrVideoDetails?.youtube_id}`} />
-                <meta property="og:title" content={`${ssrVideoDetails?.song_title} by ${ssrVideoDetails?.stage_name} - Dukaflani | Hub For All Things Music`} />
+                <meta property="og:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}`} />
+                <meta property="og:title" content={`${data?.song_title} by ${data?.stage_name} - Dukaflani | Hub For All Things Music`} />
                 <meta property="og:description" content="Buy the merchandise, download & stream it, get the lyrics, skiza tunes, album, events and media tours"/>
                 <meta 
                     property="og:image" 
-                    // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${ssrVideoDetails?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${ssrVideoDetails?.song_title}&video_title=${ssrVideoDetails?.title}&avatar=${ssrVideoDetails?.profile_avatar}`} />
-                    content={ssrVideoDetails?.thumbnail} 
+                    // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${data?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${data?.song_title}&video_title=${data?.title}&avatar=${data?.profile_avatar}`} />
+                    content={data?.thumbnail} 
                     />
 
                 
                 <meta property="twitter:card" content="summary_large_image"/>
-                <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${ssrVideoDetails?.youtube_id}`} />
-                <meta property="twitter:title" content={`${ssrVideoDetails?.song_title} by ${ssrVideoDetails?.stage_name} - Dukaflani | Hub For All Things Music`} />
+                <meta property="twitter:url" content={`${process.env.NEXT_PUBLIC_NEXT_URL}/watch?v=${data?.youtube_id}`} />
+                <meta property="twitter:title" content={`${data?.song_title} by ${data?.stage_name} - Dukaflani | Hub For All Things Music`} />
                 <meta property="twitter:description" content="Buy the merchandise, download & stream it, get the lyrics, skiza tunes, album, events and media tours"/>
                 <meta 
                     property="twitter:image" 
-                    // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${ssrVideoDetails?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${ssrVideoDetails?.song_title}&video_title=${ssrVideoDetails?.title}&avatar=${ssrVideoDetails?.profile_avatar}`} />
-                    content={ssrVideoDetails?.thumbnail} 
+                    // content={`${process.env.NEXT_PUBLIC_NEXT_URL}/api/og?stage_name=${data?.stage_name}&fanbase_count=${videoProfile?.fanbase_count}&song_title=${data?.song_title}&video_title=${data?.title}&avatar=${data?.profile_avatar}`} />
+                    content={data?.thumbnail} 
                     />
             </Head>
         <Paper sx={{ minHeight: '100vh', paddingTop: 5, paddingBottom: 10}}>
             <Box sx={{position: 'sticky', top: 48, zIndex: 99}} >
                 <Box sx={{backgroundColor: 'black', width: '100%'}}>
                     <Container disableGutters maxWidth='sm'>
-                        {ssrVideoDetails?.youtube_embed_link ? (<Box sx={{position: 'relative', paddingBottom: '56.25%'}}>
-                            <iframe width='100%' height='100%' src={ssrVideoDetails?.youtube_embed_link} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                        {data?.youtube_embed_link ? (<Box sx={{position: 'relative', paddingBottom: '56.25%'}}>
+                            <iframe width='100%' height='100%' src={data?.youtube_embed_link} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                         </Box>) : (<Skeleton animation="wave"  variant="rectangular" sx={{ paddingTop: '56.25%', width: '100%'}} />)}
                     </Container>
                 </Box>
@@ -301,9 +301,9 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, ssrVideoDetails }) => {
             <Container sx={{paddingTop: 3}} maxWidth='sm'>
                 <Stack spacing={1.5}>
                     <Box onClick={() => setShowSongDetails(true)}>
-                    {ssrVideoDetails?.title ? (<Typography gutterBottom sx={{lineHeight: 1, fontWeight: "bold", color: colors.grey[100]}} variant='subtitle1' component='h1'>{ssrVideoDetails?.title}</Typography>) : (<Skeleton width="80%" />)}
+                    {data?.title ? (<Typography gutterBottom sx={{lineHeight: 1, fontWeight: "bold", color: colors.grey[100]}} variant='subtitle1' component='h1'>{data?.title}</Typography>) : (<Skeleton width="80%" />)}
                     <Stack sx={{display: 'flex', alignItems: 'center', justifyContent: 'start'}} direction='row' spacing={1}>
-                            {ssrVideoDetails?.genre_title ? (<Typography sx={{color: '#1976d2'}} variant='button'>{ssrVideoDetails?.genre_title}</Typography>) : (<Skeleton width="10%" />)}
+                            {data?.genre_title ? (<Typography sx={{color: '#1976d2'}} variant='button'>{data?.genre_title}</Typography>) : (<Skeleton width="10%" />)}
                             {data?.views_count ? (<Typography variant='caption'>{formatedViewCount} {data?.views_count == 1 ? 'view' : 'views'}</Typography>) : (<Skeleton width="10%" />)}
                             {data?.date ? (<Typography variant='caption'>{videoUploadTime}</Typography>) : (<Skeleton width="15%" />)}
                             <Typography variant='subtitle2'>more...</Typography>
@@ -526,28 +526,3 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, ssrVideoDetails }) => {
 }
 
 export default CurrentVideo
-
-
-export const getServerSideProps = async (cxt) => {
-    const { query } = cxt
-
-    const videosApiCallResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/store/videos/?youtube_id=${query?.v}`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-        }
-        });
-
-    const videoData = await videosApiCallResponse.json();
-
-
-    
-    return {
-        props: {
-            ssrVideoDetails: videoData?.results[0],
-        }
-    }
-
-}
-
-

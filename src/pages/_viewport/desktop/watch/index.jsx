@@ -56,16 +56,6 @@ import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLi
 import { pageHasChanged, removeRefferalURL } from '@/redux/features/navigation/navigationSlice';
 
 
-export const getServerSideProps = (cxt) => {
-    const { query } = cxt
-
-    return {
-        props: {
-            ssrYouTubeID: query?.v
-        }
-    }
-}
-
 
 
 const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, ssrYouTubeID }) => {
@@ -124,18 +114,17 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, ssrYouTubeID
     
     
     const queryClient = useQueryClient()
-    const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v))
+    const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
+        initialData: () => {
+            const video = queryClient.getQueryData(["videos-list"])?.pages[0]?.find(video => video.youtube_id === v)
+            if(video) {
+                return video
+            } else {
+                return undefined
+            }
+        },
+    })
     
-    // const { data, isLoading: loading_current_video } = useQuery(["current-video", v], (v) => getCurrentVideo(v), {
-    //     initialData: () => {
-    //         const video = queryClient.getQueryData(["videos-list"])?.pages[0]?.find(video => video.youtube_id === v)
-    //         if(video) {
-    //             return video
-    //         } else {
-    //             return undefined
-    //         }
-    //     },
-    // })
     // Referral Views
     const newView = { 
         video: data?.id,
@@ -239,7 +228,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, ssrYouTubeID
     <Paper>
         <NavigationLayout2 setIsDarkMode={setIsDarkMode} isDarkMode={isDarkMode} >
             <Head>
-                <title>{`${data?.song_title} by ${data?.stage_name} - Dukaflani | Hub For All Things Music`}</title>
+                <title>{loading_current_video ? "Loading..." : `${data?.song_title} by ${data?.stage_name} - Dukaflani | Hub For All Things Music`}</title>
                 <meta name="title" content={`${data?.song_title} by ${data?.stage_name} - Dukaflani | Hub For All Things Music`} />
                 <meta name="description" content="Buy the merchandise, download & stream it, get the lyrics, skiza tunes, album, events and media tours"/>
                 <meta name="keywords" content="Music Videos, Dukaflani, Links, Events, Merchandise, Skiza Tune, Lyrics, Albums, Celebrity Merchandise, Name Brands"/>
@@ -497,27 +486,3 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, ssrYouTubeID
 
 export default CurrentVideo
 
-
-
-// export const getServerSideProps = async (cxt) => {
-//     const { query } = cxt
-
-//     const videosApiCallResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/store/videos/?youtube_id=${query?.v}`, {
-//         method: 'GET',
-//         headers: {
-//             'Accept': 'application/json',
-//         }
-//         });
-
-//     const videoData = await videosApiCallResponse.json();
-
-
-    
-//     return {
-//         props: {
-//             data: videoData?.results[0],
-//             data2: query?.v,
-//         }
-//     }
-
-// }
