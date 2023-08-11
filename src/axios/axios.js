@@ -273,3 +273,37 @@ export const profileMediaTours = async (userID) => {
     const response = await api.get(`/store/media-tour-offset/?user=${user_id}&limit=20`)
     return response.data.results
 }
+
+export const checkFanbase = async (profileID) => {
+    const profile_id = profileID?.queryKey[1]?.profileId
+    const user_id = profileID?.queryKey[1]?.userId
+    const response = await api.get(`/store/fanbase/?user=${user_id}&customuserprofile=${profile_id}`)
+    return response.data[0]
+}
+
+export const joinFanbase = async ( { accessToken, ...customuserprofile } ) => {
+    const access_token = accessToken
+
+    const response = await api.post(`/store/fanbase/`, customuserprofile, {
+        headers: {
+            // 'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: access_token 
+        },
+    })
+    return response.data
+}
+
+export const leaveFanbase = async ( { id, accessToken } ) => {
+    const access_token = accessToken
+    const fanbase_id = id
+
+    const response = await api.delete(`/store/fanbase/${fanbase_id}/`, {
+        headers: {
+            // 'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: access_token 
+        },
+    })
+    return response.data
+}

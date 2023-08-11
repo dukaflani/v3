@@ -52,14 +52,15 @@ import adposter from '../../../../../public/assets/media/dukaflani-advert-poster
 import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLinks, 
     getCurrentVideoProduct, getCurrentVideoLyrics, getCurrentVideoLyricsVerses,
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
-    getCurrentVideoEvents, getCurrentVideoMediaTours, addView } from '@/axios/axios';
+    getCurrentVideoEvents, getCurrentVideoMediaTours, addView, checkFanbase, joinFanbase, leaveFanbase } from '@/axios/axios';
 import { pageHasChanged, removeRefferalURL } from '@/redux/features/navigation/navigationSlice';
 
 
 
 
 const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
-    // const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
+    const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
+    const accessToken = useSelector((state) => state.auth.token)
     // const userCountry = useSelector((state) => state.auth.country)
     // const userIpAddress = useSelector((state) => state.auth.ip_address) 
     const referralURL = useSelector((state) => state.navigation.referralURL)
@@ -78,11 +79,15 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
     const [numberOfUnlikes, setNumberOfUnlikes] = useState('')  
     const [is_liked, setIs_liked] = useState(false)
     const [is_unliked, setIs_unliked] = useState(false)
+    const [is_aFan, setIs_aFan] = useState(false)
+    const [fanbase_count, setFanbase_count] = useState(0)
+    const [userFanObject, setUserFanObject] = useState(null)
     const [user_country, setUser_country] = useState(null)
     const [user_ip, setUser_ip] = useState(null)
     const [referrer_url, setReferrer_url] = useState(null)
 
 
+   
     
     useEffect(() => {
         if (linkCopied) {
@@ -122,6 +127,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
                 return undefined
             }
         },
+        enabled: !!v,
     })
     
     // Referral Views
@@ -165,6 +171,19 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
     const videoProfileUserID = data?.user 
     const { data: profile, isLoading, isFetching } = useQuery(["current-video-profile", videoProfileUserID], (videoProfileUserID) => getCurrentVideoUserProfile(videoProfileUserID), {
         enabled: !!videoProfileUserID
+    })
+
+    
+    const videoProfileID = {
+        profileId: profile?.id,
+        userId: currentLoggedInUser?.id
+    }
+    
+    const { data: fanbase } = useQuery(["retrieve-fanbase-object", videoProfileID], (videoProfileID) => checkFanbase(videoProfileID), {
+        onSuccess: (data, _variables, _context) => {
+            setUserFanObject(data)
+        },
+        enabled: !!currentLoggedInUser?.id && !!profile?.id
     })
     
     const videoLinksID = data?.links 
@@ -211,9 +230,9 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
     })
 
 
-    const rawFanBaseCount = profile?.fanbase_count ? profile?.fanbase_count : 0
+    // const rawFanBaseCount = profile?.fanbase_count ? profile?.fanbase_count : 0
     let formatedFanBaseCount = ''
-    rawFanBaseCount < 1000 || rawFanBaseCount % 10 === 0 ? formatedFanBaseCount = numeral(rawFanBaseCount).format('0a') :  formatedFanBaseCount = numeral(rawFanBaseCount).format('0.0a')
+    fanbase_count < 1000 || fanbase_count % 10 === 0 || fanbase_count === 0 ? formatedFanBaseCount = numeral(fanbase_count).format('0a') :  formatedFanBaseCount = numeral(fanbase_count).format('0.0a')
 
     const rawLikesCount = data?.like_count ? data?.like_count : 0
     let formatedLikesCount = ''
@@ -222,6 +241,64 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
     const desc = data?.description
     const hashTags = desc?.split(' ')
     const hashTagRegex = /#[a-z0-9_]+/gi 
+
+     // Fanbase Fns
+
+     const { mutate: addNewFan } = useMutation(joinFanbase, { 
+        onSuccess: (data, _variables, _context) => {
+          queryClient.invalidateQueries(["current-video-profile", videoProfileUserID])
+          setIs_aFan(true)
+          setUserFanObject(data)
+        //   console.log("new fan added:", data)
+        },
+        onError: (error, _variables, _context) => {
+            // console.log("new fan error:", error)
+        }
+       })
+
+    const { mutate: removeFan } = useMutation(leaveFanbase, {
+        onSuccess: (data, _variables, _context) => {
+            queryClient.invalidateQueries(["current-video-profile", videoProfileUserID])
+            setIs_aFan(false)
+        }
+    })
+
+
+
+    useEffect(() => {
+        setFanbase_count(profile?.fanbase_count)
+    }, [profile?.fanbase_count])
+    
+    useEffect(() => {
+        if (fanbase?.id > 0) {
+            setIs_aFan(true)
+        }
+    }, [fanbase])
+    
+    const newFanDetails = {
+        accessToken,
+        customuserprofile: profile?.id,
+    }
+
+    const handleJoin = () => {
+        addNewFan(newFanDetails)
+        setIs_aFan(true)
+        setFanbase_count(prevCount => prevCount + 1)
+    }
+
+
+    const userFanDetails = {
+        accessToken,
+        id: userFanObject?.id,
+    }
+    
+    const handleLeave = () => {
+        removeFan(userFanDetails)
+        setIs_aFan(false)
+        setFanbase_count(prevCount => prevCount - 1)
+    }
+
+
 
   return (
     <Paper>
@@ -368,26 +445,57 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
                                                                 </Tooltip>
                                                                 {data?.verified && <Tooltip title='Verified'><CheckCircleIcon sx={{ fontSize: 15, color: colors.grey[100], cursor: 'pointer' }} /></Tooltip>}                   
                                                             </Stack>
-                                                            <Typography variant='caption'>{isLoading ? 'Fanbase --' :  `Fanbase ${formatedFanBaseCount}`}</Typography>
+                                                            <Typography variant='caption'>{isLoading ? 'Fanbase ~' :  `Fanbase ${formatedFanBaseCount}`}</Typography>
                                                         </Stack>
                                                     </Box>
-                                                    <Box>
+                                                    {currentLoggedInUser ? (<Box>
                                                         {
-                                                        true ?
-                                                            <Button sx={{
-                                                                background: "linear-gradient(45deg, #FF3366 30%, #FF9933 90%)",
-                                                                borderRadius: "5px",
-                                                                border: 0,
-                                                                color: "white",
-                                                                transition: "box-shadow 0.3s ease-in-out",
-                                                                "&:hover": {
-                                                                    boxShadow: "0 2px 4px 1px rgba(255, 51, 102, 0.3)",
-                                                                  },
-                                                              }} startIcon={<FavoriteBorderOutlinedIcon/>} variant='contained' size='small'>Join</Button>
+                                                        is_aFan ?
+                                                            <Button 
+                                                                sx={{
+                                                                    background: "linear-gradient(45deg, #FF3366 30%, #FF9933 90%)",
+                                                                    borderRadius: "5px",
+                                                                    border: 0,
+                                                                    color: "white",
+                                                                    transition: "box-shadow 0.3s ease-in-out",
+                                                                }} 
+                                                                startIcon={<FavoriteBorderOutlinedIcon/>} 
+                                                                variant='contained' 
+                                                                size='small'
+                                                                onClick={handleLeave}
+                                                                >Leave</Button>
                                                             :
-                                                            <Button disabled startIcon={<FavoriteIcon/>} variant='outlined' size='small'>Leave</Button>
+                                                            <Button  
+                                                                sx={{
+                                                                    background: "linear-gradient(45deg, #2900be 30%, #b723d5 90%)",
+                                                                    borderRadius: "5px",
+                                                                    border: 0,
+                                                                    color: "white",
+                                                                    transition: "box-shadow 0.3s ease-in-out",
+                                                                }} 
+                                                                startIcon={<FavoriteIcon/>} 
+                                                                variant='contained' 
+                                                                size='small'
+                                                                onClick={handleJoin}
+                                                                >Join</Button>
                                                     }
-                                                    </Box>        
+                                                    </Box>) : (
+                                                        <Box>
+                                                            <Button  
+                                                                sx={{
+                                                                    background: "linear-gradient(45deg, #2900be 30%, #b723d5 90%)",
+                                                                    borderRadius: "5px",
+                                                                    border: 0,
+                                                                    color: "white",
+                                                                    transition: "box-shadow 0.3s ease-in-out",
+                                                                }} 
+                                                                startIcon={<FavoriteIcon/>} 
+                                                                variant='contained' 
+                                                                size='small'
+                                                                onClick={() => router.push({ pathname: "/account/login" })}
+                                                                >Join</Button>
+                                                        </Box>
+                                                    )}        
                                                 </Stack>
                                             </Box>
                                         </CardContent>
