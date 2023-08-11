@@ -58,7 +58,7 @@ import { pageHasChanged, removeRefferalURL } from '@/redux/features/navigation/n
 
 
 
-const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, ssrYouTubeID }) => {
+const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
     // const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
     // const userCountry = useSelector((state) => state.auth.country)
     // const userIpAddress = useSelector((state) => state.auth.ip_address) 
@@ -82,7 +82,6 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, ssrYouTubeID
     const [user_ip, setUser_ip] = useState(null)
     const [referrer_url, setReferrer_url] = useState(null)
 
-    console.log("ssr youtube id:", ssrYouTubeID)
 
     
     useEffect(() => {
@@ -380,10 +379,9 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, ssrYouTubeID
                                                                 borderRadius: "5px",
                                                                 border: 0,
                                                                 color: "white",
-                                                                boxShadow: "0 3px 5px 2px rgba(255, 51, 102, 0.3)",
                                                                 transition: "box-shadow 0.3s ease-in-out",
                                                                 "&:hover": {
-                                                                    backgroundColor: rgba(255, 51, 102, 0.3),
+                                                                    backgroundColor: "rgba(255, 51, 102, 0.3)",
                                                                 },
                                                               }} startIcon={<FavoriteBorderOutlinedIcon/>} variant='contained' size='small'>Join</Button>
                                                             :
