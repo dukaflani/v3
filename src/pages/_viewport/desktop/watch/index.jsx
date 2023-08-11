@@ -273,7 +273,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
         if (fanbase?.id > 0) {
             setIs_aFan(true)
         }
-    }, [fanbase])
+    }, [fanbase?.id])
     
     const newFanDetails = {
         accessToken,

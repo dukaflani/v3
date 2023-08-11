@@ -288,7 +288,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
         if (fanbase?.id > 0) {
             setIs_aFan(true)
         }
-    }, [fanbase])
+    }, [fanbase?.id])
     
     const newFanDetails = {
         accessToken,
@@ -409,8 +409,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                                 <Typography variant='caption'>{isLoading ? '~' :  `${formatedFanBaseCount}`}</Typography>
                             </Box>
                             {currentLoggedInUser ? (<Box>
-                                    {
-                                    is_aFan ?
+                                    {is_aFan === true ?
                                         <Button 
                                             sx={{
                                                 background: "linear-gradient(45deg, #FF3366 30%, #FF9933 90%)",
