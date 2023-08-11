@@ -288,8 +288,10 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
     useEffect(() => {
         if (fanbase?.id > 0) {
             setIs_aFan(true)
+        } else {
+            setIs_aFan(false)
         }
-    }, [fanbase?.id])
+    }, [fanbase?.id, v])
     
     const newFanDetails = {
         accessToken,
