@@ -381,7 +381,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
                                                                 color: "white",
                                                                 transition: "box-shadow 0.3s ease-in-out",
                                                                 "&:hover": {
-                                                                    backgroundColor: "rgba(255, 51, 102, 0.3)",
+                                                                    backgroundColor: "blue",
                                                                 },
                                                               }} startIcon={<FavoriteBorderOutlinedIcon/>} variant='contained' size='small'>Join</Button>
                                                             :
