@@ -376,17 +376,13 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, ssrYouTubeID
                                                         {
                                                         true ?
                                                             <Button sx={{
-                                                                background: "linear-gradient(45deg, #FF3366 30%, #FF9933 90%)",
+                                                                background: "linear-gradient(45deg, #f48e21 30%, #b723d5 90%)",
                                                                 borderRadius: "5px",
                                                                 border: 0,
                                                                 color: "white",
-                                                                // height: "48px",
-                                                                // padding: "0 30px",
                                                                 boxShadow: "0 3px 5px 2px rgba(255, 51, 102, 0.3)",
                                                                 transition: "box-shadow 0.3s ease-in-out",
-                                                                "&:hover": {
-                                                                  boxShadow: "0 6px 10px 4px rgba(255, 51, 102, 0.3)",
-                                                                },
+                                                                "&:hover":  {backgroundColor: "#b723d5"},
                                                               }} startIcon={<FavoriteBorderOutlinedIcon/>} variant='contained' size='small'>Join</Button>
                                                             :
                                                             <Button disabled startIcon={<FavoriteIcon/>} variant='outlined' size='small'>Leave</Button>
