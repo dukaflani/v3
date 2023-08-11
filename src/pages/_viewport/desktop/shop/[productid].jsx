@@ -44,8 +44,6 @@ const ProductPage = ({ setIsDarkMode, isDarkMode, ssrProductID }) => {
     const [user_ip, setUser_ip] = useState(null)
     const [referrer_url, setReferrer_url] = useState(null)
 
-    console.log("ssr props:", ssrProductID)
-
     useEffect(() => {
         if (referralURL?.split(".")?.includes("dukaflani") || isRegularPageView === true ) {
             setUser_country(UserCountry)
@@ -280,13 +278,3 @@ const ProductPage = ({ setIsDarkMode, isDarkMode, ssrProductID }) => {
 
 export default ProductPage
 
-export const getServerSideProps = (cxt) => {
-    const { query } = cxt
-
-
-    return {
-        props: {
-            ssrProductID: query?.productid
-        }
-    }
-}
