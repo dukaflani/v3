@@ -32,7 +32,7 @@ import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
 
 
 
-const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
+const ProductPage = ({ setIsDarkMode, isDarkMode, ssrProductID }) => {
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const referralURL = useSelector((state) => state.navigation.referralURL)
@@ -44,6 +44,7 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
     const [user_ip, setUser_ip] = useState(null)
     const [referrer_url, setReferrer_url] = useState(null)
 
+    console.log("ssr props:", ssrProductID)
 
     useEffect(() => {
         if (referralURL?.split(".")?.includes("dukaflani") || isRegularPageView === true ) {
@@ -278,3 +279,14 @@ const ProductPage = ({ setIsDarkMode, isDarkMode }) => {
 }
 
 export default ProductPage
+
+export const getServerSideProps = (cxt) => {
+    const { query } = cxt
+
+
+    return {
+        props: {
+            ssrProductID: query?.productid
+        }
+    }
+}
