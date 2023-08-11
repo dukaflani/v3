@@ -44,7 +44,7 @@ import adPoster from '../../../../../public/assets/media/dukaflani-advert-poster
 import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLinks, 
     getCurrentVideoProduct, getCurrentVideoLyrics, getCurrentVideoLyricsVerses,
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
-    getCurrentVideoEvents, getCurrentVideoMediaTours, addView, joinFanbase, leaveFanbase } from '@/axios/axios';
+    getCurrentVideoEvents, getCurrentVideoMediaTours, addView, joinFanbase, leaveFanbase, checkFanbase } from '@/axios/axios';
 import { pageHasChanged } from '@/redux/features/navigation/navigationSlice';
 
 // Components
@@ -85,6 +85,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
     const [user_country, setUser_country] = useState(null)
     const [user_ip, setUser_ip] = useState(null)
     const [referrer_url, setReferrer_url] = useState(null)
+
 
     useEffect(() => {
         if (linkCopied) {
@@ -409,7 +410,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                                 <Typography variant='caption'>{isLoading ? '~' :  `${formatedFanBaseCount}`}</Typography>
                             </Box>
                             {currentLoggedInUser ? (<Box>
-                                    {is_aFan === true ?
+                                    {is_aFan ?
                                         <Button 
                                             sx={{
                                                 background: "linear-gradient(45deg, #FF3366 30%, #FF9933 90%)",
