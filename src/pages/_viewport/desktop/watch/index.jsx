@@ -377,11 +377,11 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, ssrYouTubeID
                                                         true ?
                                                             <Button sx={{
                                                                 background: "linear-gradient(45deg, #FF3366 30%, #FF9933 90%)",
-                                                                borderRadius: "3px",
+                                                                borderRadius: "50%",
                                                                 border: 0,
                                                                 color: "white",
-                                                                height: "48px",
-                                                                padding: "0 30px",
+                                                                // height: "48px",
+                                                                // padding: "0 30px",
                                                                 boxShadow: "0 3px 5px 2px rgba(255, 51, 102, 0.3)",
                                                                 transition: "box-shadow 0.3s ease-in-out",
                                                                 "&:hover": {
