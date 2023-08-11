@@ -377,7 +377,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue, ssrYouTubeID
                                                         true ?
                                                             <Button sx={{
                                                                 background: "linear-gradient(45deg, #FF3366 30%, #FF9933 90%)",
-                                                                borderRadius: "50%",
+                                                                borderRadius: "5px",
                                                                 border: 0,
                                                                 color: "white",
                                                                 // height: "48px",
