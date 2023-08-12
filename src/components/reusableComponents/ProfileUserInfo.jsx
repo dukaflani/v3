@@ -1,25 +1,121 @@
+// React Imports
+import { useEffect, useState } from 'react';
+
 // NextJS Imports
 import { useRouter } from 'next/router'
 import Image from "next/legacy/image";
 
 // MUI Imports
-import { Box, Stack, Grid, Paper, Avatar, useMediaQuery, Typography, Link, Divider, Tooltip, colors } from '@mui/material'
+import { Box, Stack, Grid, Paper, Avatar, useMediaQuery, Typography, Link, Divider, Tooltip, colors, Button } from '@mui/material'
 
 // NPM Imports
 import { useSelector } from 'react-redux'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Icons
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faTwitter, faInstagram, faTiktok, faYoutube } from "@fortawesome/free-brands-svg-icons"
+
+// Project Imports
+import { checkFanbase, joinFanbase, leaveFanbase } from '@/axios/axios';
 
 
 
 
 
 const ProfileUserInfo = ({ profile }) => {
+    const router = useRouter()
+    const { username } = router.query
+    const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
+    const accessToken = useSelector((state) => state.auth.token)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+    const [is_aFan, setIs_aFan] = useState(false)
+    // const [fanbase_count, setFanbase_count] = useState(0)
+    const [userFanObject, setUserFanObject] = useState(null)
+
+
+
+    // Fanbase Fns
+    const profileUsername = username
+
+    const profilePageProfileID = {
+        profileId: profile?.id,
+        userId: currentLoggedInUser?.id
+    }
+    
+    const { data: fanbase } = useQuery(["retrieve-fanbase-object", profilePageProfileID], (profilePageProfileID) => checkFanbase(profilePageProfileID), {
+        onSuccess: (data, _variables, _context) => {
+            setUserFanObject(data)
+        },
+        enabled: !!currentLoggedInUser?.id && !!profile?.id
+    })
+
+
+
+    const queryClient = useQueryClient()
+    const { mutate: addNewFan } = useMutation(joinFanbase, { 
+        onSuccess: (data, _variables, _context) => {
+          queryClient.invalidateQueries(["profile-page-details", profileUsername])
+          setIs_aFan(true)
+          setUserFanObject(data)
+        //   console.log("new fan added:", data)
+        },
+        onError: (error, _variables, _context) => {
+            // console.log("new fan error:", error)
+        }
+       })
+
+    const { mutate: removeFan } = useMutation(leaveFanbase, {
+        onSuccess: (data, _variables, _context) => {
+            queryClient.invalidateQueries(["profile-page-details", profileUsername])
+            setIs_aFan(false)
+        }
+    })
+
+
+
+    // useEffect(() => {
+    //     setFanbase_count(profile?.fanbase_count)
+    // }, [profile?.fanbase_count])
+    
+    useEffect(() => {
+        if (fanbase?.id > 0) {
+            setIs_aFan(true)
+        } else {
+            setIs_aFan(false)
+        }
+    }, [fanbase?.id, profileUsername])
+    
+    const newFanDetails = {
+        accessToken,
+        customuserprofile: profile?.id,
+    }
+
+    const handleJoin = () => {
+        addNewFan(newFanDetails)
+        setIs_aFan(true)
+        // setFanbase_count(prevCount => prevCount + 1)
+    }
+
+
+    const userFanDetails = {
+        accessToken,
+        id: userFanObject?.id,
+    }
+    
+    const handleLeave = () => {
+        removeFan(userFanDetails)
+        setIs_aFan(false)
+        // setFanbase_count(prevCount => prevCount - 1)
+    }
+
+
+
+
 
 
   return (
@@ -121,6 +217,58 @@ const ProfileUserInfo = ({ profile }) => {
                                     : 
                                     (<Typography variant="caption">Account not found</Typography>)
                                     }
+                                </Grid>
+                                <Grid item xs={12}>
+                                {currentLoggedInUser ? (<Box>
+                                    {is_aFan ?
+                                        <Button 
+                                            sx={{
+                                                background: "linear-gradient(45deg, #FF3366 30%, #FF9933 90%)",
+                                                borderRadius: "5px",
+                                                border: 0,
+                                                color: "white",
+                                                transition: "box-shadow 0.3s ease-in-out",
+                                            }} 
+                                            startIcon={<FavoriteBorderOutlinedIcon/>} 
+                                            variant='contained' 
+                                            size='small'
+                                            fullWidth
+                                            onClick={handleLeave}
+                                            >Leave the Fanbase</Button>
+                                        :
+                                        <Button  
+                                            sx={{
+                                                background: "linear-gradient(45deg, #2900be 30%, #b723d5 90%)",
+                                                borderRadius: "5px",
+                                                border: 0,
+                                                color: "white",
+                                                transition: "box-shadow 0.3s ease-in-out",
+                                            }} 
+                                            startIcon={<FavoriteIcon/>} 
+                                            variant='contained' 
+                                            size='small'
+                                            fullWidth
+                                            onClick={handleJoin}
+                                            >Join the Fanbase</Button>
+                                }
+                                </Box>) : (
+                                    <Box>
+                                        <Button  
+                                            sx={{
+                                                background: "linear-gradient(45deg, #2900be 30%, #b723d5 90%)",
+                                                borderRadius: "5px",
+                                                border: 0,
+                                                color: "white",
+                                                transition: "box-shadow 0.3s ease-in-out",
+                                            }} 
+                                            startIcon={<FavoriteIcon/>} 
+                                            variant='contained' 
+                                            size='small'
+                                            fullWidth
+                                            onClick={() => router.push({ pathname: "/account/login" })}
+                                            >Join the Fanbase</Button>
+                                    </Box>
+                                )}  
                                 </Grid>
                             </Grid>
                         </Stack>
