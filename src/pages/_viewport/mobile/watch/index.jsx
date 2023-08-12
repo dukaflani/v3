@@ -621,7 +621,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                         <Box>
                             {formatedLikesCount && <Stack direction='row' spacing={2}>
                                 <Paper variant='outlined'  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end', paddingY: 1, paddingX: 1.5, borderRadius: 10, }}>
-                                    <Stack spacing={2} direction='row'>
+                                    {currentLoggedInUser ? (<Stack spacing={2} direction='row'>
                                         {!user_likes ? (<Tooltip placement="top" title='I like'>
                                             <Box onClick={handleAddLike}>
                                                 <Stack direction='row' spacing={1} sx={{cursor: 'pointer'}}>
@@ -641,7 +641,29 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
                                         {!user_dislikes ? (<Box onClick={handleAddDislike}><Tooltip placement="top" title="I don't like"><ThumbDownOutlinedIcon sx={{fontSize: 19, cursor: 'pointer'}} /></Tooltip></Box>)
                                         :
                                         (<Box onClick={handleRemoveDislike}><Tooltip placement="top" title="Remove dislike"><ThumbDownIcon sx={{fontSize: 19, cursor: 'pointer'}} /></Tooltip></Box>)}
-                                    </Stack>
+                                    </Stack>) 
+                                    :
+                                    (<Stack onClick={() => router.push({ pathname: '/account/login' })} spacing={2} direction='row'>
+                                        {!user_likes ? (<Tooltip placement="top" title='I like'>
+                                            <Box>
+                                                <Stack direction='row' spacing={1} sx={{cursor: 'pointer'}}>
+                                                    <ThumbUpOutlinedIcon sx={{fontSize: 19}} />
+                                                    {formatedLikesCount && <Typography sx={{ fontWeight:'bold' }} variant='body2'>{formatedLikesCount}</Typography>}
+                                                </Stack>
+                                            </Box>
+                                        </Tooltip>) : (<Tooltip placement="top" title='Remove like'>
+                                            <Box>
+                                                <Stack direction='row' spacing={1} sx={{cursor: 'pointer'}}>
+                                                    <ThumbUpIcon sx={{fontSize: 19}} />
+                                                    {formatedLikesCount && <Typography sx={{ fontWeight:'bold' }} variant='body2'>{formatedLikesCount}</Typography>}
+                                                </Stack>
+                                            </Box>
+                                        </Tooltip>)}  
+                                        <Divider orientation="vertical" variant="middle" flexItem />
+                                        {!user_dislikes ? (<Box><Tooltip placement="top" title="I don't like"><ThumbDownOutlinedIcon sx={{fontSize: 19, cursor: 'pointer'}} /></Tooltip></Box>)
+                                        :
+                                        (<Box><Tooltip placement="top" title="Remove dislike"><ThumbDownIcon sx={{fontSize: 19, cursor: 'pointer'}} /></Tooltip></Box>)}
+                                    </Stack>)}
                                 </Paper>
                                 <Paper variant='outlined' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end', paddingY: 1, paddingX: 1.5, borderRadius: 10, cursor: 'pointer'}}>
                                     <Stack spacing={2} direction='row'>
