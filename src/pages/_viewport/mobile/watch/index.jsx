@@ -362,10 +362,10 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
           queryClient.invalidateQueries(["current-video", data?.youtube_id])
           setUser_likes(true)
           setVideoLikeFanObject(data)
-        //   console.log("new like added:", data)
+          console.log("new like added:", data)
         },
         onError: (error, _variables, _context) => {
-            // console.log("new fan error:", error)
+            console.log("new like error:", error)
         }
        })
 
@@ -396,7 +396,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
           console.log("new dislike added:", data)
         },
         onError: (error, _variables, _context) => {
-            // console.log("new fan error:", error)
+            console.log("new dislike error:", error)
         }
        })
 
@@ -429,9 +429,20 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
     }
 
 
+// console.log("new likes/unlike details object:", newLikeDetails)
+// console.log("current likes details object:", currentLikeDetails)
+// console.log("current unlikes details object:", currentUnlikeDetails)
+// console.log("retrieved dislike:", currentDislike)
+// console.log("retrieved like:", currentLike)
+// console.log("user likes video:", user_likes)
+// console.log("number of likes:", video_likes_count)
+// console.log("object of likes from state:", videoLikeObject)
+// console.log("user dislikes video:", user_dislikes)
+// console.log("object of dislikes from state:", videoDislikeObject)
+
 
     const handleAddLike = () => {
-        if (user_dislikes) {
+        if (user_dislikes == true && user_likes == false) {
             // remove dislike 
             removeUserDislike(currentUnlikeDetails)
             setUser_dislikes(false)
@@ -447,7 +458,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
     }
 
     const handleAddDislike = () => {
-        if (user_likes) {
+        if (user_likes == true && user_dislikes == false) {
             // Remove Like
             removeUserLike(currentLikeDetails)
             setUser_likes(false)
