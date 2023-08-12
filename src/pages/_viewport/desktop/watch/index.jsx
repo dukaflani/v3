@@ -21,6 +21,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 // Icons
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -52,7 +54,7 @@ import adposter from '../../../../../public/assets/media/dukaflani-advert-poster
 import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLinks, 
     getCurrentVideoProduct, getCurrentVideoLyrics, getCurrentVideoLyricsVerses,
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
-    getCurrentVideoEvents, getCurrentVideoMediaTours, addView, checkFanbase, joinFanbase, leaveFanbase } from '@/axios/axios';
+    getCurrentVideoEvents, getCurrentVideoMediaTours, addView, checkFanbase, joinFanbase, leaveFanbase, checkForVideoLike, checkForVideoDislike } from '@/axios/axios';
 import { pageHasChanged, removeRefferalURL } from '@/redux/features/navigation/navigationSlice';
 
 
@@ -75,13 +77,17 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
     const [showMoreText, setShowMoreText] = useState(false)
     const [linkCopied, setLinkCopied] = useState(false)
     const [shareButtonText, setShareButtonText] = useState('Share')
-    const [numberOfLikes, setNumberOfLikes] = useState('') 
-    const [numberOfUnlikes, setNumberOfUnlikes] = useState('')  
-    const [is_liked, setIs_liked] = useState(false)
-    const [is_unliked, setIs_unliked] = useState(false)
     const [is_aFan, setIs_aFan] = useState(false)
     const [fanbase_count, setFanbase_count] = useState(0)
     const [userFanObject, setUserFanObject] = useState(null)
+
+    const [user_likes, setUser_likes] = useState(false)
+    const [video_likes_count, setVideo_likes_count] = useState(0)
+    const [videoLikeObject, setVideoLikeFanObject] = useState(null)
+    
+    const [user_dislikes, setUser_dislikes] = useState(false)
+    const [videoDislikeObject, setVideoDislikeFanObject] = useState(null)
+
     const [user_country, setUser_country] = useState(null)
     const [user_ip, setUser_ip] = useState(null)
     const [referrer_url, setReferrer_url] = useState(null)
@@ -185,6 +191,25 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
         },
         enabled: !!currentLoggedInUser?.id && !!profile?.id
     })
+
+    const videoLikeDetails = {
+        videoId: data?.id,
+        userId: currentLoggedInUser?.id
+    }
+    
+    const { data: currentLike } = useQuery(["retrieve-user-like", videoLikeDetails], (videoLikeDetails) => checkForVideoLike(videoLikeDetails), {
+        onSuccess: (data, _variables, _context) => {
+            setVideoLikeFanObject(data)
+        },
+        enabled: !!currentLoggedInUser?.id && !!data?.id
+    })
+
+    const { data: currentDislike } = useQuery(["retrieve-user-dislike", videoLikeDetails], (videoLikeDetails) => checkForVideoDislike(videoLikeDetails), {
+        onSuccess: (data, _variables, _context) => {
+            setVideoDislikeFanObject(data)
+        },
+        enabled: !!currentLoggedInUser?.id && !!data?.id
+    })
     
     const videoLinksID = data?.links 
     const { data: streamingLinks, isLoading: loadingLinks } = useQuery(["current-video-streaming-links", videoLinksID], (videoLinksID) => getCurrentVideoStreamingLinks(videoLinksID), {
@@ -234,9 +259,9 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
     let formatedFanBaseCount = ''
     fanbase_count < 1000 || fanbase_count % 10 === 0 || fanbase_count === 0 ? formatedFanBaseCount = numeral(fanbase_count).format('0a') :  formatedFanBaseCount = numeral(fanbase_count).format('0.0a')
 
-    const rawLikesCount = data?.like_count ? data?.like_count : 0
+    // const rawLikesCount = data?.like_count ? data?.like_count : 0
     let formatedLikesCount = ''
-    rawLikesCount < 1000 || rawLikesCount % 10 === 0 ? formatedLikesCount = numeral(rawLikesCount).format('0a') :  formatedLikesCount = numeral(rawLikesCount).format('0.0a')
+    video_likes_count < 1000 || video_likes_count % 10 === 0 || video_likes_count === 0 ? formatedLikesCount = numeral(video_likes_count).format('0a') :  formatedLikesCount = numeral(video_likes_count).format('0.0a')
 
     const desc = data?.description
     const hashTags = desc?.split(' ')
@@ -298,6 +323,141 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
         removeFan(userFanDetails)
         setIs_aFan(false)
         setFanbase_count(prevCount => prevCount - 1)
+    }
+
+
+    // Like video
+
+    useEffect(() => {
+        setVideo_likes_count(data?.like_count)
+    }, [data?.like_count])
+    
+    useEffect(() => {
+        if (currentLike?.id > 0) {
+            setUser_likes(true)
+        } else {
+            setUser_likes(false)
+        }
+    }, [currentLike?.id, v])
+
+    const { mutate: addALike } = useMutation(likeVideo, { 
+        onSuccess: (data, _variables, _context) => {
+          queryClient.invalidateQueries(["current-video", data?.youtube_id])
+          setUser_likes(true)
+          setVideoLikeFanObject(data)
+        //   console.log("new like added:", data)
+        },
+        onError: (error, _variables, _context) => {
+            // console.log("new fan error:", error)
+        }
+       })
+
+    const { mutate: removeUserLike } = useMutation(removeLike, {
+    onSuccess: (data, _variables, _context) => {
+        queryClient.invalidateQueries(["current-video", data?.youtube_id])
+        setUser_likes(false)
+    }
+    })
+
+
+    // Dislike video
+    
+    useEffect(() => {
+        if (currentDislike?.id > 0) {
+            setUser_dislikes(true)
+        } else {
+            setUser_dislikes(false)
+        }
+    }, [currentDislike?.id, v])
+
+
+    const { mutate: addADislike } = useMutation(dislikeVideo, { 
+        onSuccess: (data, _variables, _context) => {
+          queryClient.invalidateQueries(["current-video", data?.youtube_id])
+          setUser_dislikes(true)
+          setVideoDislikeFanObject(data)
+          console.log("new dislike added:", data)
+        },
+        onError: (error, _variables, _context) => {
+            // console.log("new fan error:", error)
+        }
+       })
+
+    const { mutate: removeUserDislike } = useMutation(removeDislike, {
+    onSuccess: (data, _variables, _context) => {
+        queryClient.invalidateQueries(["current-video", data?.youtube_id])
+        setUser_dislikes(false)
+    }
+    })
+
+
+
+    // Like + Unlike Fns
+
+
+    const newLikeDetails = {
+        accessToken,
+        video: data?.id
+    }
+
+
+    const currentLikeDetails = {
+        accessToken,
+        id: videoLikeObject?.id
+    }
+
+    const currentUnlikeDetails = {
+        accessToken,
+        id: videoDislikeObject?.id
+    }
+
+
+
+    const handleAddLike = () => {
+        if (user_dislikes) {
+            // remove dislike 
+            removeUserDislike(currentUnlikeDetails)
+            setUser_dislikes(false)
+            // Then add like
+            addALike(newLikeDetails)
+            setUser_likes(true)
+            setVideo_likes_count(prevCount => prevCount + 1)
+        } else {
+            addALike(newLikeDetails)
+            setUser_likes(true)
+            setVideo_likes_count(prevCount => prevCount + 1)
+        }
+    }
+
+    const handleAddDislike = () => {
+        if (user_likes) {
+            // Remove Like
+            removeUserLike(currentLikeDetails)
+            setUser_likes(false)
+            setVideo_likes_count(prevCount => prevCount - 1)
+            // Then add dislike
+            addADislike(newLikeDetails)
+            setUser_dislikes(true)
+        } else {
+            addADislike(newLikeDetails)
+            setUser_dislikes(true)
+        }
+    }
+
+
+
+    const handleRemoveLike = () => {
+    removeUserLike(currentLikeDetails)
+    setUser_likes(false)
+    setVideo_likes_count(prevCount => prevCount - 1)
+    }
+
+    
+
+
+    const handleRemoveDislike = () => {
+        removeUserDislike(currentUnlikeDetails)
+        setUser_dislikes(false)
     }
 
 
@@ -367,14 +527,25 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
                                         {formatedLikesCount && <Stack direction='row' spacing={2}>
                                             <Paper variant='outlined'  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end', paddingY: 1, paddingX: 1.5, borderRadius: 10, }}>
                                                 <Stack spacing={2} direction='row'>
-                                                    <Tooltip placement="top" title='I like'>
-                                                        <Stack direction='row' spacing={1} sx={{cursor: 'pointer'}}>
-                                                            <ThumbUpOutlinedIcon sx={{fontSize: 19}} />
-                                                            {formatedLikesCount && <Typography sx={{ fontWeight:'bold' }} variant='body2'>{formatedLikesCount}</Typography>}
-                                                        </Stack>
-                                                    </Tooltip>
+                                                    {!user_likes ? (<Tooltip placement="top" title='I like'>
+                                                        <Box onClick={handleAddLike}>
+                                                            <Stack direction='row' spacing={1} sx={{cursor: 'pointer'}}>
+                                                                <ThumbUpOutlinedIcon sx={{fontSize: 19}} />
+                                                                {formatedLikesCount && <Typography sx={{ fontWeight:'bold' }} variant='body2'>{formatedLikesCount}</Typography>}
+                                                            </Stack>
+                                                        </Box>
+                                                    </Tooltip>) : (<Tooltip placement="top" title='Remove like'>
+                                                        <Box onClick={handleRemoveLike}>
+                                                            <Stack direction='row' spacing={1} sx={{cursor: 'pointer'}}>
+                                                                <ThumbUpIcon sx={{fontSize: 19}} />
+                                                                {formatedLikesCount && <Typography sx={{ fontWeight:'bold' }} variant='body2'>{formatedLikesCount}</Typography>}
+                                                            </Stack>
+                                                        </Box>
+                                                    </Tooltip>)}  
                                                     <Divider orientation="vertical" variant="middle" flexItem />
-                                                    <Tooltip placement="top" title="I don't like"><ThumbDownOutlinedIcon sx={{fontSize: 19, cursor: 'pointer'}} /></Tooltip>
+                                                    {!user_dislikes ? (<Box onClick={handleAddDislike}><Tooltip placement="top" title="I don't like"><ThumbDownOutlinedIcon sx={{fontSize: 19, cursor: 'pointer'}} /></Tooltip></Box>)
+                                                    :
+                                                    (<Box onClick={handleRemoveDislike}><Tooltip placement="top" title="Remove dislike"><ThumbDownIcon sx={{fontSize: 19, cursor: 'pointer'}} /></Tooltip></Box>)}
                                                 </Stack>
                                             </Paper>
                                             <Paper variant='outlined' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end', paddingY: 1, paddingX: 1.5, borderRadius: 10, cursor: 'pointer'}}>

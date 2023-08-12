@@ -307,3 +307,71 @@ export const leaveFanbase = async ( { id, accessToken } ) => {
     })
     return response.data
 }
+
+export const likeVideo = async ( { accessToken, ...video } ) => {
+    const access_token = accessToken
+
+    const response = await api.post(`/store/likes/`, video, {
+        headers: {
+            // 'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: access_token 
+        },
+    })
+    return response.data
+}
+
+export const removeLike = async ( { id, accessToken } ) => {
+    const access_token = accessToken
+    const likes_id = id
+
+    const response = await api.delete(`/store/likes/${likes_id}/`, {
+        headers: {
+            // 'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: access_token 
+        },
+    })
+    return response.data
+}
+
+export const checkForVideoLike = async (videoLikeDetails) => {
+    const video_id = videoLikeDetails?.queryKey[1]?.videoId
+    const user_id = videoLikeDetails?.queryKey[1]?.userId
+    const response = await api.get(`/store/likes/?user=${user_id}&video=${video_id}`)
+    return response.data[0]
+}
+
+export const dislikeVideo = async ( { accessToken, ...video } ) => {
+    const access_token = accessToken
+
+    const response = await api.post(`/store/unlikes/`, video, {
+        headers: {
+            // 'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: access_token 
+        },
+    })
+    return response.data
+}
+
+export const checkForVideoDislike = async (videoDislikeDetails) => {
+    const video_id = videoDislikeDetails?.queryKey[1]?.videoId
+    const user_id = videoDislikeDetails?.queryKey[1]?.userId
+    const response = await api.get(`/store/unlikes/?user=${user_id}&video=${video_id}`)
+    return response.data[0]
+}
+
+export const removeDislike = async ( { id, accessToken } ) => {
+    const access_token = accessToken
+    const unlikes_id = id
+
+    const response = await api.delete(`/store/unlikes/${unlikes_id}/`, {
+        headers: {
+            // 'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: access_token 
+        },
+    })
+    return response.data
+}
