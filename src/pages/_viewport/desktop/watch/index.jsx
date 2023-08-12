@@ -54,7 +54,7 @@ import adposter from '../../../../../public/assets/media/dukaflani-advert-poster
 import { getCurrentVideo, getCurrentVideoUserProfile, getCurrentVideoStreamingLinks, 
     getCurrentVideoProduct, getCurrentVideoLyrics, getCurrentVideoLyricsVerses,
     getCurrentVideoSkizaTuneList, getCurrentVideoAlbum, getCurrentVideoAlbumTracks,
-    getCurrentVideoEvents, getCurrentVideoMediaTours, addView, checkFanbase, joinFanbase, leaveFanbase, checkForVideoLike, checkForVideoDislike } from '@/axios/axios';
+    getCurrentVideoEvents, getCurrentVideoMediaTours, addView, checkFanbase, joinFanbase, leaveFanbase, checkForVideoLike, checkForVideoDislike, likeVideo, removeLike, dislikeVideo, removeDislike } from '@/axios/axios';
 import { pageHasChanged, removeRefferalURL } from '@/redux/features/navigation/navigationSlice';
 
 
