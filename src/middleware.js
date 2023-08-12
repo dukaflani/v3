@@ -30,8 +30,8 @@ export function middleware(req) {
   let hostURL = req.headers.get("host")
   
   // Check the viewport
-  // const viewport = device.type === 'mobile' ? 'mobile' : 'desktop'
-  const viewport = 'mobile'
+  const viewport = device.type === 'mobile' ? 'mobile' : 'desktop'
+  // const viewport = 'mobile'
   
   //Update the expected url
   req.nextUrl.searchParams.set('UserCountry', userCountry)
