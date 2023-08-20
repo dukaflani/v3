@@ -177,6 +177,9 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode }) => {
 
     const videoProfileUserID = data?.user
     const { data: profile, isLoading, isFetching } = useQuery(["current-video-profile", videoProfileUserID], (videoProfileUserID) => getCurrentVideoUserProfile(videoProfileUserID), {
+        onSuccess: (data, _variables, _context) => {
+            setFanbase_count(data?.fanbase_count)
+        },
         enabled: !!videoProfileUserID
     })
 

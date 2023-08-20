@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 // Icons
 import { AppstoreOutlined, WhatsAppOutlined, CheckCircleFilled, FireOutlined } from "@ant-design/icons";
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
 // TanStack/React-Query
@@ -27,11 +28,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import MobileNavigationLayout from '@/layout/mobile/MobileNavigationLayout'
 import UpsellProductsCarousel from '@/components/reusableComponents/UpsellProductsCarousel'
 import Copyright from '@/components/reusableComponents/Copyright'
-import { addProductView, getCurrentVideoProduct, getCurrentVideoUserProfile, getUpsellProducts } from "@/axios/axios";
+import { addProductView, checkFanbase, getCurrentVideoProduct, getCurrentVideoUserProfile, getUpsellProducts, joinFanbase, leaveFanbase } from "@/axios/axios";
 import { pageHasChanged } from "@/redux/features/navigation/navigationSlice";
 
 
 const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
+    const currentLoggedInUser = useSelector((state) => state.auth.userInfo)
+    const accessToken = useSelector((state) => state.auth.token)
     const is_darkMode = useSelector((state) => state.theme.isDarkMode)
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     const referralURL = useSelector((state) => state.navigation.referralURL)
@@ -40,6 +43,11 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
     const router = useRouter()
     const dispatch = useDispatch()
     const { productid, UserCountry, UserIP  } = router.query
+
+    const [is_aFan, setIs_aFan] = useState(false)
+    const [fanbase_count, setFanbase_count] = useState(0)
+    const [userFanObject, setUserFanObject] = useState(null)
+
     const [user_country, setUser_country] = useState(null)
     const [user_ip, setUser_ip] = useState(null)
     const [referrer_url, setReferrer_url] = useState(null)
@@ -75,11 +83,26 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
 
     const publisherUserID = product?.user 
     const { data: profile, isLoading: loadingProfile, isFetching } = useQuery(["current-video-profile", publisherUserID], (publisherUserID) => getCurrentVideoUserProfile(publisherUserID), {
+        onSuccess: (data, _variables, _context) => {
+            setFanbase_count(data?.fanbase_count)
+        },
         enabled: !!publisherUserID
     })
     
     const { data: upsellProducts } = useQuery(["upsell-products", publisherUserID], (publisherUserID) => getUpsellProducts(publisherUserID), {
         enabled: !!publisherUserID
+    })
+
+    const videoProfileID = {
+        profileId: profile?.id,
+        userId: currentLoggedInUser?.id
+    }
+    
+    const { data: fanbase } = useQuery(["retrieve-fanbase-object", videoProfileID], (videoProfileID) => checkFanbase(videoProfileID), {
+        onSuccess: (data, _variables, _context) => {
+            setUserFanObject(data)
+        },
+        enabled: !!currentLoggedInUser?.id && !!profile?.id
     })
     
     const msg = `Hello ${product?.promoted_by}, I'm interested in the ${product?.title} from ${product?.sold_by} on dukaflani.com`
@@ -119,6 +142,69 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
     addMyReferralView();
    }, [referrer_url, product?.id, product?.customuserprofile, user_ip, user_country])
 
+
+   // const rawFanBaseCount = profile?.fanbase_count ? profile?.fanbase_count : 0
+   let formatedFanBaseCount = ''
+   fanbase_count < 1000 || fanbase_count % 10 === 0 || fanbase_count === 0 ? formatedFanBaseCount = numeral(fanbase_count).format('0a') :  formatedFanBaseCount = numeral(fanbase_count).format('0.0a')
+
+
+   // Fanbase Fns
+
+   const { mutate: addNewFan } = useMutation(joinFanbase, { 
+    onSuccess: (data, _variables, _context) => {
+      queryClient.invalidateQueries(["current-video-profile", publisherUserID])
+      setIs_aFan(true)
+      setUserFanObject(data)
+    //   console.log("new fan added:", data)
+    },
+    onError: (error, _variables, _context) => {
+        // console.log("new fan error:", error)
+    }
+   })
+
+const { mutate: removeFan } = useMutation(leaveFanbase, {
+    onSuccess: (data, _variables, _context) => {
+        queryClient.invalidateQueries(["current-video-profile", publisherUserID])
+        setIs_aFan(false)
+    }
+})
+
+
+
+useEffect(() => {
+    setFanbase_count(profile?.fanbase_count)
+}, [profile?.fanbase_count])
+
+useEffect(() => {
+    if (fanbase?.id > 0) {
+        setIs_aFan(true)
+    } else {
+        setIs_aFan(false)
+    }
+}, [fanbase?.id, productid])
+
+const newFanDetails = {
+    accessToken,
+    customuserprofile: profile?.id,
+}
+
+const handleJoin = () => {
+    addNewFan(newFanDetails)
+    setIs_aFan(true)
+    setFanbase_count(prevCount => prevCount + 1)
+}
+
+
+const userFanDetails = {
+    accessToken,
+    id: userFanObject?.id,
+}
+
+const handleLeave = () => {
+    removeFan(userFanDetails)
+    setIs_aFan(false)
+    setFanbase_count(prevCount => prevCount - 1)
+}
 
 
 
@@ -205,7 +291,57 @@ const ProductPageMobile = ({ setIsDarkMode, isDarkMode }) => {
                                                 </Box>
                                                 </Stack>
                                                 <Box sx={{width: '100%', paddingTop: 1}}>
-                                                    <Button disabled startIcon={<FavoriteBorderOutlinedIcon />} fullWidth variant="contained" size='small'>Join Fanbase</Button>
+                                                    {/* <Button disabled startIcon={<FavoriteBorderOutlinedIcon />} fullWidth variant="contained" size='small'>Join Fanbase</Button> */}
+                                                    {currentLoggedInUser ? (<Box>
+                                                        {is_aFan ?
+                                                            <Button 
+                                                                sx={{
+                                                                    background: "linear-gradient(45deg, #FF3366 30%, #FF9933 90%)",
+                                                                    borderRadius: "5px",
+                                                                    border: 0,
+                                                                    color: "white",
+                                                                    transition: "box-shadow 0.3s ease-in-out",
+                                                                }} 
+                                                                startIcon={<FavoriteBorderOutlinedIcon/>} 
+                                                                variant='contained' 
+                                                                size='small'
+                                                                fullWidth
+                                                                onClick={handleLeave}
+                                                                >Leave The Fanbase</Button>
+                                                            :
+                                                            <Button  
+                                                                sx={{
+                                                                    background: "linear-gradient(45deg, #2900be 30%, #b723d5 90%)",
+                                                                    borderRadius: "5px",
+                                                                    border: 0,
+                                                                    color: "white",
+                                                                    transition: "box-shadow 0.3s ease-in-out",
+                                                                }} 
+                                                                startIcon={<FavoriteIcon/>} 
+                                                                variant='contained' 
+                                                                size='small'
+                                                                fullWidth
+                                                                onClick={handleJoin}
+                                                                >Join The Fanbase</Button>
+                                                    }
+                                                    </Box>) : (
+                                                        <Box>
+                                                            <Button  
+                                                                sx={{
+                                                                    background: "linear-gradient(45deg, #2900be 30%, #b723d5 90%)",
+                                                                    borderRadius: "5px",
+                                                                    border: 0,
+                                                                    color: "white",
+                                                                    transition: "box-shadow 0.3s ease-in-out",
+                                                                }} 
+                                                                startIcon={<FavoriteIcon/>} 
+                                                                variant='contained' 
+                                                                size='small'
+                                                                fullWidth
+                                                                onClick={() => router.push({ pathname: "/account/login" })}
+                                                                >Join The Fanbase</Button>
+                                                        </Box>
+                                                    )}  
                                                 </Box>
                                             </Grid>
                                         </Grid>
