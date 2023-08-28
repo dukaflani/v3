@@ -525,7 +525,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
                                             </Grid>
                                         </Box>
                                         {formatedLikesCount && <Stack direction='row' spacing={2}>
-                                            <Paper variant='outlined'  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end', paddingY: 1, paddingX: 1.5, borderRadius: 10, }}>
+                                            {/* <Paper variant='outlined'  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end', paddingY: 1, paddingX: 1.5, borderRadius: 10, }}>
                                                 {currentLoggedInUser ? (<Stack spacing={2} direction='row'>
                                                     {!user_likes ? (<Tooltip placement="top" title='I like'>
                                                         <Box onClick={handleAddLike}>
@@ -569,7 +569,7 @@ const CurrentVideo = ({ setIsDarkMode, isDarkMode, value, setValue}) => {
                                                     :
                                                     (<Box><Tooltip placement="top" title="Remove dislike"><ThumbDownIcon sx={{fontSize: 19, cursor: 'pointer'}} /></Tooltip></Box>)}
                                                 </Stack>)}
-                                            </Paper>
+                                            </Paper> */}
                                             <Paper variant='outlined' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end', paddingY: 1, paddingX: 1.5, borderRadius: 10, cursor: 'pointer'}}>
                                                 <Stack spacing={2} direction='row'>
                                                 <CopyToClipboard
